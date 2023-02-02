@@ -1,9 +1,13 @@
 # Redis: AI Resources
 
+<img src="assets/redis-logo.svg" style="width: 130px; float: right;">
+
+
 ✨ A curated list of amazingly awesome redis and redis ecosystem resources for AI and Machine Learning use cases.
 
-____
 
+
+____
 
 ### Table of Contents
 
