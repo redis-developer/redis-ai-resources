@@ -43,6 +43,14 @@ ____
 
 ## Online Feature Store
 
+- Resources
+- Integrations
+- Examples
+
 ----
 
 ## Inference Engine
+
+- Resources
+- Integrations
+- Examples
