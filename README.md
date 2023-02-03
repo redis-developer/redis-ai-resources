@@ -4,7 +4,7 @@
 
 
 
-✨ A curated list of awesome community resources, integrations, and examples for Redis in the AI ecosystem.
+✨ A curated list of awesome community resources including content, integrations, documentation and examples for Redis in the AI ecosystem.
 
 ### Table of Contents
 
@@ -64,6 +64,7 @@ The following list provides resources, integrations, and examples for **Redis as
 ____
 
 ## Feature Store
+The following list provides resources, integrations, and examples for **Redis as a Feature Store**.
 
 - Content
   - [What is a Feature Store?](https://www.tecton.ai/blog/what-is-a-feature-store/) - introductory blog post on feature stores.
@@ -89,4 +90,4 @@ ____
 ----
 
 
-*Have other contributions? Open a PR. We'll happily review.*
+*Have other contributions? [Checkout our contributing guidelines](contributing.md).*
