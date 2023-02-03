@@ -1,4 +1,4 @@
-<img align="right" src="assets/redis-logo.svg" style="width: 110px">
+<img align="right" src="assets/redis-logo.svg" style="width: 130px">
 
 # Redis: AI Resources
 
