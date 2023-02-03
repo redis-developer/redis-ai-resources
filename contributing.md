@@ -2,9 +2,25 @@
 
 Please note that this project is released with a [Contributor Code of Conduct](code-of-conduct.md). By participating in this project you agree to abide by its terms.
 
-## Adding an item
+## Standards
 
-Open a PR.
+Open a PR with your addition. We expect the following standards:
+
+1. New additions must have a valid URL attached as a hyperlink.
+2. New additions should not contain any bold or italicized text to draw extra attention.
+3. New additions should be added to the bottom of the list (unless otherwise noted).
+4. New additions should not contain any profanity or offensive language.
+
+### What it takes to get a Star
+
+When reviewing the PR, we will determine whether a new entry gets a star!
+
+Examples that:
+- are well-documented and easy to follow
+- pertain to a new or creative use case
+- follow good coding/writing hygiene
+
+will be considered for getting a special star ⭐.
 
 ## Updating your Pull Request
 
