@@ -47,16 +47,25 @@ The following list provides resources, integrations, and examples for **Redis as
 | [Amazon Berkeley Product Dataset Demo](https://github.com/RedisAI/vecsim-demo) |  Redis VSS demo on Amazon Berkeley product dataset | ![redis-vecsim-demo-stars]  |
 
 
+#### Question & Answer
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [⭐ Azure OpenAI Embeddings Q&A](https://github.com/ruoccofabrizio/azure-open-ai-embeddings-qna) | OpenAI and Redis as a Q&A service on Azure | ![azure-openai-embeddings-qna-stars] |
+| [Redis OpenAI QnA Streamlit App](https://github.com/RedisVentures/redis-openai-qna) | Streamlit demo of Redis OpenAI QnA | ![redis-openai-qna-streamlit-demo-stars] |
+
+
 #### NLP & Information Retrieval
 
 | Resource | Description | Stars |
 | --- | --- | --- |
-[⭐ Azure OpenAI Embeddings Q&A](https://github.com/ruoccofabrizio/azure-open-ai-embeddings-qna) | OpenAI and Redis as a Q&A service on Azure | ![azure-openai-embeddings-qna-stars] |
 | [⭐ arXiv Paper Search](https://github.com/RedisVentures/redis-arXiv-search) | Semantic search over arXiv scholarly papers | ![redis-arxiv-search-stars] |
-| [Redis VSS Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search | ![redis-vss-streamlit-demo-stars] |
 | [Simple Vector Similarity Intro](https://github.com/RedisVentures/simple-vecsim-intro) | Dockerized Jupyter Notebook & Streamlit demo of Redis Vector Search | ![redis-vecsim-intro-stars] |
 | [Financial News Demo](https://github.com/RedisAI/financial-news) | Sentiment analysis and Semantic similarity in Financial News articles | ![financial-news-demo-stars] |
 | [The Pattern](https://github.com/applied-knowledge-systems/the-pattern) | CORD19 medical NLP pipeline with Redis | ![the-pattern-stars] |
+| [Redis VSS Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search | ![redis-vss-streamlit-demo-stars] |
+
+
 #### [Redis Vector Search Engineering Lab Submissions](https://github.com/RedisVentures/RedisVentures.github.io/issues/1) - Submissions to the first Redis VSS hackathon.
 
 | Resource | Description | Stars |
@@ -72,9 +81,9 @@ The following list provides resources, integrations, and examples for **Redis as
 
 | Resource | Description | Stars |
 | --- | --- | --- |
+| [OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook/tree/main/examples/vector_databases) | OpenAI Cookbook examples using Redis as a vector database | ![openai-cookbook-stars] |
 | [TopVecSim](https://github.com/team-castle/topvecsim/) | Topic Similarity with Redis VSS | ![top-vecsim-stars] |
 | [Java Demo](https://github.com/RedisAI/Java-VSS-demo) | Redis VSS demo in Java | ![java-demo-stars] |
-| [Information Retrieval / QnA App](https://github.com/neurocode-io/alexis) | QnA app with Redis | ![alexis-stars] |
 
 ###  RediSearch Clients
 | Client | Language | License | Stars |
@@ -121,7 +130,8 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 - [Haystack Example](https://github.com/artefactory/redis-player-one/blob/main/askyves/redis_document_store.py) - Haystack Integration (example) of Redis as a VectorDB.
 - [RelevanceAI](https://relevance.ai/) - Platform to ag, search and analyze unstructured data faster, built on Redis.
 
-
+[openai-cookbook-stars]: https://img.shields.io/github/stars/openai/openai-cookbook?style=social
+[redis-openai-qna-streamlit-demo-stars]: https://img.shields.io/github/stars/RedisVentures/redis-openai-qna?style=social
 [redis-py-stars]: https://img.shields.io/github/stars/redis/redis-py?style=social
 [redisvl-stars]: https://img.shields.io/github/stars/RedisVentures/redisvl?style=social
 [redis-py-url]: https://github.com/redis/redis-py
@@ -136,7 +146,6 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 [redisearch-go-stars]: https://img.shields.io/github/stars/RediSearch/redisearch-go.svg?style=social&amp;label=Star&amp;maxAge=2592000
 [redisearch-api-rs-url]: https://github.com/RediSearch/redisearch-api-rs
 [redisearch-api-rs-stars]: https://img.shields.io/github/stars/RediSearch/redisearch-api-rs.svg?style=social&amp;label=Star&amp;maxAge=2592000
-[alexis-stars]: https://img.shields.io/github/stars/neurocode-io/alexis.svg?style=social&amp;label=Star&amp;maxAge=2592000
 [java-demo-stars]: https://img.shields.io/github/stars/RedisAI/Java-VSS-demo.svg?style=social&amp;label=Star&amp;maxAge=2592000
 [top-vecsim-stars]: https://img.shields.io/github/stars/team-castle/topvecsim.svg?style=social&amp;label=Star&amp;maxAge=2592000
 [document-search-cli-stars]: https://img.shields.io/github/stars/artefactory/redis-team-THM.svg?style=social&amp;label=Star&amp;maxAge=2592000
