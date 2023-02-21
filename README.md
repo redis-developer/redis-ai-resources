@@ -43,7 +43,7 @@ The following list provides resources, integrations, and examples for **Redis as
 | --- | --- | --- |
 | [⭐ Redis Merlin RecSys](https://github.com/RedisVentures/Redis-Recsys) | 3 Redis & NVIDIA Merlin Recommendation System Architectures | ![redis-recsys-stars]  |
 | [⭐ Visual Product Search](https://github.com/RedisVentures/redis-product-search) | eCommerce product search (with image and text) | ![redis-product-search-stars]  |
-| [⭐ Product Recommendations with DocArray / Jina](https://github.com/jina-ai/product-recommendation-redis-docarray) |  Content-based product recommendations with Redis and DocArray | ![jina-product-recommendations-stars]  |
+| [Product Recommendations with DocArray / Jina](https://github.com/jina-ai/product-recommendation-redis-docarray) |  Content-based product recommendations with Redis and DocArray | ![jina-product-recommendations-stars]  |
 | [Amazon Berkeley Product Dataset Demo](https://github.com/RedisAI/vecsim-demo) |  Redis VSS demo on Amazon Berkeley product dataset | ![redis-vecsim-demo-stars]  |
 
 
@@ -81,7 +81,7 @@ The following list provides resources, integrations, and examples for **Redis as
 
 | Resource | Description | Stars |
 | --- | --- | --- |
-| [OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook/tree/main/examples/vector_databases) | OpenAI Cookbook examples using Redis as a vector database | ![openai-cookbook-stars] |
+| [⭐ OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook/tree/main/examples/vector_databases) | OpenAI Cookbook examples using Redis as a vector database | ![openai-cookbook-stars] |
 | [TopVecSim](https://github.com/team-castle/topvecsim/) | Topic Similarity with Redis VSS | ![top-vecsim-stars] |
 | [Java Demo](https://github.com/RedisAI/Java-VSS-demo) | Redis VSS demo in Java | ![java-demo-stars] |
 
@@ -200,7 +200,7 @@ The following list provides resources, integrations, and examples for **Redis as
 | Resource | Description | Stars |
 | --- | --- | --- |
 | [Redis + Feast + Ray Demo](https://github.com/RedisVentures/redis-feast-ray) | A demo pipeline using Redis as an online feature store with Feast for orchestration and Ray for training and model serving | ![redis-vaccine-forecaster-stars] |
-| [Loan Prediction Example](https://github.com/RedisVentures/loan-prediction-microservice) | Loan prediction example with Redis as the feature store and serving layer. | ![load-prediction-example-stars] |
+| [⭐ Loan Prediction Example](https://github.com/RedisVentures/loan-prediction-microservice) | Loan prediction example with Redis as the feature store and serving layer. | ![load-prediction-example-stars] |
 
 #### Other
 
@@ -215,8 +215,8 @@ The following list provides resources, integrations, and examples for **Redis as
 
 | Resource | Description | Stars |
 | --- | --- | --- |
-| [Spark-Redis](https://github.com/RedisLabs/spark-redis) | Spark-Redis is a connector that allows you to stream data from Spark to Redis | ![spark-redis-stars] |
-| [Feast](https://github.com/feast-dev/feast) | Feast feature orchestration system framework | ![feast-stars] |
+| [⭐ Spark-Redis](https://github.com/RedisLabs/spark-redis) | Spark-Redis is a connector that allows you to stream data from Spark to Redis | ![spark-redis-stars] |
+| [⭐ Feast](https://github.com/feast-dev/feast) | Feast feature orchestration system framework | ![feast-stars] |
 | [Feathr](https://github.com/linkedin/feathr) | Feathr is a feature orchestration framework created by Linkedin | ![feathr-stars] |
 | [Redis Kafka](https://github.com/redis-field-engineering/redis-kafka-connect) | Redis Kafka Connect is a connector that allows you to stream data from Kafka to Redis | ![redis-sql-stars] |
 
