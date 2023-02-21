@@ -2,23 +2,107 @@
 
 # Redis: AI Resources
 
-
-
 ✨ A curated list of awesome community resources including content, integrations, documentation and examples for Redis in the AI ecosystem.
 
-### Table of Contents
+## Table of Contents
 
+- [AI Related Modules](#ai-related-modules)
 - Redis as a [Vector Database](#vector-database)
 - Redis as a [Feature Store](#feature-store)
 
-____
+----------
+
+## Redis Modules
+Modules that enable Redis as a Vector Database or Feature Store.
+
+| Module | Description | Stars |
+| --- | --- | --- |
+| [RediSearch](https://github.com/RediSearch/RediSearch) | Indexing and Search including vector search | ![redisearch-stars] |
+| [RedisJSON](https://github.com/RedisJSON/RedisJSON) | JSON document storage for features or vectors with RediSearch | ![redisjson-stars] |
+| [RedisBloom](https://github.com/RedisBloom/RedisBloom) | Bloom Filters for probabilistic filtering | ![redisbloom-stars] |
+| [RedisAI](https://github.com/RedisAI/RedisAI) | Deep Learning and Machine Learning model serving | ![redisai-stars] |
+| [RedisTimeSeries](https://github.com/RedisTimeSeries/RedisTimeSeries) | Time Series data storage | ![redistimeseries-stars] |
+
+
+[redistimeseries-stars]: https://img.shields.io/github/stars/RedisTimeSeries/RedisTimeSeries?style=social
+[redisbloom-stars]: https://img.shields.io/github/stars/RedisBloom/RedisBloom?style=social
+[redisai-stars]: https://img.shields.io/github/stars/RedisAI/RedisAI?style=social
+[redisjson-stars]: https://img.shields.io/github/stars/RedisJSON/RedisJSON?style=social
+[redisearch-stars]: https://img.shields.io/github/stars/RediSearch/RediSearch?style=social
+
 
 ## Vector Database
 The following list provides resources, integrations, and examples for **Redis as a Vector Database**.
 
+
+### Examples
+
+#### Recommendation Systems
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [⭐ Redis Merlin RecSys](https://github.com/RedisVentures/Redis-Recsys) | 3 Redis & NVIDIA Merlin Recommendation System Architectures | ![redis-recsys-stars]  |
+| [⭐ Visual Product Search](https://github.com/RedisVentures/redis-product-search) | eCommerce product search (with image and text) | ![redis-product-search-stars]  |
+| [⭐ Product Recommendations with DocArray / Jina](https://github.com/jina-ai/product-recommendation-redis-docarray) |  Content-based product recommendations with Redis and DocArray | ![jina-product-recommendations-stars]  |
+| [Amazon Berkeley Product Dataset Demo](https://github.com/RedisAI/vecsim-demo) |  Redis VSS demo on Amazon Berkeley product dataset | ![redis-vecsim-demo-stars]  |
+
+
+#### Question & Answer
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [⭐ Azure OpenAI Embeddings Q&A](https://github.com/ruoccofabrizio/azure-open-ai-embeddings-qna) | OpenAI and Redis as a Q&A service on Azure | ![azure-openai-embeddings-qna-stars] |
+| [Redis OpenAI QnA Streamlit App](https://github.com/RedisVentures/redis-openai-qna) | Streamlit demo of Redis OpenAI QnA | ![redis-openai-qna-streamlit-demo-stars] |
+
+
+#### NLP & Information Retrieval
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [⭐ arXiv Paper Search](https://github.com/RedisVentures/redis-arXiv-search) | Semantic search over arXiv scholarly papers | ![redis-arxiv-search-stars] |
+| [Simple Vector Similarity Intro](https://github.com/RedisVentures/simple-vecsim-intro) | Dockerized Jupyter Notebook & Streamlit demo of Redis Vector Search | ![redis-vecsim-intro-stars] |
+| [Financial News Demo](https://github.com/RedisAI/financial-news) | Sentiment analysis and Semantic similarity in Financial News articles | ![financial-news-demo-stars] |
+| [The Pattern](https://github.com/applied-knowledge-systems/the-pattern) | CORD19 medical NLP pipeline with Redis | ![the-pattern-stars] |
+| [Redis VSS Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search | ![redis-vss-streamlit-demo-stars] |
+
+
+#### [Redis Vector Search Engineering Lab Submissions](https://github.com/RedisVentures/RedisVentures.github.io/issues/1) - Submissions to the first Redis VSS hackathon.
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [arXiv CoPilot](https://github.com/artefactory/redisventures-hackunamadata) | Chrome extension that finds relevant/similar academic papers while performing research | ![arxiv-copilot-stars] |
+| [AskYeves Question & Answer App](https://github.com/artefactory/redis-player-one) | QA & Search Engine modeled after the infamous Yves Saint Laurent | ![askyeves-stars] |
+| [Darwinian Paper Explorer App](https://github.com/artefactory/AreYouRedis) | Explore arXiv scholarly papers over time with topic evolution and search | ![darwinian-paper-explorer-stars] |
+| [PapersWithCode Browser Extension](https://github.com/ilhamfp/simpa) | Chrome extension for the PapersWithCode site that finds relevant/similar papers | ![paperswithcode-stars] |
+| [Document Search + CLI](https://github.com/artefactory/redis-team-THM) | Search engine for documents with a CLI | ![document-search-cli-stars] |
+
+
+#### Other
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook/tree/main/examples/vector_databases) | OpenAI Cookbook examples using Redis as a vector database | ![openai-cookbook-stars] |
+| [TopVecSim](https://github.com/team-castle/topvecsim/) | Topic Similarity with Redis VSS | ![top-vecsim-stars] |
+| [Java Demo](https://github.com/RedisAI/Java-VSS-demo) | Redis VSS demo in Java | ![java-demo-stars] |
+
+###  RediSearch Clients
+| Client | Language | License | Stars |
+| --- | --- | --- | --- |
+| [Redis-Py](https://github.com/redis/redis-py) | Python | MIT | ![redis-py-stars] |
+| [RedisVL](https://github.com/RedisVentures/redisvl) | Python (*Alpha*) | MIT| ![redisvl-stars] |
+| [jedis][jedis-url] | Java | MIT |  ![Stars][jedis-stars] |
+| [node-redis][node-redis-url] | Node.js | MIT | ![Stars][node-redis-stars] |
+| [nredisstack][nredisstack-url] | .NET | MIT |  ![Stars][nredisstack-stars] |
+| [redisearch-go][redisearch-go-url] | Go | BSD | [![redisearch-go-stars]][redisearch-go-url] |
+| [redisearch-api-rs][redisearch-api-rs-url] | Rust | BSD | [![redisearch-api-rs-stars]][redisearch-api-rs-url] |
+
+For a full list of RediSearch clients, see [RediSearch Clients](https://redis.io/docs/stack/search/clients/).
+For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/clients/).
+
 ### Content
 - [Vector Similarity Search: From Basics to Production](https://mlops.community/vector-similarity-search-from-basics-to-production/) - Introductory blog post to VSS and Redis as a VectorDB.
 - [AI-Powered Document Search](https://datasciencedojo.com/blog/ai-powered-document-search/) - Blog post covering AI Powered Document Search Use Cases & Architectures.
+- [Vector Databases and AI-powered Search Talk](https://www.youtube.com/watch?v=g2bNHLeKlAg) - Video "Vector Databases and AI-powered Search" given by Sam Partee at SDSC 2023.
 - [Engineering Lab Review](https://mlops.community/redis-vector-search-engineering-lab-review/) - Review of the first Redis VSS Hackathon.
 - [Real-Time Product Recommendations](https://jina.ai/news/real-time-product-recommendation-using-redis-and-docarray/) - Content-based recsys design with Redis and DocArray.
 - [Redis as a Vector Database](https://vishnudeva.medium.com/redis-as-a-vector-database-rediscloud-2a444c478f3d) - Hackathon review blog post covering Redis as a VectorDB.
@@ -30,6 +114,7 @@ The following list provides resources, integrations, and examples for **Redis as
 - *Redis + NVIDIA Developer Blog (COMING SOON)*
 ### Benchmarks
 - [Vector Database Benchmarks](https://jina.ai/news/benchmark-vector-search-databases-with-one-million-data/) - Jina AI VectorDB benchmarks comparing Redis against others.
+
 ### Documentation
 - [Redis Vector Similarity Docs](https://redis.io/docs/stack/search/reference/vectors/) - Redis official docs for Vector Search.
 - [Redis-py Search Docs](https://redis.readthedocs.io/en/latest/redismodules.html#redisearch-commands) - Redis-py client library docs for RediSearch.
@@ -37,44 +122,114 @@ The following list provides resources, integrations, and examples for **Redis as
 - [RediSearch](https://github.com/RediSearch/RediSearch) - RediSearch Module.
 - [Redis Stack](https://redis.io/docs/stack/) - Redis Stack documentation.
 - [Redis Clients](https://redis.io/docs/clients/) - Redis client list.
-- Integrations/Tools
-- [RedisVL](https://github.com/RedisVentures/redisvl) - new, OSS, and purpose-built Redis VSS Python client library and CLI (*alpha*).
+
+
+### Integrations/Tools
+
 - [DocArray](https://docarray.jina.ai/advanced/document-store/redis/) - DocArray Integration of Redis as a VectorDB by Jina AI.
 - [Haystack Example](https://github.com/artefactory/redis-player-one/blob/main/askyves/redis_document_store.py) - Haystack Integration (example) of Redis as a VectorDB.
 - [RelevanceAI](https://relevance.ai/) - Platform to ag, search and analyze unstructured data faster, built on Redis.
-### Examples
-- [Redis Vector Search Engineering Lab Submissions](https://github.com/RedisVentures/RedisVentures.github.io/issues/1) - Submissions to the first Redis VSS hackathon.
-  - [⭐ arXiv CoPilot](https://github.com/artefactory/redisventures-hackunamadata) - Chrome extension that finds relevant/similar academic papers while performing research.
-  - [AskYeves Question & Answer App](https://github.com/artefactory/redis-player-one) - QA & Search Engine modeled after the infamous Yves Saint Laurent.
-  - [Darwinian Paper Explorer App](https://github.com/artefactory/AreYouRedis) - Explore arXiv scholarly papers over time with topic evolution and search.
-  - [PapersWithCode Browser Extension](https://github.com/ilhamfp/simpa) - Chrome extension for the PapersWithCode site that finds relevant/similar papers.
-  - [⭐ Document Search + CLI](https://github.com/artefactory/redis-team-THM)
-- Recommendation Systems
-    - [⭐ Product Search](https://github.com/RedisVentures/redis-product-search) - eCommerce product search (with image and text) - the original eComm demo app (hosted).
-    - [⭐ Product Recommendations with DocArray / Jina](https://github.com/jina-ai/product-recommendation-redis-docarray) - Content-based product recommendations example with Redis and DocArray.
-    - [⭐ Redis Merlin RecSys](https://github.com/RedisVentures/Redis-Recsys) - 3 end-to-end Redis & NVIDIA Merlin Recommendation System Architectures.
-    - [Amazon Berkeley Product Dataset Demo](https://github.com/RedisAI/vecsim-demo) - Redis VSS demo on Amazon Berkeley product dataset.
-- Document Retrieval + Search
-    - [⭐ Azure OpenAI Embeddings Q&A](https://github.com/ruoccofabrizio/azure-open-ai-embeddings-qna) - OpenAI and Redis as a Q&A service on Azure.
-    - [⭐ arXiv Paper Search](https://github.com/RedisVentures/redis-arXiv-search) - Semantic search over arXiv scholarly papers - the original doc search demo app (hosted).
-    - [Redis VSS Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) - Streamlit demo of Redis Vector Search.
-    - [Simple Vector Similarity Intro](https://github.com/RedisVentures/simple-vecsim-intro) - Dockerized Jupyter Notebook & Streamlit demo of Redis Vector Search.
-    - [Financial News Demo](https://github.com/RedisAI/financial-news) - Sentiment analysis and Semantic similarity in Financial News articles
-- Other
-  - [TopVecSim](https://github.com/team-castle/topvecsim/) - Topic Similarity with Redis VSS.
-  - [Java Demo](https://github.com/RedisAI/Java-VSS-demo) - Redis VSS demo in Java.
+
+[openai-cookbook-stars]: https://img.shields.io/github/stars/openai/openai-cookbook?style=social
+[redis-openai-qna-streamlit-demo-stars]: https://img.shields.io/github/stars/RedisVentures/redis-openai-qna?style=social
+[redis-py-stars]: https://img.shields.io/github/stars/redis/redis-py?style=social
+[redisvl-stars]: https://img.shields.io/github/stars/RedisVentures/redisvl?style=social
+[redis-py-url]: https://github.com/redis/redis-py
+[redis-py-stars]: https://img.shields.io/github/stars/redis/redis-py.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[jedis-url]: https://github.com/redis/jedis
+[jedis-stars]: https://img.shields.io/github/stars/redis/jedis.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[nredisstack-url]: https://github.com/redis/nredisstack
+[nredisstack-stars]: https://img.shields.io/github/stars/redis/nredisstack.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[node-redis-url]: https://github.com/redis/node-redis
+[node-redis-stars]: https://img.shields.io/github/stars/redis/node-redis.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redisearch-go-url]: https://github.com/RediSearch/redisearch-go
+[redisearch-go-stars]: https://img.shields.io/github/stars/RediSearch/redisearch-go.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redisearch-api-rs-url]: https://github.com/RediSearch/redisearch-api-rs
+[redisearch-api-rs-stars]: https://img.shields.io/github/stars/RediSearch/redisearch-api-rs.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[java-demo-stars]: https://img.shields.io/github/stars/RedisAI/Java-VSS-demo.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[top-vecsim-stars]: https://img.shields.io/github/stars/team-castle/topvecsim.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[document-search-cli-stars]: https://img.shields.io/github/stars/artefactory/redis-team-THM.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[paperswithcode-stars]: https://img.shields.io/github/stars/ilhamfp/simpa.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[darwinian-paper-explorer-stars]: https://img.shields.io/github/stars/artefactory/AreYouRedis.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[askyeves-stars]: https://img.shields.io/github/stars/artefactory/redis-player-one.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[arxiv-copilot-stars]: https://img.shields.io/github/stars/artefactory/redisventures-hackunamadata.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[the-pattern-stars]: https://img.shields.io/github/stars/applied-knowledge-systems/the-pattern.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[financial-news-demo-stars]: https://img.shields.io/github/stars/RedisAI/financial-news.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redis-vecsim-intro-stars]: https://img.shields.io/github/stars/RedisVentures/simple-vecsim-intro.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redis-vss-streamlit-demo-stars]: https://img.shields.io/github/stars/antonum/Redis-VSS-Streamlit.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redis-arxiv-search-stars]: https://img.shields.io/github/stars/RedisVentures/redis-arXiv-search.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[azure-openai-embeddings-qna-stars]: https://img.shields.io/github/stars/ruoccofabrizio/azure-open-ai-embeddings-qna.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redis-recsys-stars]: https://img.shields.io/github/stars/redisventures/redis-recsys.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redis-product-search-stars]: https://img.shields.io/github/stars/redisventures/redis-product-search.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[jina-product-recommendations-stars]: https://img.shields.io/github/stars/jina-ai/product-recommendation-redis-docarray.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redis-vecsim-demo-stars]: https://img.shields.io/github/stars/redisai/vecsim-demo.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+
 
 ____
 
 ## Feature Store
 The following list provides resources, integrations, and examples for **Redis as a Feature Store**.
 
+### Examples
+
+#### Recommendation Systems
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [⭐ Redis Merlin RecSys](https://github.com/RedisVentures/Redis-Recsys) | Redis & NVIDIA Merlin Recommendation System architectures | ![redis-recsys-stars] |
+| [Market-basket-analysis](https://github.com/RedisLabs-Field-Engineering/demo-market-basket-analysis) | An exmaple of predicting shopping baskets on passed purchases | ![market-basket-analysis-stars] |
+
+
+#### Life Sciences / Healthcare
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [⭐ Redis Vaccine Forecaster](https://github.com/RedisVentures/redis-feast-gcp) | End-to-end ML system to predict vaccine demand deployed in GCP with Redis, Feast, Triton, and Vertex AI. | ![redis-vaccine-forecaster-stars] |
+
+#### Image/Video
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [Animal Recognition Demo](https://github.com/RedisGears/AnimalRecognitionDemo) | An example of using Redis Streams, RedisGears and RedisAI for Realtime Video Analytics (i.e. filtering cats) | ![animal-recog-stars] |
+| [Realtime Video Analytics](https://github.com/RedisGears/EdgeRealtimeVideoAnalytics) | An example of using Redis Streams, RedisGears, RedisAI and RedisTimeSeries for Realtime Video Analytics (i.e. counting people) | ![realtime-video-analytics-stars] |
+
+
+#### Finance
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [Redis + Feast + Ray Demo](https://github.com/RedisVentures/redis-feast-ray) | A demo pipeline using Redis as an online feature store with Feast for orchestration and Ray for training and model serving | ![redis-vaccine-forecaster-stars] |
+| [Loan Prediction Example](https://github.com/RedisVentures/loan-prediction-microservice) | Loan prediction example with Redis as the feature store and serving layer. | ![load-prediction-example-stars] |
+
+#### Other
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [Redis SQL](https://github.com/redis-field-engineering/redis-sql-trino) | Indexed SQL queries on Redis data using Trino | ![redis-sql-stars] |
+| [Redis GraphQL](https://github.com/redis-field-engineering/redis-graphql) | GraphQL queries on Redis data | ![redis-graphql-stars] |
+| [RedisAI Examples](https://github.com/RedisAI/redisai-examples) | A collection of examples using RedisAI | ![redisai-examples-stars] |
+
+
+### Materialization and Orchestration
+
+| Resource | Description | Stars |
+| --- | --- | --- |
+| [Spark-Redis](https://github.com/RedisLabs/spark-redis) | Spark-Redis is a connector that allows you to stream data from Spark to Redis | ![spark-redis-stars] |
+| [Feast](https://github.com/feast-dev/feast) | Feast feature orchestration system framework | ![feast-stars] |
+| [Feathr](https://github.com/linkedin/feathr) | Feathr is a feature orchestration framework created by Linkedin | ![feathr-stars] |
+| [Redis Kafka](https://github.com/redis-field-engineering/redis-kafka-connect) | Redis Kafka Connect is a connector that allows you to stream data from Kafka to Redis | ![redis-sql-stars] |
+
+
 ### Content
-- [What is a Feature Store?](https://www.tecton.ai/blog/what-is-a-feature-store/) - introductory blog post on feature stores.
+- [What is a Feature Store?](https://www.tecton.ai/blog/what-is-a-feature-store/) - introductory blog post on feature stores
+- [Building a Gigascale Feature Store with Redis](https://doordash.engineering/2020/11/19/building-a-gigascale-ml-feature-store-with-redis/) - blog post on DoorDash's feature store architecture
 - [Feature Store Comparison](https://mlops.community/learn/feature-store/) - comparison between a few feature store options.
 - [Feature Storage with Feast and Redis](https://redis.com/blog/building-feature-stores-with-redis-introduction-to-feast-with-redis/) - blog post outlining basic Redis+Feast usage.
+
 ### Benchmarks
 - [Feast Feature Serving Benchmarks](https://feast.dev/blog/feast-benchmarks/) - Feast-published benchmarks on Redis vs DynamoDB vs Datastore for feature retrieval.
+
 ### Documentation
 - [Redis-py General Docs](https://redis.readthedocs.io/en/latest/) - Redis-py client library documentation.
 - [RedisJSON](https://github.com/RedisJSON) - RedisJSON Module.
@@ -83,18 +238,34 @@ The following list provides resources, integrations, and examples for **Redis as
 - [RedisConnect](https://github.com/redis-field-engineering/redis-connect-dist) - a distributed platform that enables real-time event streaming, transformation, and propagation of changed-data events from heterogeneous data platforms to Redis.
 ### Integrations
 - [Feast](https://docs.feast.dev/reference/online-stores/redis) - open-source Feature Store orchestration framework.
-- [Tecton](https://www.tecton.ai/blog/announcing-support-for-redis/) - fully-managed Feature Store service.
 - [Feathr](https://github.com/feathr-ai/feathr) - open-source Feature Store orchestration framework pioneered by LinkedIn.
-### Examples
-- Recommendation Systems
-  - [⭐ Redis Merlin RecSys](https://github.com/RedisVentures/Redis-Recsys) - 3 end-to-end Redis & NVIDIA Merlin Recommendation System Architectures showcasing Redis as an online feature store.
-- Healthcare
-  - [⭐ Redis, Feast, Triton on GCP: Vaccine Forecaster](https://github.com/RedisVentures/redis-feast-gcp) - End-to-end ML system to predict vaccine demand deployed in GCP with Redis, Feast, Triton, and Vertex AI.
-- Finance
-  - [Redis + Feast + Ray Demo](https://github.com/RedisVentures/redis-feast-ray) - a demo pipeline using Redis as an online feature store with Feast for orchestration and Ray for training and model serving
-  - [Load Prediction Example](https://github.com/RedisVentures/loan-prediction-microservice) - loan prediction example with Redis as the feature store and serving layer.
+- [Tecton](https://www.tecton.ai/blog/announcing-support-for-redis/) - fully-managed Feature Store service.
+
+[redis-graphql-stars]: https://img.shields.io/github/stars/redis-field-engineering/redis-graphql.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[spark-redis-stars]: https://img.shields.io/github/stars/RedisLabs/spark-redis.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+[feathr-stars]: https://img.shields.io/github/stars/linkedin/feathr.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[feast-stars]: https://img.shields.io/github/stars/feast-dev/feast.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+[load-prediction-example-stars]: https://img.shields.io/github/stars/RedisVentures/loan-prediction-microservice.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redis-feast-ray-demo-stars]: https://img.shields.io/github.com/RedisVentures/redis-feast-ray.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[redis-vaccine-forecaster-stars]: https://img.shields.io/github/stars/RedisVentures/redis-feast-gcp.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+[redis-kafka-connect-stars]: https://img.shields.io/github/stars/redis-field-engineering/redis-kafka-connect.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+[redisai-examples-stars]: https://img.shields.io/github/stars/RedisAI/redisai-examples.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+[realtime-video-analytics-stars]: https://img.shields.io/github/stars/RedisGears/EdgeRealtimeVideoAnalytics.svg?style=social&amp;label=Star&amp;maxAge=2592000
+[animal-recog-stars]: https://img.shields.io/github/stars/RedisGears/AnimalRecognitionDemo.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+[market-basket-analysis-stars]: https://img.shields.io/github/stars/RedisLabs-Field-Engineering/demo-market-basket-analysis.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+[redis-sql-stars]: https://img.shields.io/github/stars/redis-field-engineering/redis-sql-trino.svg?style=social&amp;label=Star&amp;maxAge=2592000
+
+
 
 ----
+
 
 
 *Have other contributions? [Checkout our contributing guidelines](contributing.md).*
