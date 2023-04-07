@@ -43,6 +43,7 @@ The following list provides resources, integrations, and examples for **Redis as
 | --- | --- | --- |
 | [⭐ Redis Merlin RecSys](https://github.com/RedisVentures/Redis-Recsys) | 3 Redis & NVIDIA Merlin Recommendation System Architectures | ![redis-recsys-stars]  |
 | [⭐ Visual Product Search](https://github.com/RedisVentures/redis-product-search) | eCommerce product search (with image and text) | ![redis-product-search-stars]  |
+| [eCommerce Chatbot](https://github.com/RedisVentures/redis-langchain-chatbot) | eCommerce Chatbot with Redis, LangChain, and OpenAI | ![redis-langchain-chatbot-stars] |
 | [Product Recommendations with DocArray / Jina](https://github.com/jina-ai/product-recommendation-redis-docarray) |  Content-based product recommendations with Redis and DocArray | ![jina-product-recommendations-stars]  |
 | [Amazon Berkeley Product Dataset Demo](https://github.com/RedisAI/vecsim-demo) |  Redis VSS demo on Amazon Berkeley product dataset | ![redis-vecsim-demo-stars]  |
 
@@ -59,7 +60,9 @@ The following list provides resources, integrations, and examples for **Redis as
 
 | Resource | Description | Stars |
 | --- | --- | --- |
+| [⭐ ChatGPT Retrieval Plugin](https://github.com/openai/chatgpt-retrieval-plugin) | ChatGPT plugin for retrieving personal documents | ![chatgpt-retrieval-plugin-stars] |
 | [⭐ arXiv Paper Search](https://github.com/RedisVentures/redis-arXiv-search) | Semantic search over arXiv scholarly papers | ![redis-arxiv-search-stars] |
+| [⭐ Motörhead](https://github.com/getmetal/motorhead) | Rust-based IR server for LLMs backed by Redis | ![motorhead-stars] |
 | [Simple Vector Similarity Intro](https://github.com/RedisVentures/simple-vecsim-intro) | Dockerized Jupyter Notebook & Streamlit demo of Redis Vector Search | ![redis-vecsim-intro-stars] |
 | [Financial News Demo](https://github.com/RedisAI/financial-news) | Sentiment analysis and Semantic similarity in Financial News articles | ![financial-news-demo-stars] |
 | [The Pattern](https://github.com/applied-knowledge-systems/the-pattern) | CORD19 medical NLP pipeline with Redis | ![the-pattern-stars] |
@@ -100,6 +103,7 @@ For a full list of RediSearch clients, see [RediSearch Clients](https://redis.io
 For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/clients/).
 
 ### Content
+- [⭐ NVIDIA Developer Blog -- Offline to Online: Feature Storage for Real Time Recommendation Systems with NVIDIA Merlin](https://developer.nvidia.com/blog/offline-to-online-feature-storage-for-real-time-recommendation-systems-with-nvidia-merlin/)
 - [Vector Similarity Search: From Basics to Production](https://mlops.community/vector-similarity-search-from-basics-to-production/) - Introductory blog post to VSS and Redis as a VectorDB.
 - [AI-Powered Document Search](https://datasciencedojo.com/blog/ai-powered-document-search/) - Blog post covering AI Powered Document Search Use Cases & Architectures.
 - [Vector Databases and AI-powered Search Talk](https://www.youtube.com/watch?v=g2bNHLeKlAg) - Video "Vector Databases and AI-powered Search" given by Sam Partee at SDSC 2023.
@@ -111,7 +115,7 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 - [VSS Cheat Sheet](https://drive.google.com/file/d/10O52YXE1-x9jUTv2G-iJUHFSbthWAcyy/view?usp=share_link) - Redis Vector Search Cheat Sheet by Datascience Dojo.
 - [RedisDays Keynote](https://www.youtube.com/watch?v=EEIBTEpb2LI) - Video "Infuse Real-Time AI Into Your "Financial Services" Application".
 - [RedisDays Trading Signals](https://www.youtube.com/watch?v=_Lrbesg4DhY) - Video "Using AI to Reveal Trading Signals Buried in Corporate Filings".
-- *Redis + NVIDIA Developer Blog (COMING SOON)*
+
 ### Benchmarks
 - [Vector Database Benchmarks](https://jina.ai/news/benchmark-vector-search-databases-with-one-million-data/) - Jina AI VectorDB benchmarks comparing Redis against others.
 
@@ -125,7 +129,8 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 
 
 ### Integrations/Tools
-
+- [⭐ LangChain](https://github.com/hwchase17/langchain) - popular client lib for building LLM applications.
+- [⭐ ChatGPT Memory](https://github.com/continuum-llms/chatgpt-memory) - contextual and adaptive memory for ChatGPT powered by Redis.
 - [DocArray](https://docarray.jina.ai/advanced/document-store/redis/) - DocArray Integration of Redis as a VectorDB by Jina AI.
 - [Haystack Example](https://github.com/artefactory/redis-player-one/blob/main/askyves/redis_document_store.py) - Haystack Integration (example) of Redis as a VectorDB.
 - [RelevanceAI](https://relevance.ai/) - Platform to ag, search and analyze unstructured data faster, built on Redis.
@@ -163,7 +168,9 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 [redis-product-search-stars]: https://img.shields.io/github/stars/redisventures/redis-product-search.svg?style=social&amp;label=Star&amp;maxAge=2592000
 [jina-product-recommendations-stars]: https://img.shields.io/github/stars/jina-ai/product-recommendation-redis-docarray.svg?style=social&amp;label=Star&amp;maxAge=2592000
 [redis-vecsim-demo-stars]: https://img.shields.io/github/stars/redisai/vecsim-demo.svg?style=social&amp;label=Star&amp;maxAge=2592000
-
+[chatgpt-retrieval-plugin-stars]: https://img.shields.io/github/stars/openai/chatgpt-retrieval-plugin?style=social
+[motorhead-stars]: https://img.shields.io/github/stars/getmetal/motorhead?style=social
+[redis-langchain-chatbot-stars]: https://img.shields.io/github/stars/RedisVentures/redis-langchain-chatbot?style=social
 
 
 ____
@@ -237,9 +244,11 @@ The following list provides resources, integrations, and examples for **Redis as
 - [RedisTimeSeries](https://github.com/RedisTimeSeries/RedisTimeSeries) - Redis Time Series Module.
 - [RedisConnect](https://github.com/redis-field-engineering/redis-connect-dist) - a distributed platform that enables real-time event streaming, transformation, and propagation of changed-data events from heterogeneous data platforms to Redis.
 ### Integrations
+- [FeatureForm](https://www.featureform.com/?gclid=Cj0KCQjw_r6hBhDdARIsAMIDhV_lhReZdfM66Z5gE5yJCtDsSb3WeLhHjtI4AFokk_cjKC54vRDXN7waAq3HEALw_wcB) - open-source Feature Store orchestration framework.
 - [Feast](https://docs.feast.dev/reference/online-stores/redis) - open-source Feature Store orchestration framework.
 - [Feathr](https://github.com/feathr-ai/feathr) - open-source Feature Store orchestration framework pioneered by LinkedIn.
 - [Tecton](https://www.tecton.ai/blog/announcing-support-for-redis/) - fully-managed Feature Store service.
+
 
 [redis-graphql-stars]: https://img.shields.io/github/stars/redis-field-engineering/redis-graphql.svg?style=social&amp;label=Star&amp;maxAge=2592000
 [spark-redis-stars]: https://img.shields.io/github/stars/RedisLabs/spark-redis.svg?style=social&amp;label=Star&amp;maxAge=2592000
