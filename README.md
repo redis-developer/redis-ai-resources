@@ -61,12 +61,14 @@ The following list provides resources, integrations, and examples for **Redis as
 | Resource | Description | Stars |
 | --- | --- | --- |
 | [⭐ ChatGPT Retrieval Plugin](https://github.com/openai/chatgpt-retrieval-plugin) | ChatGPT plugin for retrieving personal documents | ![chatgpt-retrieval-plugin-stars] |
+| [⭐ Auto-GPT](https://github.com/Torantulino/Auto-GPT) | Experimental OSS app showcasing GPT-4 with Redis as a vectorized memory store | ![auto-gpt-stars]
 | [⭐ arXiv Paper Search](https://github.com/RedisVentures/redis-arXiv-search) | Semantic search over arXiv scholarly papers | ![redis-arxiv-search-stars] |
 | [⭐ Motörhead](https://github.com/getmetal/motorhead) | Rust-based IR server for LLMs backed by Redis | ![motorhead-stars] |
 | [Simple Vector Similarity Intro](https://github.com/RedisVentures/simple-vecsim-intro) | Dockerized Jupyter Notebook & Streamlit demo of Redis Vector Search | ![redis-vecsim-intro-stars] |
 | [Financial News Demo](https://github.com/RedisAI/financial-news) | Sentiment analysis and Semantic similarity in Financial News articles | ![financial-news-demo-stars] |
 | [The Pattern](https://github.com/applied-knowledge-systems/the-pattern) | CORD19 medical NLP pipeline with Redis | ![the-pattern-stars] |
 | [Redis VSS Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search | ![redis-vss-streamlit-demo-stars] |
+| [GPT Vectors Example](https://github.com/gbaeke/gpt-vectors) | Code associated with the blog post below: "Storing and querying embeddings with Redis" | ![gpt-vectors-stars] |
 
 
 #### [Redis Vector Search Engineering Lab Submissions](https://github.com/RedisVentures/RedisVentures.github.io/issues/1) - Submissions to the first Redis VSS hackathon.
@@ -85,6 +87,8 @@ The following list provides resources, integrations, and examples for **Redis as
 | Resource | Description | Stars |
 | --- | --- | --- |
 | [⭐ OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook/tree/main/examples/vector_databases) | OpenAI Cookbook examples using Redis as a vector database | ![openai-cookbook-stars] |
+| [Redis Vector Similarity Search Quickstart](https://github.com/lablab-ai/Vector-Similarity-Search-with-Redis-Quickstart-Notebook) | Quickstart notebook sponspored by LabLab AI for their AI hackathons. | ![lablab-vss-quickstart] |
+| [Redis Solution Architects VSS Examples](https://github.com/Redislabs-Solution-Architects/vss-ops) | Examples of VSS in Python | ![vss-ops-stars] |
 | [TopVecSim](https://github.com/team-castle/topvecsim/) | Topic Similarity with Redis VSS | ![top-vecsim-stars] |
 | [Java Demo](https://github.com/RedisAI/Java-VSS-demo) | Redis VSS demo in Java | ![java-demo-stars] |
 
@@ -110,8 +114,10 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 - [Engineering Lab Review](https://mlops.community/redis-vector-search-engineering-lab-review/) - Review of the first Redis VSS Hackathon.
 - [Real-Time Product Recommendations](https://jina.ai/news/real-time-product-recommendation-using-redis-and-docarray/) - Content-based recsys design with Redis and DocArray.
 - [Redis as a Vector Database](https://vishnudeva.medium.com/redis-as-a-vector-database-rediscloud-2a444c478f3d) - Hackathon review blog post covering Redis as a VectorDB.
-- [Building Intelligent Apps with Redis Vector Similarity Search](https://redis.com/blog/build-intelligent-apps-redis-vector-similarity-search/) - Introductory blog post.
-- [Rediscovering Redis for Vector Similarity](https://redis.com/blog/rediscover-redis-for-vector-similarity-search/) - Introductory blog post.
+- [LabLab AI Redis Tech Page](https://lablab.ai/tech/redis)
+- [Storing and querying for embeddings with Redis](https://blog.baeke.info/2023/03/21/storing-and-querying-for-embeddings-with-redis/)
+- [Building Intelligent Apps with Redis Vector Similarity Search](https://redis.com/blog/build-intelligent-apps-redis-vector-similarity-search/)
+- [Rediscovering Redis for Vector Similarity](https://redis.com/blog/rediscover-redis-for-vector-similarity-search/)
 - [VSS Cheat Sheet](https://drive.google.com/file/d/10O52YXE1-x9jUTv2G-iJUHFSbthWAcyy/view?usp=share_link) - Redis Vector Search Cheat Sheet by Datascience Dojo.
 - [RedisDays Keynote](https://www.youtube.com/watch?v=EEIBTEpb2LI) - Video "Infuse Real-Time AI Into Your "Financial Services" Application".
 - [RedisDays Trading Signals](https://www.youtube.com/watch?v=_Lrbesg4DhY) - Video "Using AI to Reveal Trading Signals Buried in Corporate Filings".
@@ -134,6 +140,7 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 - [DocArray](https://docarray.jina.ai/advanced/document-store/redis/) - DocArray Integration of Redis as a VectorDB by Jina AI.
 - [Haystack Example](https://github.com/artefactory/redis-player-one/blob/main/askyves/redis_document_store.py) - Haystack Integration (example) of Redis as a VectorDB.
 - [RelevanceAI](https://relevance.ai/) - Platform to ag, search and analyze unstructured data faster, built on Redis.
+- LlamaIndex - COMING SOON
 
 [openai-cookbook-stars]: https://img.shields.io/github/stars/openai/openai-cookbook?style=social
 [redis-openai-qna-streamlit-demo-stars]: https://img.shields.io/github/stars/RedisVentures/redis-openai-qna?style=social
@@ -171,7 +178,10 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 [chatgpt-retrieval-plugin-stars]: https://img.shields.io/github/stars/openai/chatgpt-retrieval-plugin?style=social
 [motorhead-stars]: https://img.shields.io/github/stars/getmetal/motorhead?style=social
 [redis-langchain-chatbot-stars]: https://img.shields.io/github/stars/RedisVentures/redis-langchain-chatbot?style=social
-
+[gpt-vectors-stars]: https://img.shields.io/github/stars/gbaeke/gpt-vectors?style=social
+[vss-ops-stars]: https://img.shields.io/github/stars/Redislabs-Solution-Architects/vss-ops?style=social
+[lablab-vss-quickstart]: https://img.shields.io/github/stars/lablab-ai/Vector-Similarity-Search-with-Redis-Quickstart-Notebook?style=social
+[auto-gpt-stars]: https://img.shields.io/github/stars/Torantulino/Auto-GPT?style=social
 
 ____
 
