@@ -69,6 +69,7 @@ async function openaiClient() {
  * Builds 2 different indices in Redis, each with a vector and text field.  One index is on vectors stored in
  * JSON objects; the other is on vectors stored in hashsets.
  * @param {_RedisClientType} redis
+ * @returns {Promise<void>}
  */
 async function buildIndices(redis) {
     try {
@@ -116,6 +117,7 @@ async function buildIndices(redis) {
  * JSON.
  * @param {_RedisClientType} redis
  * @param {OpenAIApi} openai
+ * @returns {Promise<void>}
  */
 async function loadData(redis, openai) {
     let files = await fsPromises.readdir('./data');
@@ -141,6 +143,7 @@ async function loadData(redis, openai) {
  * Executes 2 different VSS scenarios using 2 different index and object types.
  * @param {_RedisClientType} redis
  * @param {OpenAIApi} openai
+ * @returns {Promise<void>}
  */
 async function vectorSearch(redis, openai) {
     //Vector search scenario #1
@@ -164,7 +167,7 @@ async function vectorSearch(redis, openai) {
     // Vector search scenario #2
     topic = "The History Boys by Alan Bennett has been named best new play in the Critics' Circle Theatre Awards."
     vector = await getEmbedding(openai, topic);
-    result = await redis.ft.search('idx2', '*=>[KNN 2 @vector $query_vec]', {
+    result = await redis.ft.search('idx2', '(@content:"Christian Slater")=>[KNN 2 @vector $query_vec]', {
         PARAMS: { query_vec: Buffer.from(new Float32Array(vector).buffer) },
         DIALECT: 2,
         SORTBY: {
@@ -173,7 +176,7 @@ async function vectorSearch(redis, openai) {
         }
     });
     console.log('\n*** Vector Search #2 ***');
-    console.log('Scenario:  HASH docs, HNSW index, Top 2 KNN, Entertainment topic input');
+    console.log('Scenario:  HASH docs, HNSW index, Hybrid w/Top 2 KNN, Entertainment topic input');
     for (const doc of result.documents) {
         console.log(`\nkey: ${doc.id}`);
         console.log(`content: ${doc.value.content}`);
@@ -186,6 +189,7 @@ async function vectorSearch(redis, openai) {
  * additional context.
  * @param {_RedisClientType} redis
  * @param {OpenAIApi} openai
+ * @returns {Promise<void>}
  */
 async function qna(redis, openai) {
     let prompt = "Is Sam Bankman-Fried's company, FTX, considered a well-managed company?";

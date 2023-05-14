@@ -65,13 +65,10 @@ content: Hansen 'delays return until 2006'  British triple jumper Ashia Hansen h
 ```
 ### Vector Search Scenario #2
 ```text
-Scenario:  HASH docs, HNSW index, Top 2 KNN, Entertainment topic input
+Scenario:  HASH docs, HNSW index, Hybrid w/Top 2 KNN, Entertainment topic input
 
 key: hashDoc:3
 content: Slater to star in Broadway play  Actor Christian Slater is stepping into the role of Tom in the Broadway revival of The Glass Menagerie.  Slater, 35, is replacing actor Dallas Roberts in the Tennessee Williams drama, which opens next month. No reason was given for Roberts' departure. The role will be played by understudy Joey Collins until Slater joins the show. Slater won rave reviews for his recent performance in One Flew Over the Cuckoo's Nest in London's West End.  He has also starred in a number of films, including Heathers, Robin Hood: Prince of Thieves and more recently Churchill: The Hollywood Years. Preview performances of The Glass Menagerie will begin at New York's Ethel Barrymore Theatre on Thursday. Philip Rinaldi, a spokesman for the show, said the play's 15 March opening date remains unchanged. The revival, directed by David Leveaux, will also star Jessica Lange as the domineering mother, Amanda Wingfield.
-
-key: hashDoc:2
-content: Musical treatment for Capra film  The classic film It's A Wonderful Life is to be turned into a musical by the producer of the controversial hit show Jerry Springer - The Opera.  Frank Capra's 1946 movie starring James Stewart, is being turned into a £7m musical by producer Jon Thoday. He is working with Steve Brown, who wrote the award-winning musical Spend Spend Spend. A spokeswoman said the plans were in the "very early stages", with no cast, opening date or theatre announced.  A series of workshops have been held in London, and on Wednesday a cast of singers unveiled the musical to a select group of potential investors. Mr Thoday said the idea of turning the film into a musical had been an ambition of his for almost 20 years. It's a Wonderful Life was based on a short story, The Greatest Gift, by Philip van Doren Stern. Mr Thoday managed to buy the rights to the story from Van Doren Stern's family in 1999, following Mr Brown's success with Spend Spend Spend. He later secured the film rights from Paramount, enabling them to use the title It's A Wonderful Life. 
 ```
 ### AI Q&A Scenario #1
 ```text
