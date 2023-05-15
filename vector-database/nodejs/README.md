@@ -32,7 +32,8 @@ searches in conjunction with AI queries are demonstrated.
 2.  CD to the nodejs directory
 3.  Create a .env file and add this line:  OPENAI_API_KEY="your key"
 4.  Start up Redis Stack:  docker compose up -d
-5.  Execute the node app:  npm start
+5.  Install node libs:  npm install
+6.  Execute the node app:  npm start
 
 ## Execution <a name="execution"></a>
 ### Redis Client Connection 
