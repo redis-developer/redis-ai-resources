@@ -25,7 +25,7 @@ searches in conjunction with AI queries are demonstrated.
 ## Prerequisites <a name="prerequisites"></a>
 - Docker
 - Nodejs
-- OpenAI key
+- [OpenAI key](https://platform.openai.com)
 
 ## Installation <a name="installation"></a>
 1.  Clone this repo.
