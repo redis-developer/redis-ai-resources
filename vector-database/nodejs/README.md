@@ -78,7 +78,7 @@ Prompt: Is Sam Bankman-Fried's company, FTX, considered a well-managed company?
 
 Response: As an AI language model, I cannot provide a personal opinion. However, FTX has been recognized as one of the fastest-growing cryptocurrency exchanges and has received positive reviews for its user-friendly interface, low fees, and innovative products. Additionally, Sam Bankman-Fried has been praised for his leadership and strategic decision-making, including FTX's recent acquisition of Blockfolio. Overall, FTX appears to be a well-managed company.
 ```
-### AI Q&A Scenario #2
+### LLM Question Answering Scenario #2
 ```text
 Scenario:  Vectorize the question, search Redis for relevant docs, then provide additional info from Redis to the AI
 Prompt: Using the information delimited by triple hyphens, answer this question: Is Sam Bankman-Fried's company, FTX, considered a well-managed company?
