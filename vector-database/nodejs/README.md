@@ -80,7 +80,7 @@ Response: As an AI language model, I cannot provide a personal opinion. However,
 ```
 ### LLM Question Answering Scenario #2
 ```text
-Scenario:  Vectorize the question, search Redis for relevant docs, then provide additional info from Redis to the AI
+Scenario:  Vectorize the question, search Redis for relevant docs, then provide additional info from Redis to the LLM
 Prompt: Using the information delimited by triple hyphens, answer this question: Is Sam Bankman-Fried's company, FTX, considered a well-managed company?
 
     Context: ---Embattled Crypto Exchange FTX Files for Bankruptcy  Nov. 11, 2022 On Monday, Sam Bankman-Fried, the chief executive of the cryptocurrency exchange FTX, took to Twitter to reassure his customers: “FTX is fine,” he wrote. “Assets are fine.”  On Friday, FTX announced that it was filing for bankruptcy, capping an extraordinary week of corporate drama that has upended crypto markets, sent shock waves through an industry struggling to gain mainstream credibility and sparked government investigations that could lead to more damaging revelations or even criminal charges.  In a statement on Twitter, the company said that Mr. Bankman-Fried had resigned, with John J. Ray III, a corporate turnaround specialist, taking over as chief executive.  The speed of FTX’s downfall has left crypto insiders stunned. Just days ago, Mr. Bankman-Fried was considered one of the smartest leaders in the crypto industry, an influential figure in Washington who was lobbying to shape regulations. (abbreviated) ---
