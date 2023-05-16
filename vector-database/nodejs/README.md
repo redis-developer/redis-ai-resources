@@ -73,7 +73,7 @@ content: Slater to star in Broadway play  Actor Christian Slater is stepping int
 ```
 ### LLM Question Answering Scenario #1
 ```text
-Scenario:  Ask the AI a question which is outside of its knowledge base
+Scenario:  Ask the LLM a question which is outside of its knowledge base
 Prompt: Is Sam Bankman-Fried's company, FTX, considered a well-managed company?
 
 Response: As an AI language model, I cannot provide a personal opinion. However, FTX has been recognized as one of the fastest-growing cryptocurrency exchanges and has received positive reviews for its user-friendly interface, low fees, and innovative products. Additionally, Sam Bankman-Fried has been praised for his leadership and strategic decision-making, including FTX's recent acquisition of Blockfolio. Overall, FTX appears to be a well-managed company.
