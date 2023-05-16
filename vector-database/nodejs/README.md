@@ -11,7 +11,7 @@
 
 ## Summary <a name="summary"></a>
 This provides a series of examples of how to use Redis VSS in a Nodejs domain.  Both standalone vector searches and
-searches in conjunction with AI queries are demonstrated.
+searches in conjunction with generative AI queries are demonstrated.
 
 ## Architecture <a name="architecture"></a>
 ![architecture](https://docs.google.com/drawings/d/e/2PACX-1vQlOwYbS5EN29m1Ld2lbZQA16oiB4h1T_x8q0N9_pi8pYNiDQw9igTsP9IZVm1Zje_FQvgag9GJqlaW/pub?w=462&h=268)
@@ -32,8 +32,8 @@ searches in conjunction with AI queries are demonstrated.
 2.  CD to the nodejs directory
 3.  Create a .env file and add this line:  OPENAI_API_KEY="your key"
 4.  Start up Redis Stack:  docker compose up -d
-5.  Install node libs:  npm install
-6.  Execute the node app:  npm start
+5.  Install the node module dependencies as listed in package.json:  npm install
+6.  Execute the node app (app.js) via script from the included package.json:  npm start
 
 ## Execution <a name="execution"></a>
 ### Redis Client Connection 
