@@ -69,6 +69,7 @@ The following list provides resources, integrations, and examples for **Redis as
 | [The Pattern](https://github.com/applied-knowledge-systems/the-pattern) | CORD19 medical NLP pipeline with Redis | ![the-pattern-stars] |
 | [Redis VSS Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search | ![redis-vss-streamlit-demo-stars] |
 | [GPT Vectors Example](https://github.com/gbaeke/gpt-vectors) | Code associated with the blog post below: "Storing and querying embeddings with Redis" | ![gpt-vectors-stars] |
+| [Azure OpenAI Redis Deployment Template](https://github.com/RedisVentures/azure-openai-redis-deployment) | Terraform template automates the end-to-end deployment of Azure OpenAI applications using Redis Enterprise as a vector database | ![azure-openai-redis-deployment-stars] |
 
 
 #### [Redis Vector Search Engineering Lab Submissions](https://github.com/RedisVentures/RedisVentures.github.io/issues/1) - Submissions to the first Redis VSS hackathon.
@@ -182,6 +183,7 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 [vss-ops-stars]: https://img.shields.io/github/stars/Redislabs-Solution-Architects/vss-ops?style=social
 [lablab-vss-quickstart]: https://img.shields.io/github/stars/lablab-ai/Vector-Similarity-Search-with-Redis-Quickstart-Notebook?style=social
 [auto-gpt-stars]: https://img.shields.io/github/stars/Torantulino/Auto-GPT?style=social
+[azure-openai-redis-deployment-stars]: https://img.shields.io/github/stars/RedisVentures/azure-openai-redis-deployment?style=social
 
 ____
 
