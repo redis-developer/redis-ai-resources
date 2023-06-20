@@ -71,6 +71,7 @@ powered by Redis.
 | [The Pattern](https://github.com/applied-knowledge-systems/the-pattern) | CORD19 medical NLP pipeline with Redis | ![the-pattern-stars] |
 | [Redis VSS Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search | ![redis-vss-streamlit-demo-stars] |
 | [GPT Vectors Example](https://github.com/gbaeke/gpt-vectors) | Code associated with the blog post below: "Storing and querying embeddings with Redis" | ![gpt-vectors-stars] |
+| [Azure OpenAI Redis Deployment Template](https://github.com/RedisVentures/azure-openai-redis-deployment) | Terraform template automates the end-to-end deployment of Azure OpenAI applications using Redis Enterprise as a vector database | ![azure-openai-redis-deployment-stars] |
 | [VSS for Finance](https://github.com/redislabs-training/redisfi-vss) | Searching through SEC filings with Redis VSS | ![redisfi-vss-stars] |
 
 #### Recommendation Systems
@@ -203,6 +204,8 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 [llmchat-stars]: https://img.shields.io/github/stars/c0sogi/llmchat?style=social
 [vectorverse-stars]: https://img.shields.io/github/stars/abhishek-ch/vectorverse?style=social
 [local-model-qna-example-stars]: https://img.shields.io/github/stars/cxfcxf/embeddings?style=social
+[azure-openai-redis-deployment-stars]: https://img.shields.io/github/stars/RedisVentures/azure-openai-redis-deployment?style=social
+
 ____
 
 ## Feature Store
