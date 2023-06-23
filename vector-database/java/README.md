@@ -122,7 +122,7 @@ client.jsonSet("product:" + product.id, gson.toJson(product));
 9. Palm Tree Kids Boy Washed Blue Jeans (Score: 0.7440362)
 10. Lee Men Elvira Rinse Blue Chicago Fit Jeans (Score: 0.7366651)
 ```
-### VSS query: 'man blue jeans' in 'productVector' with hybrid filters: @productDisplayName:"slim fit"
+### VSS hybrid query: 'man blue jeans' in 'productVector' with hybrid filters: @productDisplayName:"slim fit"
 ```text
 1. Lee Rinse Navy Blue Slim Fit Jeans (Score: 0.71524847)
 2. Basics Men Blue Slim Fit Checked Shirt (Score: 0.71524143)
@@ -133,7 +133,7 @@ client.jsonSet("product:" + product.id, gson.toJson(product));
 7. Basics Men White Slim Fit Striped Shirt (Score: 0.622632)
 8. ADIDAS Men's Slim Fit White T-shirt (Score: 0.5857945)
 ```
-### VSS query: 'man blue jeans' in 'productVector' with hybrid filters: (@year:[2011 2012] @season:{Summer})
+### VSS hybrid query: 'man blue jeans' in 'productVector' with hybrid filters: (@year:[2011 2012] @season:{Summer})
 ```text
 1. John Players Men Blue Jeans (Score: 0.79437006)
 2. Peter England Men Party Blue Jeans (Score: 0.7699023)
