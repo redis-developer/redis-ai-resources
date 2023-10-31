@@ -5,55 +5,52 @@
 ✨ A curated list of awesome community resources including content, integrations, documentation and examples for Redis in the AI ecosystem.
 
 ## Table of Contents
-
-- [AI Related Modules](#ai-related-modules)
 - Redis as a [Vector Database](#vector-database)
 - Redis as a [Feature Store](#feature-store)
 
 ----------
 
-## Redis Modules
-Modules that enable Redis as a Vector Database or Feature Store.
-
-| Module | Description | Stars |
-| --- | --- | --- |
-| [RediSearch](https://github.com/RediSearch/RediSearch) | Indexing and Search including vector search | ![redisearch-stars] |
-| [RedisJSON](https://github.com/RedisJSON/RedisJSON) | JSON document storage for features or vectors with RediSearch | ![redisjson-stars] |
-| [RedisBloom](https://github.com/RedisBloom/RedisBloom) | Bloom Filters for probabilistic filtering | ![redisbloom-stars] |
-| [RedisAI](https://github.com/RedisAI/RedisAI) | Deep Learning and Machine Learning model serving | ![redisai-stars] |
-| [RedisTimeSeries](https://github.com/RedisTimeSeries/RedisTimeSeries) | Time Series data storage | ![redistimeseries-stars] |
-
-
-[redistimeseries-stars]: https://img.shields.io/github/stars/RedisTimeSeries/RedisTimeSeries?style=social
-[redisbloom-stars]: https://img.shields.io/github/stars/RedisBloom/RedisBloom?style=social
-[redisai-stars]: https://img.shields.io/github/stars/RedisAI/RedisAI?style=social
-[redisjson-stars]: https://img.shields.io/github/stars/RedisJSON/RedisJSON?style=social
-[redisearch-stars]: https://img.shields.io/github/stars/RediSearch/RediSearch?style=social
-
-
 ## Vector Database
 The following list provides resources, integrations, and examples for **Redis as a Vector Database**.
 
 ### Integrations/Tools
-- [⭐ LangChain](https://github.com/hwchase17/langchain) - popular client lib for building LLM applications.
+- [⭐ RedisVL](https://github.com/RedisVentures/redisvl) - a dedicated Python client lib for Redis as a Vector DB.
+- [⭐ LangChain Python](https://github.com/langchain-ai/langchain) - popular Python client lib for building LLM applications.
 powered by Redis.
-- [⭐ RelevanceAI](https://relevance.ai/) - Platform to ag, search and analyze unstructured data faster, built on Redis.
-- [⭐ LlamaIndex](https://gpt-index.readthedocs.io/en/latest/examples/vector_stores/RedisIndexDemo.html) - LlamaIndex Integration for Redis as a vector Database (formerly GPT-index)
+- [⭐ LangChain JS](https://github.com/langchain-ai/langchainjs) - popular JS client lib for building LLM applications.
+powered by Redis.
+- [⭐ LlamaIndex](https://gpt-index.readthedocs.io/en/latest/examples/vector_stores/RedisIndexDemo.html) - LlamaIndex Integration for Redis as a vector Database (formerly GPT-index).
+- [Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main) - popular lib by MSFT to integrate LLMs with plugins.
+- [Metal](https://getmetal.io/) - an all-inclusive LLM development platform for building RAG applications. Built on top of Redis as a vector database and high performance data layer.
+- [RelevanceAI](https://relevance.ai/) - Platform to ag, search and analyze unstructured data faster, built on Redis.
 - [DocArray](https://docarray.jina.ai/advanced/document-store/redis/) - DocArray Integration of Redis as a VectorDB by Jina AI.
 - [ChatGPT Memory](https://github.com/continuum-llms/chatgpt-memory) - contextual and adaptive memory for ChatGPT
 - [Haystack Example](https://github.com/artefactory/redis-player-one/blob/main/askyves/redis_document_store.py) - Haystack Integration (example) of Redis as a VectorDB.
+- [Mantium AI](https://mantiumai.com/)
 
 ### Examples
+
+#### Quickstarts
+
+| Resource | Description |
+| --- | --- |
+| [⭐ Hands-On Redis Workshops](https://github.com/Redislabs-Solution-Architects/Redis-Workshops) | Hands-on workshops for Redis JSON, Search, and VSS / Gen AI. |
+| [⭐ Redis VSS Getting Started - 3 Ways](https://github.com/Redislabs-Solution-Architects/financial-vss) | Getting started VSS demo covering RedisVL, Redis Python, and LangChain |
+| [⭐ OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook/tree/main/examples/vector_databases) | OpenAI Cookbook examples using Redis as a vector database |
+| [Redis VSS - Simple Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search |
+| [Redis VSS - LabLab AI Quickstart](https://github.com/lablab-ai/Vector-Similarity-Search-with-Redis-Quickstart-Notebook) | Quickstart notebook sponspored by LabLab AI for their AI hackathons. |
+| [Redis VSS Documentation Quickstart](https://github.com/RedisVentures/redis-vss-getting-started) | Redis.io VSS Quickstart code. |
 
 #### Question & Answer
 
 | Resource | Description | Stars |
 | --- | --- | --- |
+| [⭐ ArxivChatGuru](https://github.com/RedisVentures/ArxivChatGuru) | Streamlit demo of QnA over Arxiv documents with Redis & OpenAI | ![redis-openai-qna-streamlit-demo-stars] |
 | [⭐ Azure OpenAI Embeddings Q&A](https://github.com/ruoccofabrizio/azure-open-ai-embeddings-qna) | OpenAI and Redis as a Q&A service on Azure | ![azure-openai-embeddings-qna-stars] |
-| [⭐ Redis OpenAI QnA Streamlit App](https://github.com/RedisVentures/redis-openai-qna) | Streamlit demo of Redis OpenAI QnA | ![redis-openai-qna-streamlit-demo-stars] |
 | [LLM Document Chat](https://github.com/RedisVentures/LLM-Document-Chat) | Using LlamaIndex and Redis to chat with Documents | ![llm-document-chat-stars] |
+| [GCP Vertex AI "Chat Your PDF"](https://github.com/RedisVentures/gcp-redis-llm-stack/tree/main/examples/chat-your-pdf) | Chat with a PDF using Redis & VertexAI LLMs | |
 | [LLMChat](https://github.com/c0sogi/LLMChat) | Full-stack implementation using FastAPI, Redis, OpenAI and Flutter. | ![llmchat-stars] |
-| [eCommerce Chatbot](https://github.com/RedisVentures/redis-langchain-chatbot) | eCommerce Chatbot with Redis, LangChain, and OpenAI | ![redis-langchain-chatbot-stars] |
+| [Example eCommerce Chatbot](https://github.com/RedisVentures/redis-langchain-chatbot) | eCommerce Chatbot with Redis, LangChain, and OpenAI | ![redis-langchain-chatbot-stars] |
 | [Food-GPT](https://github.com/DevSamurai/food-gpt) | Food-GPT is a QnA Chat System | ![food-gpt-stars] |
 | [Redis vector bot](https://github.com/aetherwu/redis-vector-bot) | Redis vector bot for Ecommerce QnA | ![redis-vector-bot-stars] |
 | [Local Model QnA Example](https://github.com/cxfcxf/embeddings) | Local LLMs embeddings with Redis as vector db | ![local-model-qna-example-stars] |
@@ -69,7 +66,6 @@ powered by Redis.
 | [Financial News Demo](https://github.com/RedisAI/financial-news) | Sentiment analysis and Semantic similarity in Financial News articles | ![financial-news-demo-stars] |
 | [Romeo GPT](https://github.com/fmanrique8/romeo-gpt) | AI Document management assistant | ![romeo-gpt-stars] |
 | [The Pattern](https://github.com/applied-knowledge-systems/the-pattern) | CORD19 medical NLP pipeline with Redis | ![the-pattern-stars] |
-| [Redis VSS Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search | ![redis-vss-streamlit-demo-stars] |
 | [GPT Vectors Example](https://github.com/gbaeke/gpt-vectors) | Code associated with the blog post below: "Storing and querying embeddings with Redis" | ![gpt-vectors-stars] |
 | [Azure OpenAI Redis Deployment Template](https://github.com/RedisVentures/azure-openai-redis-deployment) | Terraform template automates the end-to-end deployment of Azure OpenAI applications using Redis Enterprise as a vector database | ![azure-openai-redis-deployment-stars] |
 | [VSS for Finance](https://github.com/redislabs-training/redisfi-vss) | Searching through SEC filings with Redis VSS | ![redisfi-vss-stars] |
@@ -87,8 +83,6 @@ powered by Redis.
 
 | Resource | Description | Stars |
 | --- | --- | --- |
-| [⭐ OpenAI Cookbook Examples](https://github.com/openai/openai-cookbook/tree/main/examples/vector_databases) | OpenAI Cookbook examples using Redis as a vector database | ![openai-cookbook-stars] |
-| [Redis Vector Similarity Search Quickstart](https://github.com/lablab-ai/Vector-Similarity-Search-with-Redis-Quickstart-Notebook) | Quickstart notebook sponspored by LabLab AI for their AI hackathons. | ![lablab-vss-quickstart] |
 | [VectorVerse](https://github.com/abhishek-ch/VectorVerse) | Vector Database comparison app | ![vectorverse-stars] |
 | [Simple Vector Similarity Intro](https://github.com/RedisVentures/simple-vecsim-intro) | Dockerized Jupyter Notebook & Streamlit demo of Redis Vector Search | ![redis-vecsim-intro-stars] |
 | [Redis Solution Architects VSS Examples](https://github.com/Redislabs-Solution-Architects/vss-ops) | Examples of VSS in Python | ![vss-ops-stars] |
@@ -143,12 +137,13 @@ For a full list of Redis Clients see [Redis Clients](https://redis.io/resources/
 
 ### Benchmarks
 - [Vector Database Benchmarks](https://jina.ai/news/benchmark-vector-search-databases-with-one-million-data/) - Jina AI VectorDB benchmarks comparing Redis against others.
+- [ANN Benchmarks](https://ann-benchmarks.com) - Standard ANN Benchmarks site. *Only using single Redis OSS instance/client.*
 
 ### Documentation
-- [Redis Vector Similarity Docs](https://redis.io/docs/stack/search/reference/vectors/) - Redis official docs for Vector Search.
+- [Redis Vector Database QuickStart](https://redis.io/docs/get-started/vector-database/)
+- [Redis Vector Similarity Docs](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/) - Official Redis literature for Vector Similarity Search.
 - [Redis-py Search Docs](https://redis.readthedocs.io/en/latest/redismodules.html#redisearch-commands) - Redis-py client library docs for RediSearch.
 - [Redis-py General Docs](https://redis.readthedocs.io/en/latest/) - Redis-py client library documentation.
-- [RediSearch](https://github.com/RediSearch/RediSearch) - RediSearch Module.
 - [Redis Stack](https://redis.io/docs/stack/) - Redis Stack documentation.
 - [Redis Clients](https://redis.io/docs/clients/) - Redis client list.
 
