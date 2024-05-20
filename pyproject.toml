@@ -1,5 +1,6 @@
 [tool.poetry]
 name = "redis-ai-resources"
+package-mode = false
 version = "0.1.0"
 description = "A curated repository of code recipes, demos, and resources for basic and advanced Redis use cases in the AI ecosystem."
 authors = ["Redis Inc. <applied.ai@redis.com>"]

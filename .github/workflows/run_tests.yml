@@ -86,7 +86,7 @@ jobs:
       #   AZURE_OPENAI_DEPLOYMENT_NAME: ${{secrets.AZURE_OPENAI_DEPLOYMENT_NAME}}
       #   OPENAI_API_VERSION: ${{secrets.OPENAI_API_VERSION}}
       run: |
-        cd python-examples/ && poetry run pytest --nbval python-examples/auto_test/01_redis-py.ipynb
+        poetry run pytest --nbval python-examples/auto_test/01_redis-py.ipynb
 
     # - name: Publish coverage results
     #   uses: codecov/codecov-action@v4
