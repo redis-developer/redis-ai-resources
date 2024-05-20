@@ -77,20 +77,20 @@ jobs:
     - name: Run notebooks
       if: matrix.connection == 'plain' && matrix.redis-stack-version == 'latest'
       env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_KEY }}
-        GCP_LOCATION: ${{ secrets.GCP_LOCATION }}
-        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-        COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-        AZURE_OPENAI_API_KEY: ${{secrets.AZURE_OPENAI_API_KEY}}
-        AZURE_OPENAI_ENDPOINT: ${{secrets.AZURE_OPENAI_ENDPOINT}}
-        AZURE_OPENAI_DEPLOYMENT_NAME: ${{secrets.AZURE_OPENAI_DEPLOYMENT_NAME}}
-        OPENAI_API_VERSION: ${{secrets.OPENAI_API_VERSION}}
+        # OPENAI_API_KEY: ${{ secrets.OPENAI_KEY }}
+        # GCP_LOCATION: ${{ secrets.GCP_LOCATION }}
+        # GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        # COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+        # AZURE_OPENAI_API_KEY: ${{secrets.AZURE_OPENAI_API_KEY}}
+        # AZURE_OPENAI_ENDPOINT: ${{secrets.AZURE_OPENAI_ENDPOINT}}
+        # AZURE_OPENAI_DEPLOYMENT_NAME: ${{secrets.AZURE_OPENAI_DEPLOYMENT_NAME}}
+        # OPENAI_API_VERSION: ${{secrets.OPENAI_API_VERSION}}
       run: |
         cd python-examples/ && poetry run pytest --nbval python-examples/auto_test/01_redis-py.ipynb
 
-    - name: Publish coverage results
-      uses: codecov/codecov-action@v4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./coverage.xml
-        fail_ci_if_error: true
+    # - name: Publish coverage results
+    #   uses: codecov/codecov-action@v4
+    #   with:
+    #     token: ${{ secrets.CODECOV_TOKEN }}
+    #     files: ./coverage.xml
+    #     fail_ci_if_error: true
