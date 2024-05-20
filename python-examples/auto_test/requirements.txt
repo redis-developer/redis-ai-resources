@@ -1,0 +1,8 @@
+openai
+tiktoken
+langchain
+unstructured[pdf]
+sentence-transformers
+pandas
+pdf2image
+redisvl>=0.1.0

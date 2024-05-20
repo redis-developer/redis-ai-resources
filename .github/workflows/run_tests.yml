@@ -1,0 +1,96 @@
+name: Test Suite
+
+on:
+  pull_request:
+
+  push:
+    branches:
+      - RAAE-67/resource-updates
+      - main
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }} - ${{ matrix.connection }} [redis-stack ${{matrix.redis-stack-version}}]
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
+        connection: ['hiredis', 'plain']
+        redis-stack-version: ['6.2.6-v9', 'latest', 'edge']
+
+    services:
+      redis:
+        image: redis/redis-stack-server:${{matrix.redis-stack-version}}
+        ports:
+          - 6379:6379
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install dependencies
+      run: |
+        poetry install --all-extras
+
+    - name: Install hiredis if needed
+      if: matrix.connection == 'hiredis'
+      run: |
+        poetry add hiredis
+
+    - name: Set Redis version
+      run: |
+        echo "REDIS_VERSION=${{ matrix.redis-stack-version }}" >> $GITHUB_ENV
+
+    # - name: Authenticate to Google Cloud
+    #   uses: google-github-actions/auth@v1
+    #   with:
+    #     credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+    # - name: Run tests
+    #   if: matrix.connection == 'plain' && matrix.redis-stack-version == 'latest'
+    #   env:
+    #     OPENAI_API_KEY: ${{ secrets.OPENAI_KEY }}
+    #     GCP_LOCATION: ${{ secrets.GCP_LOCATION }}
+    #     GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+    #     COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+    #     AZURE_OPENAI_API_KEY: ${{secrets.AZURE_OPENAI_API_KEY}}
+    #     AZURE_OPENAI_ENDPOINT: ${{secrets.AZURE_OPENAI_ENDPOINT}}
+    #     AZURE_OPENAI_DEPLOYMENT_NAME: ${{secrets.AZURE_OPENAI_DEPLOYMENT_NAME}}
+    #     OPENAI_API_VERSION: ${{secrets.OPENAI_API_VERSION}}
+    #   run: |
+    #     poetry run test-cov
+
+    # - name: Run tests
+    #   if: matrix.connection != 'plain' || matrix.redis-stack-version != 'latest'
+    #   run: |
+    #     SKIP_VECTORIZERS=True SKIP_RERANKERS=True poetry run test-cov
+
+    - name: Run notebooks
+      if: matrix.connection == 'plain' && matrix.redis-stack-version == 'latest'
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_KEY }}
+        GCP_LOCATION: ${{ secrets.GCP_LOCATION }}
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+        AZURE_OPENAI_API_KEY: ${{secrets.AZURE_OPENAI_API_KEY}}
+        AZURE_OPENAI_ENDPOINT: ${{secrets.AZURE_OPENAI_ENDPOINT}}
+        AZURE_OPENAI_DEPLOYMENT_NAME: ${{secrets.AZURE_OPENAI_DEPLOYMENT_NAME}}
+        OPENAI_API_VERSION: ${{secrets.OPENAI_API_VERSION}}
+      run: |
+        cd python-examples/ && poetry run pytest --nbval python-examples/auto_test/01_redis-py.ipynb
+
+    - name: Publish coverage results
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage.xml
+        fail_ci_if_error: true
