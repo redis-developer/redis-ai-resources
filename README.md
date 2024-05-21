@@ -1,9 +1,20 @@
 <div align="center">
 <div><img src="assets/redis-logo.svg" style="width: 130px"> </div>
 <h1>AI Resources</h1>
+<div align="center">
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Language](https://img.shields.io/github/languages/top/redis-developer/redis-ai-resources)
+![GitHub last commit](https://img.shields.io/github/last-commit/redis-developer/redis-ai-resources)
+
+</div>
 <div>
     ✨ A curated repository of code recipes, demos, and resources for basic and advanced Redis use cases in the AI ecosystem. ✨
 </div>
+
+<div></div>
+
+
 <br>
 </div>
 
@@ -22,7 +33,7 @@
 <br>
 
 # Demos
-The best way to get started is by diving in and playing around with one of our full-featured demos. These Streamlit demos let you toggle different features on and off to find what suits your use case best.
+No faster way to get started than by diving in and playing around with one of our demos.
 
 | Demo | Description |
 | --- | --- |
@@ -35,11 +46,13 @@ The best way to get started is by diving in and playing around with one of our f
 
 # Recipes
 
+Need specific sample code to help get started with Redis? Start here.
+
 ## Getting started with RAG
 
-Retrieval Augmented Generation (aka RAG) is a system to enhance the ability of an LLM to respond to user queries. The **retrieval** part of RAG is supported by a vector database, which can return semantically relevant results to a user’s query, serving as contextual information to **augment** the **generative** capabilities of an LLM.
+**Retrieval Augmented Generation** (aka RAG) is a technique to enhance the ability of an LLM to respond to user queries. The **retrieval** part of RAG is supported by a vector database, which can return semantically relevant results to a user’s query, serving as contextual information to **augment** the **generative** capabilities of an LLM.
 
-To get started with RAG, either from scratch or using a popular framework like Llamaindex or LangChain, see these recipes:
+To get started with RAG, either from scratch or using a popular framework like Llamaindex or LangChain, go with these recipes:
 
 | Recipe | Description |
 | --- | --- |
@@ -50,18 +63,18 @@ To get started with RAG, either from scratch or using a popular framework like L
 
 
 ## Semantic Cache
-It’s estimated that 31% of LLM queries are potential semantic cache matches ([source](https://arxiv.org/pdf/2403.02694)). Redis, which is most well known for its prowess as a caching layer, can support this in the vector context and help cut down on costly LLM calls that would otherwise be duplicated.
+An estimated 31% of LLM queries are potentially redundant ([source](https://arxiv.org/pdf/2403.02694)). Redis enables semantic caching to help cut down on LLM costs quickly.
 
 | Recipe | Description |
 | --- | --- |
-| [/semantic_cache](python-recipes/advanced_capabilities/semantic_cache.ipynb) | Intro |
+| [/semantic_caching_gemini](python-recipes/semantic-cache/semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
 
 ## Advanced RAG
-For further insights on enhancing RAG applications with dense content representations, query re-writing, semantic cache, and conversational memory persistence, exploring the following notebook.
+For further insights on enhancing RAG applications with dense content representations, query re-writing, and other techniques.
 
 | Recipe | Description |
 | --- | --- |
-[/advanced_RAG](python-recipes/RAG/04_advanced_redisvl.ipynb) | Notebook for additional tips and techniques |
+[/advanced_RAG](python-recipes/RAG/04_advanced_redisvl.ipynb) | Notebook for additional tips and techniques to improve RAG quality |
 
 ## Recommendation systems
 
@@ -80,9 +93,7 @@ powered by Redis.
 - [⭐ LlamaIndex](https://gpt-index.readthedocs.io/en/latest/examples/vector_stores/RedisIndexDemo.html) - LlamaIndex Integration for Redis as a vector Database (formerly GPT-index).
 - [Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main) - popular lib by MSFT to integrate LLMs with plugins.
 - [RelevanceAI](https://relevance.ai/) - Platform to ag, search and analyze unstructured data faster, built on Redis.
-- [DocArray](https://docarray.jina.ai/advanced/document-store/redis/) - DocArray Integration of Redis as a VectorDB by Jina AI.
-- [ChatGPT Memory](https://github.com/continuum-llms/chatgpt-memory) - contextual and adaptive memory for ChatGPT
-- [Haystack Example](https://github.com/artefactory/redis-player-one/blob/main/askyves/redis_document_store.py) - Haystack Integration (example) of Redis as a VectorDB.
+- [DocArray](https://docs.docarray.org/user_guide/storing/index_redis/) - DocArray Integration of Redis as a VectorDB by Jina AI.
 
 
 # Additional content
@@ -93,15 +104,11 @@ powered by Redis.
 - [Vector Databases and AI-powered Search Talk](https://www.youtube.com/watch?v=g2bNHLeKlAg) - Video "Vector Databases and AI-powered Search" given by Sam Partee at SDSC 2023.
 - [Engineering Lab Review](https://mlops.community/redis-vector-search-engineering-lab-review/) - Review of the first Redis VSS Hackathon.
 - [Real-Time Product Recommendations](https://jina.ai/news/real-time-product-recommendation-using-redis-and-docarray/) - Content-based recsys design with Redis and DocArray.
-- [Redis as a Vector Database](https://vishnudeva.medium.com/redis-as-a-vector-database-rediscloud-2a444c478f3d) - Hackathon review blog post covering Redis as a VectorDB.
 - [LabLab AI Redis Tech Page](https://lablab.ai/tech/redis)
 - [Storing and querying for embeddings with Redis](https://blog.baeke.info/2023/03/21/storing-and-querying-for-embeddings-with-redis/)
 - [Building Intelligent Apps with Redis Vector Similarity Search](https://redis.com/blog/build-intelligent-apps-redis-vector-similarity-search/)
-- [Rediscovering Redis for Vector Similarity](https://redis.com/blog/rediscover-redis-for-vector-similarity-search/)
-- [VSS Cheat Sheet](https://drive.google.com/file/d/10O52YXE1-x9jUTv2G-iJUHFSbthWAcyy/view?usp=share_link) - Redis Vector Search Cheat Sheet by Datascience Dojo.
 - [RedisDays Keynote](https://www.youtube.com/watch?v=EEIBTEpb2LI) - Video "Infuse Real-Time AI Into Your "Financial Services" Application".
 - [RedisDays Trading Signals](https://www.youtube.com/watch?v=_Lrbesg4DhY) - Video "Using AI to Reveal Trading Signals Buried in Corporate Filings".
-- [LLM Stack Hackathon writeup](https://medium.com/@sonam.gupta1105/equipping-with-llm-stack-mlops-community-hackathon-fd0505762c85) - Building a QnA Slack bot for the MLOps Community Hackathon with OpenAI and Redis
 
 # Benchmarks
 - [Vector Database Benchmarks](https://jina.ai/news/benchmark-vector-search-databases-with-one-million-data/) - Jina AI VectorDB benchmarks comparing Redis against others.
