@@ -12,9 +12,8 @@
     - Demos
     - Recipes
 - Advanced Capabilities
-    - Session memory
     - Semantic cache
-    - reranker
+    - Advanced RAG
 - Integrations
 - Use cases beyond RAG
     - Recommendation systems
@@ -53,9 +52,15 @@ Often a bare bones implementation is not enough for application needs. If this i
 ## Semantic Cache
 It’s estimated that 31% of LLM queries are potential semantic cache matches ([source](https://arxiv.org/pdf/2403.02694)). Redis, which is most well known for its prowess as a caching layer, can support this in the vector context and help cut down on costly LLM calls that would otherwise be duplicated.
 
+# TODO: Tyler's notebook linked here
 [/semantic_cache](python-examples/advanced_capabilities/semantic_cache.ipynb)
 
+## Advanced RAG
+For further insights on enhancing RAG applications with dense content representations, query re-writing, semantic cache, and conversational memory persistence, exploring the following notebook.
 
+[/advanced_RAG](python-examples/advanced_capabilities/advanced_RAG.ipynb)
+
+# TODO: these probably get dropped for quick ship v1
 ## Session Memory
 By default, many LLMs execute statelessly, meaning they respond to queries independently without considering broader conversation or application context. RedisVL allows you to easily add a layer of longer-term memory to assist the LLM in accurately responding to users. This longer-term memory can be configured at the session, application, or user level and is a great way to improve chat performance.
 
