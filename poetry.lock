@@ -3210,6 +3210,17 @@ hiredis = ["hiredis (>=1.0.0)"]
 ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
 
 [[package]]
+name = "redispy"
+version = "3.0.0"
+description = "Python client for Redis key-value store"
+optional = false
+python-versions = "*"
+files = [
+    {file = "redispy-3.0.0-py2.py3-none-any.whl", hash = "sha256:c9d9e98e7aa869fece34c8ed344ade38c5b1c6c8d90889e08d4881514f4f4d1f"},
+    {file = "redispy-3.0.0.tar.gz", hash = "sha256:5833e0f2b981c62a9c56c40b066c8bb49786a4a9d867ea191fc16aa5e0853c7e"},
+]
+
+[[package]]
 name = "redisvl"
 version = "0.2.0"
 description = "Python client library and CLI for using Redis as a vector database"
@@ -4186,4 +4197,4 @@ sentence-transformers = []
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "bfd4abd11194be2613fb195ee75873b24cdaa8561a36e52ccf0c4a2021e50188"
+content-hash = "0f5797129482f690b4a0bba94ef9408fa065b0f493893dd4aaab632ba18ab3b9"
