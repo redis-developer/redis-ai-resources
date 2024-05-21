@@ -4,8 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - .:/app
+    # volumes:
+    #   - .:/app
   redis:
     image: redis/redis-stack-server:latest
     ports:
