@@ -24,10 +24,14 @@
 # Demos
 The best way to get started is by diving in and playing around with one of our full-featured demos. These Streamlit demos let you toggle different features on and off to find what suits your use case best.
 
-| Demo | Description | Stars |
-| --- | --- | --- |
-| [⭐ ArxivChatGuru](https://github.com/redis-developer/ArxivChatGuru) | Streamlit demo of QnA over Arxiv documents with Redis & OpenAI | !
+| Demo | Description |
+| --- | --- |
+| [ArxivChatGuru](https://github.com/redis-developer/ArxivChatGuru) | Streamlit demo of RAG over Arxiv documents with Redis & OpenAI |
 | [Redis VSS - Simple Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search |
+| [Vertex AI & Redis](https://github.com/redis-developer/gcp-redis-llm-stack/tree/main) | A tutorial featuring Redis with Vertex AI |
+| [Agentic RAG](https://github.com/redis-developer/agentic-rag) | A tutorial focused on agentic RAG with LlamaIndex and Cohere |
+| [ArXiv Search](https://github.com/redis-developer/redis-arxiv-search) | Full stack implementation of Redis with React FE |
+| [Product Search](https://github.com/redis-developer/redis-product-search) |  Vector search with Redis Stack and Redis Enterprise |
 
 # Recipes
 
