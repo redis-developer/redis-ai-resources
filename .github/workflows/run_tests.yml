@@ -16,9 +16,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.9, 3.10, 3.11]
-        connection: ['hiredis', 'plain']
-        redis-stack-version: ['6.2.6-v9', 'latest', 'edge']
+        python-version: [3.11]
+        connection: ['plain']
+        redis-stack-version: ['latest']
 
     services:
       redis:

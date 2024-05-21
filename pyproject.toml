@@ -24,7 +24,6 @@ pdf2image = "^1.17.0"
 nbval = "^0.11.0"
 langchain-community = "^0.2.0"
 redis = "^5.0.4"
-redispy = "^3.0.0"
 
 [tool.poetry.extras]
 openai = ["openai"]
@@ -86,15 +85,6 @@ exclude = '''
 [tool.pytest.ini_options]
 log_cli = true
 asyncio_mode = "auto"
-
-[tool.coverage.run]
-source = ["redisvl"]
-
-[tool.coverage.report]
-ignore_errors = true
-
-[tool.coverage.html]
-directory = "htmlcov"
 
 [tool.mypy]
 warn_unused_configs = true
