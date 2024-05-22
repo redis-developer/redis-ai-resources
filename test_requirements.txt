@@ -1,0 +1,15 @@
+# notebook deps are self contained
+# this file is for automated testing purposes
+openai
+tiktoken
+langchain
+langchain-community
+llama-index
+unstructured[pdf]
+sentence-transformers
+pandas
+pdf2image
+nbval
+redis
+redisvl
+pytest
