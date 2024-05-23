@@ -5,6 +5,9 @@ tiktoken
 langchain
 langchain-community
 llama-index
+llama-index-vector-stores-redis
+llama-index-embeddings-cohere
+llama-index-embeddings-openai
 unstructured[pdf]
 sentence-transformers
 pandas

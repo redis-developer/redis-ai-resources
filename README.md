@@ -85,7 +85,7 @@ Within [this repository](https://github.com/redis-developer/redis-nvidia-recsys)
 
 # Integrations/Tools
 - [⭐ RedisVL](https://github.com/redis/redis-vl-python) - a dedicated Python client lib for Redis as a Vector DB.
-- [⭐ AWS Bedrock][https://redis.io/docs/latest/integrate/amazon-bedrock/]
+- [⭐ AWS Bedrock](https://redis.io/docs/latest/integrate/amazon-bedrock/) - Streamlines GenAI deployment by offering foundational models as a unified API.
 - [⭐ LangChain Python](https://github.com/langchain-ai/langchain) - popular Python client lib for building LLM applications.
 powered by Redis.
 - [⭐ LangChain JS](https://github.com/langchain-ai/langchainjs) - popular JS client lib for building LLM applications.
