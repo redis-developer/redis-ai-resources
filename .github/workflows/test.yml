@@ -1,8 +1,6 @@
 name: Test Suite
 
 on:
-  pull_request:
-
   push:
     branches:
       - feature/auto-testing
@@ -36,7 +34,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r test_requirements.txt
+        pip install -r requirements.txt
 
     - name: Set Redis version
       run: |
