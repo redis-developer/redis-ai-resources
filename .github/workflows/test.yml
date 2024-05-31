@@ -1,0 +1,58 @@
+name: Test Suite
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }} - ${{ matrix.connection }} [redis-stack ${{matrix.redis-stack-version}}]
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.11]
+        connection: ['plain']
+        redis-stack-version: ['latest']
+
+    services:
+      redis:
+        image: redis/redis-stack-server:${{matrix.redis-stack-version}}
+        ports:
+          - 6379:6379
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Set Redis version
+      run: |
+        echo "REDIS_VERSION=${{ matrix.redis-stack-version }}" >> $GITHUB_ENV
+
+    - name: Run notebooks
+      if: matrix.connection == 'plain' && matrix.redis-stack-version == 'latest'
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        LLAMA_CLOUD_API_KEY: ${{ secrets.LLAMA_CLOUD_API_KEY }}
+        GCP_REGION: ${{ secrets.GCP_REGION }}
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      #   COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+      #   AZURE_OPENAI_API_KEY: ${{secrets.AZURE_OPENAI_API_KEY}}
+      #   AZURE_OPENAI_ENDPOINT: ${{secrets.AZURE_OPENAI_ENDPOINT}}
+      #   AZURE_OPENAI_DEPLOYMENT_NAME: ${{secrets.AZURE_OPENAI_DEPLOYMENT_NAME}}
+      #   OPENAI_API_VERSION: ${{secrets.OPENAI_API_VERSION}}
+      run: |
+        pytest --nbval-lax python-recipes/RAG/00_intro_redispy.ipynb python-recipes/RAG/01_redisvl.ipynb python-recipes/RAG/02_langchain.ipynb python-recipes/RAG/03_llamaindex.ipynb python-recipes/RAG/04_advanced_redisvl.ipynb

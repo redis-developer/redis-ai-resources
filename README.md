@@ -60,6 +60,8 @@ To get started with RAG, either from scratch or using a popular framework like L
 | [/01_redisvl](python-recipes/RAG/01_redisvl.ipynb) | RAG from scratch with the Redis Vector Library |
 | [/02_langchain](python-recipes/RAG/02_langchain.ipynb) | RAG using Redis and LangChain |
 | [/03_llamaindex](python-recipes/RAG/03_llamaindex.ipynb) | RAG using Redis and LlamaIndex |
+| [/04_advanced_redisvl](python-recipes/RAG//04_advanced_redisvl.ipynb) | Advanced RAG with redisvl |
+| [/05_nvidia_ai_rag_redis](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia |
 
 
 ## Semantic Cache
@@ -85,7 +87,7 @@ Within [this repository](https://github.com/redis-developer/redis-nvidia-recsys)
 
 # Integrations/Tools
 - [⭐ RedisVL](https://github.com/redis/redis-vl-python) - a dedicated Python client lib for Redis as a Vector DB.
-- [⭐ AWS Bedrock][https://redis.io/docs/latest/integrate/amazon-bedrock/]
+- [⭐ AWS Bedrock](https://redis.io/docs/latest/integrate/amazon-bedrock/) - Streamlines GenAI deployment by offering foundational models as a unified API.
 - [⭐ LangChain Python](https://github.com/langchain-ai/langchain) - popular Python client lib for building LLM applications.
 powered by Redis.
 - [⭐ LangChain JS](https://github.com/langchain-ai/langchainjs) - popular JS client lib for building LLM applications.
