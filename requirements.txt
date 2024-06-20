@@ -4,6 +4,7 @@ openai
 tiktoken
 langchain
 langchain-community
+langchain-openai
 llama-index
 llama-index-vector-stores-redis
 llama-index-embeddings-cohere
@@ -16,3 +17,6 @@ nbval
 redis
 redisvl
 pytest
+ragas
+datasets
+
