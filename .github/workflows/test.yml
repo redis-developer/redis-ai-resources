@@ -55,4 +55,4 @@ jobs:
       #   AZURE_OPENAI_DEPLOYMENT_NAME: ${{secrets.AZURE_OPENAI_DEPLOYMENT_NAME}}
       #   OPENAI_API_VERSION: ${{secrets.OPENAI_API_VERSION}}
       run: |
-        pytest --nbval-lax python-recipes/RAG/00_intro_redispy.ipynb python-recipes/RAG/01_redisvl.ipynb python-recipes/RAG/02_langchain.ipynb python-recipes/RAG/03_llamaindex.ipynb python-recipes/RAG/04_advanced_redisvl.ipynb
+        pytest --nbval-lax python-recipes/RAG/00_intro_redispy.ipynb python-recipes/RAG/01_redisvl.ipynb python-recipes/RAG/02_langchain.ipynb python-recipes/RAG/03_llamaindex.ipynb python-recipes/RAG/04_advanced_redisvl.ipynb python-recipes/RAG/06_ragas_evaluation.ipynb
