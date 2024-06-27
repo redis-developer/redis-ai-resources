@@ -52,7 +52,7 @@ Need specific sample code to help get started with Redis? Start here.
 
 | Recipe | Description |
 | --- | --- |
-| [/redis_intro](python-recipes/redis-intro/redis_intro.ipynb) | Introduction to basic redis types and search |
+| [/redis_intro](python-recipes/redis-intro/redis_intro.ipynb) | The place to start if brand new to Redis |
 | [/redispy](python-recipes/vector-search/redispy.ipynb) | Vector search with Redis python client |
 | [/redisvl](python-recipes/vector-search/redisvl.ipynb) | Vector search with Redis Vector Library |
 
