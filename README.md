@@ -48,6 +48,14 @@ No faster way to get started than by diving in and playing around with one of ou
 
 Need specific sample code to help get started with Redis? Start here.
 
+## Getting started with Redis & Vector Search
+
+| Recipe | Description |
+| --- | --- |
+| [/redis-intro/redis_intro.ipynb](python-recipes/redis-intro/redis_intro.ipynb) | The place to start if brand new to Redis |
+| [/vector-search/00_redispy.ipynb](python-recipes/vector-search/00_redispy.ipynb) | Vector search with Redis python client |
+| [/vector-search/01_redisvl.ipynb](python-recipes/vector-search/01_redisvl.ipynb) | Vector search with Redis Vector Library |
+
 ## Getting started with RAG
 
 **Retrieval Augmented Generation** (aka RAG) is a technique to enhance the ability of an LLM to respond to user queries. The **retrieval** part of RAG is supported by a vector database, which can return semantically relevant results to a user’s query, serving as contextual information to **augment** the **generative** capabilities of an LLM.
@@ -56,12 +64,11 @@ To get started with RAG, either from scratch or using a popular framework like L
 
 | Recipe | Description |
 | --- | --- |
-| [/00_intro_redispy](python-recipes/RAG/00_intro_redispy.ipynb) | Introduction to vector search using the standard redis python client |
-| [/01_redisvl](python-recipes/RAG/01_redisvl.ipynb) | RAG from scratch with the Redis Vector Library |
-| [/02_langchain](python-recipes/RAG/02_langchain.ipynb) | RAG using Redis and LangChain |
-| [/03_llamaindex](python-recipes/RAG/03_llamaindex.ipynb) | RAG using Redis and LlamaIndex |
-| [/04_advanced_redisvl](python-recipes/RAG//04_advanced_redisvl.ipynb) | Advanced RAG with redisvl |
-| [/05_nvidia_ai_rag_redis](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia |
+| [/RAG/01_redisvl.ipynb](python-recipes/RAG/01_redisvl.ipynb) | RAG from scratch with the Redis Vector Library |
+| [/RAG/02_langchain.ipynb](python-recipes/RAG/02_langchain.ipynb) | RAG using Redis and LangChain |
+| [/RAG/03_llamaindex.ipynb](python-recipes/RAG/03_llamaindex.ipynb) | RAG using Redis and LlamaIndex |
+| [/RAG/04_advanced_redisvl.ipynb](python-recipes/RAG/04_advanced_redisvl.ipynb) | Advanced RAG with redisvl |
+| [/RAG/05_nvidia_ai_rag_redis.ipynb](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia |
 
 
 ## Semantic Cache
@@ -69,14 +76,14 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 
 | Recipe | Description |
 | --- | --- |
-| [/semantic_caching_gemini](python-recipes/semantic-cache/semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
+| [/semantic-cache/semantic_caching_gemini.ipynb](python-recipes/semantic-cache/semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
 
 ## Advanced RAG
 For further insights on enhancing RAG applications with dense content representations, query re-writing, and other techniques.
 
 | Recipe | Description |
 | --- | --- |
-[/advanced_RAG](python-recipes/RAG/04_advanced_redisvl.ipynb) | Notebook for additional tips and techniques to improve RAG quality |
+[/RAG/04_advanced_redisvl.ipynb](python-recipes/RAG/04_advanced_redisvl.ipynb) | Notebook for additional tips and techniques to improve RAG quality |
 
 ## Recommendation systems
 
