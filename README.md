@@ -120,7 +120,7 @@ powered by Redis.
 - [RedisDays Trading Signals](https://www.youtube.com/watch?v=_Lrbesg4DhY) - Video "Using AI to Reveal Trading Signals Buried in Corporate Filings".
 
 # Benchmarks
-- [Vector Database Benchmarks](https://jina.ai/news/benchmark-vector-search-databases-with-one-million-data/) - Jina AI VectorDB benchmarks comparing Redis against others.
+- [Benchmarking results for vector databases](https://redis.io/blog/benchmarking-results-for-vector-databases/) - Benchmarking results for vector databases, including Redis and 7 other Vector Database players.
 - [ANN Benchmarks](https://ann-benchmarks.com) - Standard ANN Benchmarks site. *Only using single Redis OSS instance/client.*
 
 # Documentation
