@@ -69,7 +69,7 @@ To get started with RAG, either from scratch or using a popular framework like L
 | [/RAG/03_llamaindex.ipynb](python-recipes/RAG/03_llamaindex.ipynb) | RAG using Redis and LlamaIndex |
 | [/RAG/04_advanced_redisvl.ipynb](python-recipes/RAG/04_advanced_redisvl.ipynb) | Advanced RAG with redisvl |
 | [/RAG/05_nvidia_ai_rag_redis.ipynb](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia |
-| [/RAG/06_ragas_evaluation.ipynb](python-recipes/RAG/06_ragas_evaluation.ipynb) | RAG using Redis and Nvidia |
+| [/RAG/06_ragas_evaluation.ipynb](python-recipes/RAG/06_ragas_evaluation.ipynb) | Utilize RAGAS evaluation framework to measure RAG performance |
 
 
 ## Semantic Cache
