@@ -15,7 +15,7 @@ pandas
 pdf2image
 nbval
 redis
-redisvl
+redisvl==0.3.0
 pytest
 ragas
 datasets
