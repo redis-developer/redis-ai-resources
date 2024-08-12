@@ -36,7 +36,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
+        pip install --no-cache-dir -r requirements.txt
 
     - name: Set Redis version
       run: |
@@ -49,10 +49,5 @@ jobs:
         LLAMA_CLOUD_API_KEY: ${{ secrets.LLAMA_CLOUD_API_KEY }}
         GCP_REGION: ${{ secrets.GCP_REGION }}
         GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      #   COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-      #   AZURE_OPENAI_API_KEY: ${{secrets.AZURE_OPENAI_API_KEY}}
-      #   AZURE_OPENAI_ENDPOINT: ${{secrets.AZURE_OPENAI_ENDPOINT}}
-      #   AZURE_OPENAI_DEPLOYMENT_NAME: ${{secrets.AZURE_OPENAI_DEPLOYMENT_NAME}}
-      #   OPENAI_API_VERSION: ${{secrets.OPENAI_API_VERSION}}
       run: |
-        pytest --nbval-lax python-recipes/RAG/01_redisvl.ipynb python-recipes/RAG/02_langchain.ipynb python-recipes/RAG/03_llamaindex.ipynb python-recipes/RAG/04_advanced_redisvl.ipynb python-recipes/RAG/06_ragas_evaluation.ipynb python-recipes/vector-search python-recipes/redis-intro
+        pytest --verbose --nbval-lax python-recipes/RAG/ python-recipes/vector-search python-recipes/redis-intro --ignore python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb
