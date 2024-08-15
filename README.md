@@ -76,6 +76,7 @@ LLMs are stateless. To maintain context within a conversation chat sessions must
 | Recipe | Description |
 | --- | --- |
 | [/session-manager/00_session_manager.ipynb](python-recipes/session-manager/00_session_manager.ipynb) | Chat session manager with semantic similarity |
+| [/session-manager/01_multiple_sessions.ipynb](python-recipes/session-manager/01_multiple_sessions.ipynb) | Handle multiple simultaneous chats with one instance |
 
 ## Semantic Cache
 An estimated 31% of LLM queries are potentially redundant ([source](https://arxiv.org/pdf/2403.02694)). Redis enables semantic caching to help cut down on LLM costs quickly.
