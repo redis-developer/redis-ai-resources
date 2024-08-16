@@ -25,7 +25,7 @@
     - [Semantic cache](#semantic-cache)
     - [Advanced RAG](#advanced-rag)
     - [Recommendation systems](#recommendation-systems)
-    - [Chat Session Management](#chat-session-management)
+    - [LLM Session Management](#llm-session-management)
 - [Integrations](#integrations)
 - [Additional content](#additional-content)
 - [Benchmarks](#benchmarks)
@@ -71,12 +71,12 @@ To get started with RAG, either from scratch or using a popular framework like L
 | [/RAG/05_nvidia_ai_rag_redis.ipynb](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia |
 | [/RAG/06_ragas_evaluation.ipynb](python-recipes/RAG/06_ragas_evaluation.ipynb) | Utilize RAGAS framework to evaluate RAG performance |
 
-## Chat Session Management
+## LLM Session Management
 LLMs are stateless. To maintain context within a conversation chat sessions must be stored and resent to the LLM. Redis manages the storage and retrieval of chat sessions to maintain context and conversational relevance.
 | Recipe | Description |
 | --- | --- |
-| [/session-manager/00_session_manager.ipynb](python-recipes/session-manager/00_session_manager.ipynb) | Chat session manager with semantic similarity |
-| [/session-manager/01_multiple_sessions.ipynb](python-recipes/session-manager/01_multiple_sessions.ipynb) | Handle multiple simultaneous chats with one instance |
+| [/llm-session-manager/00_session_manager.ipynb](python-recipes/llm-session-manager/00_llm_session_manager.ipynb) | LLM session manager with semantic similarity |
+| [/llm-session-manager/01_multiple_sessions.ipynb](python-recipes/llm-session-manager/01_multiple_sessions.ipynb) | Handle multiple simultaneous chats with one instance |
 
 ## Semantic Cache
 An estimated 31% of LLM queries are potentially redundant ([source](https://arxiv.org/pdf/2403.02694)). Redis enables semantic caching to help cut down on LLM costs quickly.
