@@ -25,6 +25,7 @@
     - [Semantic cache](#semantic-cache)
     - [Advanced RAG](#advanced-rag)
     - [Recommendation systems](#recommendation-systems)
+    - [LLM Session Management](#llm-session-management)
 - [Integrations](#integrations)
 - [Additional content](#additional-content)
 - [Benchmarks](#benchmarks)
@@ -55,7 +56,6 @@ Need specific sample code to help get started with Redis? Start here.
 | [/redis-intro/redis_intro.ipynb](python-recipes/redis-intro/redis_intro.ipynb) | The place to start if brand new to Redis |
 | [/vector-search/00_redispy.ipynb](python-recipes/vector-search/00_redispy.ipynb) | Vector search with Redis python client |
 | [/vector-search/01_redisvl.ipynb](python-recipes/vector-search/01_redisvl.ipynb) | Vector search with Redis Vector Library |
-
 ## Getting started with RAG
 
 **Retrieval Augmented Generation** (aka RAG) is a technique to enhance the ability of an LLM to respond to user queries. The **retrieval** part of RAG is supported by a vector database, which can return semantically relevant results to a user’s query, serving as contextual information to **augment** the **generative** capabilities of an LLM.
@@ -71,6 +71,12 @@ To get started with RAG, either from scratch or using a popular framework like L
 | [/RAG/05_nvidia_ai_rag_redis.ipynb](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia |
 | [/RAG/06_ragas_evaluation.ipynb](python-recipes/RAG/06_ragas_evaluation.ipynb) | Utilize RAGAS framework to evaluate RAG performance |
 
+## LLM Session Management
+LLMs are stateless. To maintain context within a conversation chat sessions must be stored and resent to the LLM. Redis manages the storage and retrieval of chat sessions to maintain context and conversational relevance.
+| Recipe | Description |
+| --- | --- |
+| [/llm-session-manager/00_session_manager.ipynb](python-recipes/llm-session-manager/00_llm_session_manager.ipynb) | LLM session manager with semantic similarity |
+| [/llm-session-manager/01_multiple_sessions.ipynb](python-recipes/llm-session-manager/01_multiple_sessions.ipynb) | Handle multiple simultaneous chats with one instance |
 
 ## Semantic Cache
 An estimated 31% of LLM queries are potentially redundant ([source](https://arxiv.org/pdf/2403.02694)). Redis enables semantic caching to help cut down on LLM costs quickly.
