@@ -5,6 +5,7 @@ tiktoken
 langchain
 langchain-community
 langchain-openai
+langchain-redis
 llama-index
 llama-index-vector-stores-redis
 llama-index-embeddings-cohere
