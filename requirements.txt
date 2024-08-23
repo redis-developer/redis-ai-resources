@@ -3,7 +3,6 @@
 openai
 tiktoken
 langchain
-langchain-community
 langchain-openai
 langchain-redis
 langchain-huggingface
