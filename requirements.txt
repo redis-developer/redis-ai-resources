@@ -6,6 +6,7 @@ langchain
 langchain-community
 langchain-openai
 langchain-redis
+langchain-huggingface
 llama-index
 llama-index-vector-stores-redis
 llama-index-embeddings-cohere
