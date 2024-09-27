@@ -50,4 +50,4 @@ jobs:
         GCP_REGION: ${{ secrets.GCP_REGION }}
         GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       run: |
-        pytest --verbose --nbval-lax python-recipes/RAG/ python-recipes/vector-search python-recipes/redis-intro --ignore python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb
+        pytest --verbose --nbval-lax python-recipes/RAG/ python-recipes/vector-search python-recipes/redis-intro --ignore python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb --ignore python-recipes/semantic-cache/doc2cache_llama3_1.ipynb
