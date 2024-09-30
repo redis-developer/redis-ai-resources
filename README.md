@@ -38,6 +38,7 @@ No faster way to get started than by diving in and playing around with one of ou
 
 | Demo | Description |
 | --- | --- |
+| [Redis RAG Workbench](https://github.com/redis-developer/redis-rag-workbench) | Interactive demo to build a RAG-based chatbot over an arbitrary PDF. Toggle different settings and configurations to improve chatbot performance and quality. Integrates RedisVL, LangChain, RAGAs, and more. |
 | [ArxivChatGuru](https://github.com/redis-developer/ArxivChatGuru) | Streamlit demo of RAG over Arxiv documents with Redis & OpenAI |
 | [Redis VSS - Simple Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search |
 | [Vertex AI & Redis](https://github.com/redis-developer/gcp-redis-llm-stack/tree/main) | A tutorial featuring Redis with Vertex AI |
