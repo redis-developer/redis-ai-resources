@@ -94,6 +94,11 @@ For further insights on enhancing RAG applications with dense content representa
 
 ## Recommendation systems
 
+| Recipe | Description |
+| --- | --- |
+| [/recommendation-systems/content_filtering.ipynb](python-recipes/recommendation-systems/content_filtering.ipynb) | Intro content filtering example with redisvl |
+
+### See also
 An exciting example of how Redis can power production-ready systems is highlighted in our collaboration with [NVIDIA](https://developer.nvidia.com/blog/offline-to-online-feature-storage-for-real-time-recommendation-systems-with-nvidia-merlin/) to construct a state-of-the-art recommendation system.
 
 Within [this repository](https://github.com/redis-developer/redis-nvidia-recsys), you'll find three examples, each escalating in complexity, showcasing the process of building such a system.
