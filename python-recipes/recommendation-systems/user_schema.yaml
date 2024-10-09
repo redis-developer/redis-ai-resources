@@ -1,0 +1,18 @@
+index:
+    name: users
+    prefix: user
+    storage_type: json
+
+fields:
+    - name: usr_id
+      type: tag
+      name: ratings
+      type: numeric
+
+    - name: user_vector
+      type: vector
+      attrs:
+          dims: 100
+          distance_metric: ip
+          algorithm: flat
+          dtype: float32
