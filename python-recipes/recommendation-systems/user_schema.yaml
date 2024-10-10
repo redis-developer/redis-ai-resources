@@ -6,8 +6,10 @@ index:
 fields:
     - name: usr_id
       type: tag
-      name: ratings
+    - name: ratings
       type: numeric
+      name: watched_list
+      type: text
 
     - name: user_vector
       type: vector
