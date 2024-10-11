@@ -4,7 +4,7 @@ index:
     storage_type: json
 
 fields:
-    - name: usr_id
+    - name: user_id
       type: tag
     - name: ratings
       type: numeric
