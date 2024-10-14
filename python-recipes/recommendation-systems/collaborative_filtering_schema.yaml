@@ -4,9 +4,9 @@ index:
     storage_type: json
 
 fields:
-    - name: genres
+    - name: movieId
       type: tag
-    - name: movie_id
+    - name: genres
       type: tag
     - name: original_language
       type: tag
