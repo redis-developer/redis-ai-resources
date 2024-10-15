@@ -37,4 +37,4 @@ fields:
           dims: 100
           distance_metric: ip
           algorithm: flat
-          dtype: float32
+          datatype: float32
