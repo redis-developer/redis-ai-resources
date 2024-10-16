@@ -20,4 +20,4 @@ redisvl>=0.3.0
 pytest
 ragas
 datasets
-
+scikit-surprise
