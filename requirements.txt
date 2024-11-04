@@ -3,6 +3,9 @@
 openai
 tiktoken
 langchain
+langgraph
+langchainhub
+langchain-text-splitters
 langchain-openai
 langchain-redis
 langchain-huggingface
