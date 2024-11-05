@@ -94,6 +94,13 @@ For further insights on enhancing RAG applications with dense content representa
 | --- | --- |
 [/RAG/04_advanced_redisvl.ipynb](python-recipes/RAG/04_advanced_redisvl.ipynb) | Notebook for additional tips and techniques to improve RAG quality |
 
+## Agents
+/Users/robert.shelton/Documents/redis-ai-resources/python-recipes/agents/01_crewai_langgraph_redis.ipynb
+| Recipe | Description |
+| --- | --- |
+[/agents/00_langgraph_redis_agentic_rag.ipynb](python-recipes/agents/00_langgraph_redis_agentic_rag.ipynb) | Notebook to get started with lang-graph and agents |
+[/agents/01_crewai_langgraph_redis.ipynb](python-recipes/agents/01_crewai_langgraph_redis.ipynb) | Notebook to get started with lang-graph and agents |
+
 ## Recommendation systems
 
 | Recipe | Description |
