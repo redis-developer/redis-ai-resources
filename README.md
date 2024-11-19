@@ -105,8 +105,8 @@ For further insights on enhancing RAG applications with dense content representa
 
 | Recipe | Description |
 | --- | --- |
-| [/recommendation-systems/content_filtering.ipynb](python-recipes/recommendation-systems/content_filtering.ipynb) | Intro content filtering example with redisvl |
-| [/recommendation-systems/collaborative_filtering.ipynb](python-recipes/recommendation-systems/collaborative_filtering.ipynb) | Intro collaborative filtering example with redisvl |
+| [/recommendation-systems/content_filtering.ipynb](python-recipes/recommendation-systems/00_content_filtering.ipynb) | Intro content filtering example with redisvl |
+| [/recommendation-systems/collaborative_filtering.ipynb](python-recipes/recommendation-systems/01_collaborative_filtering.ipynb) | Intro collaborative filtering example with redisvl |
 
 ### See also
 An exciting example of how Redis can power production-ready systems is highlighted in our collaboration with [NVIDIA](https://developer.nvidia.com/blog/offline-to-online-feature-storage-for-real-time-recommendation-systems-with-nvidia-merlin/) to construct a state-of-the-art recommendation system.
