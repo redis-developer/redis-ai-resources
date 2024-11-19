@@ -54,9 +54,9 @@ Need specific sample code to help get started with Redis? Start here.
 
 | Recipe | Description |
 | --- | --- |
-| [/redis-intro/redis_intro.ipynb](python-recipes/redis-intro/redis_intro.ipynb) | The place to start if brand new to Redis |
-| [/vector-search/00_redispy.ipynb](python-recipes/vector-search/00_redispy.ipynb) | Vector search with Redis python client |
-| [/vector-search/01_redisvl.ipynb](python-recipes/vector-search/01_redisvl.ipynb) | Vector search with Redis Vector Library |
+| [/redis-intro/00_redis_intro.ipynb](/python-recipes/redis-intro/00_redis_intro.ipynb) | The place to start if brand new to Redis |
+| [/vector-search/00_redispy.ipynb](/python-recipes/vector-search/00_redispy.ipynb) | Vector search with Redis python client |
+| [/vector-search/01_redisvl.ipynb](/python-recipes/vector-search/01_redisvl.ipynb) | Vector search with Redis Vector Library |
 ## Getting started with RAG
 
 **Retrieval Augmented Generation** (aka RAG) is a technique to enhance the ability of an LLM to respond to user queries. The **retrieval** part of RAG is supported by a vector database, which can return semantically relevant results to a user’s query, serving as contextual information to **augment** the **generative** capabilities of an LLM.
