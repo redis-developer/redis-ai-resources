@@ -7,57 +7,48 @@
 ![Language](https://img.shields.io/github/languages/top/redis-developer/redis-ai-resources)
 ![GitHub last commit](https://img.shields.io/github/last-commit/redis-developer/redis-ai-resources)
 
+
+
 </div>
 <div>
-    ✨ A curated repository of code recipes, demos, and resources for basic and advanced Redis use cases in the AI ecosystem. ✨
+    ✨ A curated repository of code recipes, demos, tutorials and resources for basic and advanced Redis use cases in the AI ecosystem. ✨
 </div>
 
 <div></div>
-
-
 <br>
+
+[**Demos**](#demos) | [**Recipes**](#recipes) | [**Tutorials**](#tutorials) | [**Integrations**](#integrations) | [**Content**](#content) | [**Benchmarks**](#benchmarks) | [**Docs**](#docs)
+
 </div>
-
-# Table of Contents
-- [Demos](#Demos)
-- [Recipes](#Recipes)
-    - [RAG](#getting-started-with-rag)
-    - [Semantic cache](#semantic-cache)
-    - [Advanced RAG](#advanced-rag)
-    - [Recommendation systems](#recommendation-systems)
-    - [LLM Session Management](#llm-session-management)
-- [Integrations](#integrations)
-- [Additional content](#additional-content)
-- [Benchmarks](#benchmarks)
-- [Documentation](#documentation)
-
 <br>
 
-# Demos
-No faster way to get started than by diving in and playing around with one of our demos.
+## Demos
+No faster way to get started than by diving in and playing around with a demo.
 
 | Demo | Description |
 | --- | --- |
-| [Redis RAG Workbench](https://github.com/redis-developer/redis-rag-workbench) | Interactive demo to build a RAG-based chatbot over an arbitrary PDF. Toggle different settings and configurations to improve chatbot performance and quality. Integrates RedisVL, LangChain, RAGAs, and more. |
+| [Redis RAG Workbench](https://github.com/redis-developer/redis-rag-workbench) | Interactive demo to build a RAG-based chatbot over a user-uploaded PDF. Toggle different settings and configurations to improve chatbot performance and quality. Utilizes RedisVL, LangChain, RAGAs, and more. |
 | [ArxivChatGuru](https://github.com/redis-developer/ArxivChatGuru) | Streamlit demo of RAG over Arxiv documents with Redis & OpenAI |
 | [Redis VSS - Simple Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search |
-| [Vertex AI & Redis](https://github.com/redis-developer/gcp-redis-llm-stack/tree/main) | A tutorial featuring Redis with Vertex AI |
-| [Agentic RAG](https://github.com/redis-developer/agentic-rag) | A tutorial focused on agentic RAG with LlamaIndex and Cohere |
 | [ArXiv Search](https://github.com/redis-developer/redis-arxiv-search) | Full stack implementation of Redis with React FE |
 | [Product Search](https://github.com/redis-developer/redis-product-search) |  Vector search with Redis Stack and Redis Enterprise |
 
-# Recipes
 
-Need specific sample code to help get started with Redis? Start here.
+## Recipes
 
-## Getting started with Redis & Vector Search
+Need quickstarts to begin your Redis AI journey? **Start here.**
+
+### Getting started with Redis & Vector Search
 
 | Recipe | Description |
 | --- | --- |
 | [/redis-intro/00_redis_intro.ipynb](/python-recipes/redis-intro/00_redis_intro.ipynb) | The place to start if brand new to Redis |
 | [/vector-search/00_redispy.ipynb](/python-recipes/vector-search/00_redispy.ipynb) | Vector search with Redis python client |
 | [/vector-search/01_redisvl.ipynb](/python-recipes/vector-search/01_redisvl.ipynb) | Vector search with Redis Vector Library |
-## Getting started with RAG
+| [/vector-search/02_hybrid_search.ipynb](/python-recipes/vector-search/02_hybrid_search.ipynb) | Hybrid search techniques with Redis (BM25 + Vector)
+
+
+### Retrieval Augmented Generation (RAG)
 
 **Retrieval Augmented Generation** (aka RAG) is a technique to enhance the ability of an LLM to respond to user queries. The **retrieval** part of RAG is supported by a vector database, which can return semantically relevant results to a user’s query, serving as contextual information to **augment** the **generative** capabilities of an LLM.
 
@@ -68,18 +59,18 @@ To get started with RAG, either from scratch or using a popular framework like L
 | [/RAG/01_redisvl.ipynb](python-recipes/RAG/01_redisvl.ipynb) | RAG from scratch with the Redis Vector Library |
 | [/RAG/02_langchain.ipynb](python-recipes/RAG/02_langchain.ipynb) | RAG using Redis and LangChain |
 | [/RAG/03_llamaindex.ipynb](python-recipes/RAG/03_llamaindex.ipynb) | RAG using Redis and LlamaIndex |
-| [/RAG/04_advanced_redisvl.ipynb](python-recipes/RAG/04_advanced_redisvl.ipynb) | Advanced RAG with redisvl |
-| [/RAG/05_nvidia_ai_rag_redis.ipynb](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia |
-| [/RAG/06_ragas_evaluation.ipynb](python-recipes/RAG/06_ragas_evaluation.ipynb) | Utilize RAGAS framework to evaluate RAG performance |
+| [/RAG/04_advanced_redisvl.ipynb](python-recipes/RAG/04_advanced_redisvl.ipynb) | Advanced RAG techniques |
+| [/RAG/05_nvidia_ai_rag_redis.ipynb](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia NIMs |
+| [/RAG/06_ragas_evaluation.ipynb](python-recipes/RAG/06_ragas_evaluation.ipynb) | Utilize the RAGAS framework to evaluate RAG performance |
 
-## LLM Session Management
+### LLM Memory
 LLMs are stateless. To maintain context within a conversation chat sessions must be stored and resent to the LLM. Redis manages the storage and retrieval of chat sessions to maintain context and conversational relevance.
 | Recipe | Description |
 | --- | --- |
 | [/llm-session-manager/00_session_manager.ipynb](python-recipes/llm-session-manager/00_llm_session_manager.ipynb) | LLM session manager with semantic similarity |
 | [/llm-session-manager/01_multiple_sessions.ipynb](python-recipes/llm-session-manager/01_multiple_sessions.ipynb) | Handle multiple simultaneous chats with one instance |
 
-## Semantic Cache
+### Semantic Cache
 An estimated 31% of LLM queries are potentially redundant ([source](https://arxiv.org/pdf/2403.02694)). Redis enables semantic caching to help cut down on LLM costs quickly.
 
 | Recipe | Description |
@@ -87,65 +78,67 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 | [/semantic-cache/doc2cache_llama3_1.ipynb](python-recipes/semantic-cache/doc2cache_llama3_1.ipynb) | Build a semantic cache using the Doc2Cache framework and Llama3.1 |
 | [/semantic-cache/semantic_caching_gemini.ipynb](python-recipes/semantic-cache/semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
 
-## Advanced RAG
-For further insights on enhancing RAG applications with dense content representations, query re-writing, and other techniques.
 
-| Recipe | Description |
-| --- | --- |
-[/RAG/04_advanced_redisvl.ipynb](python-recipes/RAG/04_advanced_redisvl.ipynb) | Notebook for additional tips and techniques to improve RAG quality |
+### Agents
 
-## Agents
-/Users/robert.shelton/Documents/redis-ai-resources/python-recipes/agents/01_crewai_langgraph_redis.ipynb
 | Recipe | Description |
 | --- | --- |
 [/agents/00_langgraph_redis_agentic_rag.ipynb](python-recipes/agents/00_langgraph_redis_agentic_rag.ipynb) | Notebook to get started with lang-graph and agents |
 [/agents/01_crewai_langgraph_redis.ipynb](python-recipes/agents/01_crewai_langgraph_redis.ipynb) | Notebook to get started with lang-graph and agents |
 
-## Recommendation systems
+### Recommendation systems
 
 | Recipe | Description |
 | --- | --- |
-| [/recommendation-systems/content_filtering.ipynb](python-recipes/recommendation-systems/00_content_filtering.ipynb) | Intro content filtering example with redisvl |
-| [/recommendation-systems/collaborative_filtering.ipynb](python-recipes/recommendation-systems/01_collaborative_filtering.ipynb) | Intro collaborative filtering example with redisvl |
-
-### See also
-An exciting example of how Redis can power production-ready systems is highlighted in our collaboration with [NVIDIA](https://developer.nvidia.com/blog/offline-to-online-feature-storage-for-real-time-recommendation-systems-with-nvidia-merlin/) to construct a state-of-the-art recommendation system.
-
-Within [this repository](https://github.com/redis-developer/redis-nvidia-recsys), you'll find three examples, each escalating in complexity, showcasing the process of building such a system.
+| [/recommendation-systems/00_content_filtering.ipynb](python-recipes/recommendation-systems/00_content_filtering.ipynb) | Intro content filtering example with redisvl |
+| [/recommendation-systems/01_collaborative_filtering.ipynb](python-recipes/recommendation-systems/01_collaborative_filtering.ipynb) | Intro collaborative filtering example with redisvl |
 
 
-# Integrations/Tools
-- [⭐ RedisVL](https://github.com/redis/redis-vl-python) - a dedicated Python client lib for Redis as a Vector DB.
-- [⭐ AWS Bedrock](https://redis.io/docs/latest/integrate/amazon-bedrock/) - Streamlines GenAI deployment by offering foundational models as a unified API.
-- [⭐ LangChain Python](https://github.com/langchain-ai/langchain) - popular Python client lib for building LLM applications.
-powered by Redis.
-- [⭐ LangChain JS](https://github.com/langchain-ai/langchainjs) - popular JS client lib for building LLM applications.
-powered by Redis.
-- [⭐ LlamaIndex](https://gpt-index.readthedocs.io/en/latest/examples/vector_stores/RedisIndexDemo.html) - LlamaIndex Integration for Redis as a vector Database (formerly GPT-index).
-- [Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main) - popular lib by MSFT to integrate LLMs with plugins.
-- [RelevanceAI](https://relevance.ai/) - Platform to ag, search and analyze unstructured data faster, built on Redis.
-- [DocArray](https://docs.docarray.org/user_guide/storing/index_redis/) - DocArray Integration of Redis as a VectorDB by Jina AI.
+## Tutorials
+Need a *deeper-dive* through different use cases and topics?
+
+| Tutorial | Description | 
+| -------- | ------------ |
+| [RAG on VertexAI](https://github.com/redis-developer/gcp-redis-llm-stack/tree/main) | A RAG tutorial featuring Redis with Vertex AI |
+| [Agentic RAG](https://github.com/redis-developer/agentic-rag) | A tutorial focused on agentic RAG with LlamaIndex and Cohere |
+| [Recommendation Systems w/ NVIDIA Merlin & Redis]((https://github.com/redis-developer/redis-nvidia-recsys)) | Three examples, each escalating in complexity, showcasing the process of building a realtime recsys with NVIDIA and Redis |
 
 
-# Additional content
+## Integrations
+Redis integrates with many different players in the AI ecosystem. Here's a curated list below:
+
+| Integration | Description |
+| --- | --- |
+| [RedisVL](https://github.com/redis/redis-vl-python) | A dedicated Python client lib for Redis as a Vector DB |
+| [AWS Bedrock](https://redis.io/docs/latest/integrate/amazon-bedrock/) | Streamlines GenAI deployment by offering foundational models as a unified API |
+| [LangChain Python](https://github.com/langchain-ai/langchain) | Popular Python client lib for building LLM applications powered by Redis |
+| [LangChain JS](https://github.com/langchain-ai/langchainjs) | Popular JS client lib for building LLM applications powered by Redis |
+| [LlamaIndex](https://gpt-index.readthedocs.io/en/latest/examples/vector_stores/RedisIndexDemo.html) | LlamaIndex Integration for Redis as a vector Database (formerly GPT-index) |
+| [LiteLLM](https://www.litellm.ai/) | Popular LLM proxy layer to help manage and streamline usage of multiple foundation models |
+| [Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main) | Popular lib by MSFT to integrate LLMs with plugins |
+| [RelevanceAI](https://relevance.ai/) | Platform to tag, search and analyze unstructured data faster, built on Redis |
+| [DocArray](https://docs.docarray.org/user_guide/storing/index_redis/) | DocArray Integration of Redis as a VectorDB by Jina AI |
+
+
+## Content
 - [Vector Similarity Search: From Basics to Production](https://mlops.community/vector-similarity-search-from-basics-to-production/) - Introductory blog post to VSS and Redis as a VectorDB.
-- [AI-Powered Document Search](https://datasciencedojo.com/blog/ai-powered-document-search/) - Blog post covering AI Powered Document Search Use Cases & Architectures.
-- [Vector Search on Azure](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/vector-similarity-search-with-azure-cache-for-redis-enterprise/ba-p/3822059) - Using Azure Redis Enterprise for Vector Search
+- [Improving RAG quality with RAGAs](https://redis.io/blog/get-better-rag-responses-with-ragas/)
+- [Level-up RAG with RedisVL](https://redis.io/blog/level-up-rag-apps-with-redis-vector-library/)
 - [Vector Databases and Large Language Models](https://youtu.be/GJDN8u3Y-T4) - Talk given at LLMs in Production Part 1 by Sam Partee.
 - [Vector Databases and AI-powered Search Talk](https://www.youtube.com/watch?v=g2bNHLeKlAg) - Video "Vector Databases and AI-powered Search" given by Sam Partee at SDSC 2023.
-- [Engineering Lab Review](https://mlops.community/redis-vector-search-engineering-lab-review/) - Review of the first Redis VSS Hackathon.
 - [Real-Time Product Recommendations](https://jina.ai/news/real-time-product-recommendation-using-redis-and-docarray/) - Content-based recsys design with Redis and DocArray.
+- [NVIDIA Recsys with Redis](https://developer.nvidia.com/blog/offline-to-online-feature-storage-for-real-time-recommendation-systems-with-nvidia-merlin/)
 - [LabLab AI Redis Tech Page](https://lablab.ai/tech/redis)
 - [Storing and querying for embeddings with Redis](https://blog.baeke.info/2023/03/21/storing-and-querying-for-embeddings-with-redis/)
 - [Building Intelligent Apps with Redis Vector Similarity Search](https://redis.com/blog/build-intelligent-apps-redis-vector-similarity-search/)
-- [RedisDays Keynote](https://www.youtube.com/watch?v=EEIBTEpb2LI) - Video "Infuse Real-Time AI Into Your "Financial Services" Application".
 - [RedisDays Trading Signals](https://www.youtube.com/watch?v=_Lrbesg4DhY) - Video "Using AI to Reveal Trading Signals Buried in Corporate Filings".
 
-# Benchmarks
+## Benchmarks
 - [Benchmarking results for vector databases](https://redis.io/blog/benchmarking-results-for-vector-databases/) - Benchmarking results for vector databases, including Redis and 7 other Vector Database players.
 - [ANN Benchmarks](https://ann-benchmarks.com) - Standard ANN Benchmarks site. *Only using single Redis OSS instance/client.*
 
-# Documentation
+## Docs
+- [Redis Vector Library Docs](https://redisvl.com)
 - [Redis Vector Database QuickStart](https://redis.io/docs/get-started/vector-database/)
 - [Redis Vector Similarity Docs](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/) - Official Redis literature for Vector Similarity Search.
 - [Redis-py Search Docs](https://redis.readthedocs.io/en/latest/redismodules.html#redisearch-commands) - Redis-py client library docs for RediSearch.
