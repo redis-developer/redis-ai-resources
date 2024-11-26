@@ -28,10 +28,10 @@ No faster way to get started than by diving in and playing around with a demo.
 | Demo | Description |
 | --- | --- |
 | [Redis RAG Workbench](https://github.com/redis-developer/redis-rag-workbench) | Interactive demo to build a RAG-based chatbot over a user-uploaded PDF. Toggle different settings and configurations to improve chatbot performance and quality. Utilizes RedisVL, LangChain, RAGAs, and more. |
-| [ArxivChatGuru](https://github.com/redis-developer/ArxivChatGuru) | Streamlit demo of RAG over Arxiv documents with Redis & OpenAI |
 | [Redis VSS - Simple Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search |
 | [ArXiv Search](https://github.com/redis-developer/redis-arxiv-search) | Full stack implementation of Redis with React FE |
 | [Product Search](https://github.com/redis-developer/redis-product-search) |  Vector search with Redis Stack and Redis Enterprise |
+| [ArxivChatGuru](https://github.com/redis-developer/ArxivChatGuru) | Streamlit demo of RAG over Arxiv documents with Redis & OpenAI |
 
 
 ## Recipes
@@ -78,7 +78,6 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 | [/semantic-cache/doc2cache_llama3_1.ipynb](python-recipes/semantic-cache/doc2cache_llama3_1.ipynb) | Build a semantic cache using the Doc2Cache framework and Llama3.1 |
 | [/semantic-cache/semantic_caching_gemini.ipynb](python-recipes/semantic-cache/semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
 
-
 ### Agents
 
 | Recipe | Description |
@@ -86,7 +85,13 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 [/agents/00_langgraph_redis_agentic_rag.ipynb](python-recipes/agents/00_langgraph_redis_agentic_rag.ipynb) | Notebook to get started with lang-graph and agents |
 [/agents/01_crewai_langgraph_redis.ipynb](python-recipes/agents/01_crewai_langgraph_redis.ipynb) | Notebook to get started with lang-graph and agents |
 
-### Recommendation systems
+### Computer Vision
+| Recipe | Description |
+| ------ | ----------- |
+| [/computer-vision/00_facial_recognition_facenet.ipynb](python-recipes/computer-vision/00_facial_recognition_facenet.ipynb) | Build a facial recognition system using the Facenet embedding model and RedisVL.
+
+
+### Recommendation Systems
 
 | Recipe | Description |
 | --- | --- |
@@ -99,8 +104,8 @@ Need a *deeper-dive* through different use cases and topics?
 
 | Tutorial | Description | 
 | -------- | ------------ |
-| [RAG on VertexAI](https://github.com/redis-developer/gcp-redis-llm-stack/tree/main) | A RAG tutorial featuring Redis with Vertex AI |
 | [Agentic RAG](https://github.com/redis-developer/agentic-rag) | A tutorial focused on agentic RAG with LlamaIndex and Cohere |
+| [RAG on VertexAI](https://github.com/redis-developer/gcp-redis-llm-stack/tree/main) | A RAG tutorial featuring Redis with Vertex AI |
 | [Recommendation Systems w/ NVIDIA Merlin & Redis]((https://github.com/redis-developer/redis-nvidia-recsys)) | Three examples, each escalating in complexity, showcasing the process of building a realtime recsys with NVIDIA and Redis |
 
 

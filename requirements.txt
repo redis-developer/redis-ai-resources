@@ -24,3 +24,6 @@ pytest
 ragas
 datasets
 scikit-surprise
+deepface
+pillow
+tf-keras
