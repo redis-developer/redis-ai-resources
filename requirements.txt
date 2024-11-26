@@ -26,3 +26,4 @@ datasets
 scikit-surprise
 deepface
 pillow
+tf-keras
