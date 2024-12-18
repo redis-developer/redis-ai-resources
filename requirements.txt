@@ -1,8 +1,11 @@
 # notebook deps are self contained
 # this file is for automated testing purposes
-openai
+openai>=1.57.0
 tiktoken
 langchain
+langgraph
+langchainhub
+langchain-text-splitters
 langchain-openai
 langchain-redis
 langchain-huggingface
@@ -20,4 +23,7 @@ redisvl>=0.3.0
 pytest
 ragas
 datasets
-
+scikit-surprise
+deepface
+pillow
+tf-keras
