@@ -45,7 +45,8 @@ Need quickstarts to begin your Redis AI journey? **Start here.**
 | [/redis-intro/00_redis_intro.ipynb](/python-recipes/redis-intro/00_redis_intro.ipynb) | The place to start if brand new to Redis |
 | [/vector-search/00_redispy.ipynb](/python-recipes/vector-search/00_redispy.ipynb) | Vector search with Redis python client |
 | [/vector-search/01_redisvl.ipynb](/python-recipes/vector-search/01_redisvl.ipynb) | Vector search with Redis Vector Library |
-| [/vector-search/02_hybrid_search.ipynb](/python-recipes/vector-search/02_hybrid_search.ipynb) | Hybrid search techniques with Redis (BM25 + Vector)
+| [/vector-search/02_hybrid_search.ipynb](/python-recipes/vector-search/02_hybrid_search.ipynb) | Hybrid search techniques with Redis (BM25 + Vector) |
+| [/vector-search/03_float16_support.ipynb](/python-recipes/vector-search/03_float16_support.ipynb) | Shows how to convert a float32 index to use float16 |
 
 
 ### Retrieval Augmented Generation (RAG)
