@@ -96,7 +96,7 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 ### Feature Store
 | Recipe | Description |
 | ------ | ----------- |
-| [/feature-store/01_feast_credit_score.ipynb](python-recipes/feature-store/01_feast_credit_score.ipynb) | Credit scoring system using Feast with Redis as the online store.
+| [/feature-store/00_feast_credit_score.ipynb](python-recipes/feature-store/00_feast_credit_score.ipynb) | Credit scoring system using Feast with Redis as the online store.
 
 ### Recommendation Systems
 
