@@ -85,6 +85,7 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 | --- | --- |
 [/agents/00_langgraph_redis_agentic_rag.ipynb](python-recipes/agents/00_langgraph_redis_agentic_rag.ipynb) | Notebook to get started with lang-graph and agents |
 [/agents/01_crewai_langgraph_redis.ipynb](python-recipes/agents/01_crewai_langgraph_redis.ipynb) | Notebook to get started with lang-graph and agents |
+[/agents/02_full_featured_agent.ipynb](python-recipes/agents/02_full_featured_agent.ipynb) | Notebook builds full tool calling agent with semantic cache and router |
 
 ### Computer Vision
 | Recipe | Description |
