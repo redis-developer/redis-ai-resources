@@ -63,6 +63,7 @@ To get started with RAG, either from scratch or using a popular framework like L
 | [/RAG/04_advanced_redisvl.ipynb](python-recipes/RAG/04_advanced_redisvl.ipynb) | Advanced RAG techniques |
 | [/RAG/05_nvidia_ai_rag_redis.ipynb](python-recipes/RAG/05_nvidia_ai_rag_redis.ipynb) | RAG using Redis and Nvidia NIMs |
 | [/RAG/06_ragas_evaluation.ipynb](python-recipes/RAG/06_ragas_evaluation.ipynb) | Utilize the RAGAS framework to evaluate RAG performance |
+| [/RAG/07_user_role_based_rag.ipynb](python-recipes/RAG/07_user_role_based_rag.ipynb) | Implement a simple RBAC policy with vector search using Redis |
 
 ### LLM Memory
 LLMs are stateless. To maintain context within a conversation chat sessions must be stored and resent to the LLM. Redis manages the storage and retrieval of chat sessions to maintain context and conversational relevance.
