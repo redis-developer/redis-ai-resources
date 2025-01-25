@@ -27,3 +27,5 @@ scikit-surprise
 deepface
 pillow
 tf-keras
+feast[redis]==0.42.0
+ipywidgets
