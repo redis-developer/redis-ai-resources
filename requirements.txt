@@ -27,4 +27,3 @@ scikit-surprise
 deepface
 pillow
 tf-keras
-feast['redis']
