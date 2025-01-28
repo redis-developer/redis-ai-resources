@@ -128,28 +128,13 @@ Redis integrates with many different players in the AI ecosystem. Here's a curat
 | [DocArray](https://docs.docarray.org/user_guide/storing/index_redis/) | DocArray Integration of Redis as a VectorDB by Jina AI |
 
 
-## Content
-- [Vector Similarity Search: From Basics to Production](https://mlops.community/vector-similarity-search-from-basics-to-production/) - Introductory blog post to VSS and Redis as a VectorDB.
-- [Improving RAG quality with RAGAs](https://redis.io/blog/get-better-rag-responses-with-ragas/)
-- [Level-up RAG with RedisVL](https://redis.io/blog/level-up-rag-apps-with-redis-vector-library/)
+# Other Helpful Resources
+
 - [Vector Databases and Large Language Models](https://youtu.be/GJDN8u3Y-T4) - Talk given at LLMs in Production Part 1 by Sam Partee.
+- [Level-up RAG with RedisVL](https://redis.io/blog/level-up-rag-apps-with-redis-vector-library/)
+- [Improving RAG quality with RAGAs](https://redis.io/blog/get-better-rag-responses-with-ragas/)
 - [Vector Databases and AI-powered Search Talk](https://www.youtube.com/watch?v=g2bNHLeKlAg) - Video "Vector Databases and AI-powered Search" given by Sam Partee at SDSC 2023.
-- [Real-Time Product Recommendations](https://jina.ai/news/real-time-product-recommendation-using-redis-and-docarray/) - Content-based recsys design with Redis and DocArray.
-- [NVIDIA Recsys with Redis](https://developer.nvidia.com/blog/offline-to-online-feature-storage-for-real-time-recommendation-systems-with-nvidia-merlin/)
-- [LabLab AI Redis Tech Page](https://lablab.ai/tech/redis)
-- [Storing and querying for embeddings with Redis](https://blog.baeke.info/2023/03/21/storing-and-querying-for-embeddings-with-redis/)
-- [Building Intelligent Apps with Redis Vector Similarity Search](https://redis.com/blog/build-intelligent-apps-redis-vector-similarity-search/)
-- [RedisDays Trading Signals](https://www.youtube.com/watch?v=_Lrbesg4DhY) - Video "Using AI to Reveal Trading Signals Buried in Corporate Filings".
-
-## Benchmarks
+- [NVIDIA RecSys with Redis](https://developer.nvidia.com/blog/offline-to-online-feature-storage-for-real-time-recommendation-systems-with-nvidia-merlin/)
 - [Benchmarking results for vector databases](https://redis.io/blog/benchmarking-results-for-vector-databases/) - Benchmarking results for vector databases, including Redis and 7 other Vector Database players.
-- [ANN Benchmarks](https://ann-benchmarks.com) - Standard ANN Benchmarks site. *Only using single Redis OSS instance/client.*
-
-## Docs
-- [Redis Vector Library Docs](https://redisvl.com)
-- [Redis Vector Database QuickStart](https://redis.io/docs/get-started/vector-database/)
-- [Redis Vector Similarity Docs](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/) - Official Redis literature for Vector Similarity Search.
-- [Redis-py Search Docs](https://redis.readthedocs.io/en/latest/redismodules.html#redisearch-commands) - Redis-py client library docs for RediSearch.
-- [Redis-py General Docs](https://redis.readthedocs.io/en/latest/) - Redis-py client library documentation.
-- [Redis Stack](https://redis.io/docs/stack/) - Redis Stack documentation.
-- [Redis Clients](https://redis.io/docs/clients/) - Redis client list.
+- [Redis Vector Library Docs](https://docs.redisvl.com)
+- [Redis Vector Search API Docs](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/) - Official Redis literature for Vector Similarity Search.

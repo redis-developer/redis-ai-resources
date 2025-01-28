@@ -11,17 +11,6 @@ Open a PR with your addition. We expect the following standards:
 3. New additions should be added to the bottom of the list (unless otherwise noted).
 4. New additions should not contain any profanity or offensive language.
 
-### What it takes to get a Star
-
-When reviewing the PR, we will determine whether a new entry gets a star!
-
-Examples that:
-- are well-documented and easy to follow
-- pertain to a new or creative use case
-- follow good coding/writing hygiene
-
-will be considered for getting a special star ⭐.
-
 ## Updating your Pull Request
 
 Sometimes, a maintainer will ask you to edit your Pull Request before it is included. This is normally due to spelling errors or because your PR didn't match the list format.
