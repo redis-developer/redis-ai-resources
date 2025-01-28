@@ -1,19 +1,18 @@
-name: Tests - PR/Push
+name: Tests - Nightly Run
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  schedule:
+    - cron: "0 3 * * *"  # 3 AM UTC nightly
+  workflow_dispatch:
 
 env:
   PYTHON_VERSION: "3.11"
 
 jobs:
   # ---------------------------------------------------------
-  # 1) Gather the changed notebooks to produce a matrix list
+  # 1) Gather all notebooks (except skip-list)
   # ---------------------------------------------------------
-  gather_notebooks:
+  gather_all_notebooks:
     runs-on: ubuntu-latest
     outputs:
       notebooks: ${{ steps.get_nbs.outputs.notebooks }}
@@ -22,10 +21,6 @@ jobs:
 
       - id: get_nbs
         run: |
-          # Compare this commit/PR to 'main' and list changed .ipynb files
-          git fetch --depth=1 origin main
-          CHANGED_NOTEBOOKS=$(git diff --name-only origin/main | grep '\.ipynb$' || true)
-      
           # 1) Read ignore patterns from .github/ignore-notebooks.txt
           IGNORE_LIST=()
           while IFS= read -r skip_nb || [ -n "$skip_nb" ]; do
@@ -34,50 +29,48 @@ jobs:
             IGNORE_LIST+=("$skip_nb")
           done < .github/ignore-notebooks.txt
       
-          # 2) Filter out notebooks in CHANGED_NOTEBOOKS that match ignore patterns
-          FILTERED_NBS=()
-          for nb in $CHANGED_NOTEBOOKS; do
-            skip=false
+          # 2) Find all .ipynb in python-recipes (or your path)
+          NBS=$(find python-recipes -name '*.ipynb')
       
-            # Check if in ignore list
+          # 3) Filter out notebooks that match anything in IGNORE_LIST
+          FILTERED_NBS=()
+          for nb in $NBS; do
+            skip=false
             for ignore_nb in "${IGNORE_LIST[@]}"; do
-              # Partial match:
               if [[ "$nb" == *"$ignore_nb"* ]]; then
                 skip=true
                 break
               fi
             done
-      
+
             if [ "$skip" = false ]; then
               FILTERED_NBS+=("$nb")
             fi
           done
       
-          # 3) Build a single-line JSON array
+          # 4) Convert the final array to compact JSON for GitHub Actions
           NB_JSON=$(printf '%s\n' "${FILTERED_NBS[@]}" \
             | jq -R . \
             | jq -s -c .)
       
-          # 4) Fallback to an empty array if there's nothing left
+          # 5) Default to an empty array if there's nothing left
           if [ -z "$NB_JSON" ] || [ "$NB_JSON" = "[]" ]; then
             NB_JSON="[]"
           fi
       
           echo "All valid notebooks: $NB_JSON"
-      
-          # 5) Write to $GITHUB_OUTPUT (modern approach instead of ::set-output)
           echo "notebooks=$NB_JSON" >> $GITHUB_OUTPUT
 
   # ---------------------------------------------------------
-  # 2) Test each changed notebook in parallel
+  # 2) Test all notebooks in parallel
   # ---------------------------------------------------------
-  test_notebooks:
-    needs: gather_notebooks
+  test_all_notebooks:
+    needs: gather_all_notebooks
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        notebook: ${{ fromJson(needs.gather_notebooks.outputs.notebooks) }}
+        notebook: ${{ fromJson(needs.gather_all_notebooks.outputs.notebooks) }}
 
     services:
       redis:
