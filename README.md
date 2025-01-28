@@ -108,6 +108,10 @@ Routing is a simple and effective way of preventing misuses with your AI applica
 | [/recommendation-systems/00_content_filtering.ipynb](python-recipes/recommendation-systems/00_content_filtering.ipynb) | Intro content filtering example with redisvl |
 | [/recommendation-systems/01_collaborative_filtering.ipynb](python-recipes/recommendation-systems/01_collaborative_filtering.ipynb) | Intro collaborative filtering example with redisvl |
 
+### Feature Store
+| Recipe | Description |
+| ------ | ----------- |
+| [/feature-store/00_feast_credit_score.ipynb](python-recipes/feature-store/00_feast_credit_score.ipynb) | Credit scoring system using Feast with Redis as the online store.
 
 ## Tutorials
 Need a *deeper-dive* through different use cases and topics?
