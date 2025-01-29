@@ -64,14 +64,21 @@ jobs:
           fi
       
           echo "All valid notebooks: $NB_JSON"
-      
-          # 5) Write to $GITHUB_OUTPUT (modern approach instead of ::set-output)
-          echo "notebooks=$NB_JSON" >> $GITHUB_OUTPUT
 
+          # 5) Write to $GITHUB_OUTPUT
+          if [ "$NB_JSON" != "[]" ]; then
+            echo "has_notebooks=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_notebooks=false" >> $GITHUB_OUTPUT
+          fi
+
+          echo "notebooks=$NB_JSON" >> $GITHUB_OUTPUT
+      
   # ---------------------------------------------------------
   # 2) Test each changed notebook in parallel
   # ---------------------------------------------------------
   test_notebooks:
+    if: ${{ needs.gather_notebooks.outputs.has_notebooks == 'true' }}
     needs: gather_notebooks
     runs-on: ubuntu-latest
     strategy:
