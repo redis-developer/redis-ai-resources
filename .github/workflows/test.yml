@@ -72,6 +72,7 @@ jobs:
   # 2) Test each changed notebook in parallel
   # ---------------------------------------------------------
   test_notebooks:
+    if: ${{ needs.gather_notebooks.outputs.notebooks != '[]' }}
     needs: gather_notebooks
     runs-on: ubuntu-latest
     strategy:
