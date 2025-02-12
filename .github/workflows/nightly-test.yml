@@ -1,6 +1,8 @@
 name: Tests - Nightly Run
 
 on:
+  pull_request:
+    branches: [ main ]
   schedule:
     - cron: "0 3 * * *"  # 3 AM UTC nightly
   workflow_dispatch:
