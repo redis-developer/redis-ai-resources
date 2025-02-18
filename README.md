@@ -46,7 +46,7 @@ Need quickstarts to begin your Redis AI journey? **Start here.**
 | [/vector-search/00_redispy.ipynb](/python-recipes/vector-search/00_redispy.ipynb) | Vector search with Redis python client |
 | [/vector-search/01_redisvl.ipynb](/python-recipes/vector-search/01_redisvl.ipynb) | Vector search with Redis Vector Library |
 | [/vector-search/02_hybrid_search.ipynb](/python-recipes/vector-search/02_hybrid_search.ipynb) | Hybrid search techniques with Redis (BM25 + Vector) |
-| [/vector-search/03_float16_support.ipynb](/python-recipes/vector-search/03_float16_support.ipynb) | Shows how to convert a float32 index to use float16 |
+| [/vector-search/03_dtype_support.ipynb](/python-recipes/vector-search/03_dtype_support.ipynb) | Shows how to convert a float32 index to float16 or integer dataypes|
 
 
 ### Retrieval Augmented Generation (RAG)
@@ -107,6 +107,7 @@ Routing is a simple and effective way of preventing misuses with your AI applica
 | --- | --- |
 | [/recommendation-systems/00_content_filtering.ipynb](python-recipes/recommendation-systems/00_content_filtering.ipynb) | Intro content filtering example with redisvl |
 | [/recommendation-systems/01_collaborative_filtering.ipynb](python-recipes/recommendation-systems/01_collaborative_filtering.ipynb) | Intro collaborative filtering example with redisvl |
+| [/recommendation-systems/02_two_towers.ipynb](python-recipes/recommendation-systems/02_two_towers.ipynb) | Intro deep learning two tower example with redisvl |
 
 ### Feature Store
 | Recipe | Description |
