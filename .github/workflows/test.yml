@@ -17,16 +17,18 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       notebooks: ${{ steps.get_nbs.outputs.notebooks }}
+      has_notebooks: ${{ steps.get_nbs.outputs.has_notebooks }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - id: get_nbs
+      - name: Gather notebooks
+        id: get_nbs
         run: |
-          # Compare this commit/PR to 'main' and list changed .ipynb files
+          # 1) Compare this commit/PR to 'main' and list changed notebooks
           git fetch --depth=1 origin main
           CHANGED_NOTEBOOKS=$(git diff --name-only origin/main | grep '\.ipynb$' || true)
       
-          # 1) Read ignore patterns from .github/ignore-notebooks.txt
+          # 2) Load notebooks to ignore
           IGNORE_LIST=()
           while IFS= read -r skip_nb || [ -n "$skip_nb" ]; do
             # Skip empty lines or comment lines
@@ -34,11 +36,10 @@ jobs:
             IGNORE_LIST+=("$skip_nb")
           done < .github/ignore-notebooks.txt
       
-          # 2) Filter out notebooks in CHANGED_NOTEBOOKS that match ignore patterns
+          # 3) Filter out ignored notebooks
           FILTERED_NBS=()
           for nb in $CHANGED_NOTEBOOKS; do
             skip=false
-      
             # Check if in ignore list
             for ignore_nb in "${IGNORE_LIST[@]}"; do
               # Partial match:
@@ -47,33 +48,31 @@ jobs:
                 break
               fi
             done
-      
             if [ "$skip" = false ]; then
               FILTERED_NBS+=("$nb")
             fi
           done
       
-          # 3) Build a single-line JSON array
+          # 4) Stuff into a single-line JSON array
           NB_JSON=$(printf '%s\n' "${FILTERED_NBS[@]}" \
             | jq -R . \
             | jq -s -c .)
       
-          # 4) Fallback to an empty array if there's nothing left
           if [ -z "$NB_JSON" ] || [ "$NB_JSON" = "[]" ]; then
             NB_JSON="[]"
           fi
       
           echo "All valid notebooks: $NB_JSON"
 
-          # 5) Write to $GITHUB_OUTPUT
-          if [ "$NB_JSON" != "[]" ]; then
+          # 5) Check if there's anything in FILTERED_NBS
+          if [ "${#FILTERED_NBS[@]}" -gt 0 ]; then
             echo "has_notebooks=true" >> $GITHUB_OUTPUT
           else
             echo "has_notebooks=false" >> $GITHUB_OUTPUT
           fi
 
           echo "notebooks=$NB_JSON" >> $GITHUB_OUTPUT
-      
+
   # ---------------------------------------------------------
   # 2) Test each changed notebook in parallel
   # ---------------------------------------------------------
@@ -93,7 +92,7 @@ jobs:
           - 6379:6379
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Setup Python
       - uses: actions/setup-python@v4

@@ -16,21 +16,22 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       notebooks: ${{ steps.get_nbs.outputs.notebooks }}
+      has_notebooks: ${{ steps.get_nbs.outputs.has_notebooks }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - id: get_nbs
         run: |
-          # 1) Read ignore patterns from .github/ignore-notebooks.txt
+          # 1) Find all available notebooks
+          NBS=$(find python-recipes -name '*.ipynb')
+
+          # 2) Load notebooks to ignore
           IGNORE_LIST=()
           while IFS= read -r skip_nb || [ -n "$skip_nb" ]; do
             # Skip empty lines or comment lines
             [[ -z "$skip_nb" || "$skip_nb" =~ ^# ]] && continue
             IGNORE_LIST+=("$skip_nb")
           done < .github/ignore-notebooks.txt
-      
-          # 2) Find all .ipynb in python-recipes (or your path)
-          NBS=$(find python-recipes -name '*.ipynb')
       
           # 3) Filter out notebooks that match anything in IGNORE_LIST
           FILTERED_NBS=()
@@ -42,29 +43,36 @@ jobs:
                 break
               fi
             done
-
             if [ "$skip" = false ]; then
               FILTERED_NBS+=("$nb")
             fi
           done
       
-          # 4) Convert the final array to compact JSON for GitHub Actions
+          # 4) Stuff into a single-line JSON array
           NB_JSON=$(printf '%s\n' "${FILTERED_NBS[@]}" \
             | jq -R . \
             | jq -s -c .)
       
-          # 5) Default to an empty array if there's nothing left
           if [ -z "$NB_JSON" ] || [ "$NB_JSON" = "[]" ]; then
             NB_JSON="[]"
           fi
       
           echo "All valid notebooks: $NB_JSON"
+
+          # 5) Check if there's anything in FILTERED_NBS
+          if [ "${#FILTERED_NBS[@]}" -gt 0 ]; then
+            echo "has_notebooks=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_notebooks=false" >> $GITHUB_OUTPUT
+          fi
+      
           echo "notebooks=$NB_JSON" >> $GITHUB_OUTPUT
 
   # ---------------------------------------------------------
   # 2) Test all notebooks in parallel
   # ---------------------------------------------------------
   test_all_notebooks:
+    if: ${{ needs.gather_all_notebooks.outputs.has_notebooks == 'true' }}
     needs: gather_all_notebooks
     runs-on: ubuntu-latest
     strategy:
@@ -79,7 +87,7 @@ jobs:
           - 6379:6379
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Setup Python
       - uses: actions/setup-python@v4
