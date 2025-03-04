@@ -1,0 +1,82 @@
+[
+    {
+        "query": "What's the difference between machine learning and deep learning?",
+        "query_match": "technology"
+    },
+    {
+        "query": "How do I update my computer's graphics drivers?",
+        "query_match": "technology"
+    },
+    {
+        "query": "What are the pros and cons of cloud computing for startups?",
+        "query_match": "technology"
+    },
+    {
+        "query": "Explain how virtual reality headsets work",
+        "query_match": "technology"
+    },
+    {
+        "query": "What programming languages are most in-demand for 2023?",
+        "query_match": "technology"
+    },
+    {
+        "query": "Who won the tennis match at Wimbledon yesterday?",
+        "query_match": "sports"
+    },
+    {
+        "query": "What are the rules for offside in soccer?",
+        "query_match": "sports"
+    },
+    {
+        "query": "How many points did LeBron James score in his last game?",
+        "query_match": "sports"
+    },
+    {
+        "query": "What equipment do I need to start rock climbing?",
+        "query_match": "sports"
+    },
+    {
+        "query": "Which team is leading the Premier League standings?",
+        "query_match": "sports"
+    },
+    {
+        "query": "What are the reviews saying about the new Marvel movie?",
+        "query_match": "entertainment"
+    },
+    {
+        "query": "Who is hosting the Academy Awards this year?",
+        "query_match": "entertainment"
+    },
+    {
+        "query": "What are the lyrics to Taylor Swift's latest single?",
+        "query_match": "entertainment"
+    },
+    {
+        "query": "Which actor just joined the cast of the upcoming Batman film?",
+        "query_match": "entertainment"
+    },
+    {
+        "query": "What new shows are premiering on streaming platforms this month?",
+        "query_match": "entertainment"
+    },
+    {
+        "query": "What's the best way to remove a wine stain?",
+        "query_match": ""
+    },
+    {
+        "query": "How do I register to vote in my state?",
+        "query_match": ""
+    },
+    {
+        "query": "What are the symptoms of seasonal allergies?",
+        "query_match": ""
+    },
+    {
+        "query": "What's the recipe for authentic Italian pasta carbonara?",
+        "query_match": ""
+    },
+    {
+        "query": "How do I calculate mortgage payments on a house?",
+        "query_match": ""
+    }
+]
