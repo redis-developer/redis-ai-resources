@@ -3,3 +3,5 @@
 00_semantic_caching_gemini
 01_collaborative_filtering
 05_nvidia_ai_rag_redis
+01_routing_optimization
+02_semantic_cache_optimization
