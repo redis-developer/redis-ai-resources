@@ -77,8 +77,8 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 
 | Recipe | Description |
 | --- | --- |
-| [/semantic-cache/doc2cache_llama3_1.ipynb](python-recipes/semantic-cache/doc2cache_llama3_1.ipynb) | Build a semantic cache using the Doc2Cache framework and Llama3.1 |
-| [/semantic-cache/semantic_caching_gemini.ipynb](python-recipes/semantic-cache/semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
+| [/semantic-cache/01_doc2cache_llama3_1.ipynb](python-recipes/semantic-cache/01_doc2cache_llama3_1.ipynb) | Build a semantic cache using the Doc2Cache framework and Llama3.1 |
+| [/semantic-cache/00_semantic_caching_gemini.ipynb](python-recipes/semantic-cache/00_semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
 
 ### Semantic Routing
 Routing is a simple and effective way of preventing misuses with your AI application or for creating branching logic between data sources etc.

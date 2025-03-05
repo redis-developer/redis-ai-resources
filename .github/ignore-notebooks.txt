@@ -1,5 +1,5 @@
 01_crewai_langgraph_redis
-doc2cache_llama3_1
-semantic_caching_gemini
+01_doc2cache_llama3_1
+00_semantic_caching_gemini
 01_collaborative_filtering
 05_nvidia_ai_rag_redis
