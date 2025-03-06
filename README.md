@@ -77,8 +77,9 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 
 | Recipe | Description |
 | --- | --- |
-| [/semantic-cache/doc2cache_llama3_1.ipynb](python-recipes/semantic-cache/doc2cache_llama3_1.ipynb) | Build a semantic cache using the Doc2Cache framework and Llama3.1 |
-| [/semantic-cache/semantic_caching_gemini.ipynb](python-recipes/semantic-cache/semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
+| [/semantic-cache/00_semantic_caching_gemini.ipynb](python-recipes/semantic-cache/00_semantic_caching_gemini.ipynb) | Build a semantic cache with Redis and Google Gemini |
+| [/semantic-cache/01_doc2cache_llama3_1.ipynb](python-recipes/semantic-cache/01_doc2cache_llama3_1.ipynb) | Build a semantic cache using the Doc2Cache framework and Llama3.1 |
+| [/semantic-cache/02_semantic_cache_optimization.ipynb](python-recipes/semantic-cache/02_semantic_cache_optimization.ipynb) | Use CacheThresholdOptimizer from redisvl to setup best cache config |
 
 ### Semantic Routing
 Routing is a simple and effective way of preventing misuses with your AI application or for creating branching logic between data sources etc.
@@ -86,6 +87,7 @@ Routing is a simple and effective way of preventing misuses with your AI applica
 | Recipe | Description |
 | --- | --- |
 | [/semantic-router/00_semantic_routing.ipynb](python-recipes/semantic-router/00_semantic_routing.ipynb) | Simple examples of how to build an allow/block list router in addition to a multi-topic router |
+| [/semantic-router/01_routing_optimization.ipynb](python-recipes/semantic-router/01_routing_optimization.ipynb) | Use RouterThresholdOptimizer from redisvl to setup best router config |
 
 ### Agents
 
