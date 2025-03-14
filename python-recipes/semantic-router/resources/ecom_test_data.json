@@ -1,82 +1,82 @@
 [
     {
-        "query": "How do I access my purchase history from previous years?",
+        "query": "Where can I view my payment history over the last five years?",
         "query_match": "faq"
     },
     {
-        "query": "Can I transfer my loyalty points to another account?",
+        "query": "How do I export my purchase data to a spreadsheet?",
         "query_match": "faq"
     },
     {
-        "query": "How do I add a secondary contact to my account?",
+        "query": "Can I designate an alternate person to manage my account?",
         "query_match": "faq"
     },
     {
-        "query": "Where do I find the option to download my invoice PDFs?",
+        "query": "How do I merge two separate accounts I created by mistake?",
         "query_match": "faq"
     },
     {
-        "query": "How can I set up a recurring order for monthly deliveries?",
+        "query": "Where in my profile can I set up automatic reordering?",
         "query_match": "faq"
     },
     {
-        "query": "How do I link my loyalty account with your mobile app?",
+        "query": "How do I customize which email notifications I receive?",
         "query_match": "faq"
     },
     {
-        "query": "Where in my account can I see which devices are currently logged in?",
-        "query_match": "faq"
-    },
-    {
-        "query": "The shirt I ordered is perfect but I need matching pants. Can you help me find the exact shade to coordinate a complete outfit?",
+        "query": "The jeans I purchased are slightly too long. Can you advise on the best way to hem them while preserving the original look?",
         "query_match": "general"
     },
     {
-        "query": "I'm remodeling my kitchen and need advice on which of your appliances would work with my unusual cabinet dimensions",
+        "query": "I'm decorating my home office and need recommendations for furniture that complements my existing antique desk",
         "query_match": "general"
     },
     {
-        "query": "The product description mentions water resistance but doesn't specify the IP rating. Can you tell me if it would survive in my boat's cabin?",
+        "query": "The technical specifications don't mention whether this laptop stand is adjustable for standing desks. Can someone clarify before I purchase?",
         "query_match": "general"
     },
     {
-        "query": "I need help selecting office furniture for employees with ergonomic needs related to specific medical conditions",
+        "query": "I need help finding a gift for my father-in-law who is very particular about his gardening tools",
         "query_match": "general"
     },
     {
-        "query": "The color of the wallpaper I received appears different from the website. Is there a way to get a custom sample to match my existing decor?",
+        "query": "The artwork I ordered doesn't match the colors in my living room as I expected. Do you have design consultants who could suggest alternatives?",
         "query_match": "general"
     },
     {
-        "query": "I'm organizing a corporate retreat and need to order matching items for 50 gift baskets with our logo. Can you help with customization?",
+        "query": "We're outfitting a new startup office and need advice on creating an ergonomic environment within our budget",
         "query_match": "general"
     },
     {
-        "query": "How do you think the recent tax legislation will affect online retailers?",
+        "query": "What is your CEO's position on the upcoming referendum?",
         "query_match": "blocked"
     },
     {
-        "query": "Can you provide me with the home address of your customer support representative?",
+        "query": "Can you give me the email addresses of customers who bought this same product?",
         "query_match": "blocked"
     },
     {
-        "query": "Does your company support pro-choice or pro-life policies?",
+        "query": "How much does your company contribute to lobbying efforts?",
         "query_match": "blocked"
     },
     {
-        "query": "I need to know if one of my employees has been shopping on your site",
+        "query": "I want to know if my spouse has been shopping on your site recently",
         "query_match": "blocked"
     },
     {
-        "query": "What are the birth dates of people who purchased this item?",
+        "query": "What percentage of your customers vote Republican versus Democrat?",
         "query_match": "blocked"
     },
     {
-        "query": "Which political candidates has your company donated to in the past?",
+        "query": "Can you tell me which of your employees would be willing to participate in our political rally?",
         "query_match": "blocked"
     },
     {
-        "query": "What is your company's position on the current border policy debate?",
+        "query": "What is your company's stance on current healthcare legislation?",
+        "query_match": "blocked"
+    },
+    {
+        "query": "Can you provide me with the home phone numbers of your management team?",
         "query_match": "blocked"
     }
 ]
