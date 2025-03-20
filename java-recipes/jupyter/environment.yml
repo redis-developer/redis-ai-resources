@@ -1,0 +1,9 @@
+name: base
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - pytorch
+  - torchtext
+  - gensim
