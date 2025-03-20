@@ -220,3 +220,4 @@ pip-selfcheck.json
 libs/redis/docs/.Trash*
 .python-version
 .idea/*
+java-recipes/.*
