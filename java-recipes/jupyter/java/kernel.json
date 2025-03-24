@@ -1,0 +1,13 @@
+{
+    "argv": [
+        "java",
+        "--add-opens", "jdk.jshell/jdk.jshell=ALL-UNNAMED",
+        "-jar",
+        "@KERNEL_INSTALL_DIRECTORY@/jjava.jar",
+        "{connection_file}"
+    ],
+    "display_name": "Java",
+    "language": "java",
+    "interrupt_mode": "message",
+    "env": {}
+}

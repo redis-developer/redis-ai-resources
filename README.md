@@ -48,6 +48,11 @@ Need quickstarts to begin your Redis AI journey? **Start here.**
 | [/vector-search/02_hybrid_search.ipynb](/python-recipes/vector-search/02_hybrid_search.ipynb) | Hybrid search techniques with Redis (BM25 + Vector) |
 | [/vector-search/03_dtype_support.ipynb](/python-recipes/vector-search/03_dtype_support.ipynb) | Shows how to convert a float32 index to float16 or integer dataypes|
 
+### Non-Python Redis AI Recipes
+
+#### ☕️ Java
+
+A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md).
 
 ### Retrieval Augmented Generation (RAG)
 
@@ -119,7 +124,7 @@ Routing is a simple and effective way of preventing misuses with your AI applica
 ## Tutorials
 Need a *deeper-dive* through different use cases and topics?
 
-| Tutorial | Description | 
+| Tutorial | Description |
 | -------- | ------------ |
 | [Agentic RAG](https://github.com/redis-developer/agentic-rag) | A tutorial focused on agentic RAG with LlamaIndex and Cohere |
 | [RAG on VertexAI](https://github.com/redis-developer/gcp-redis-llm-stack/tree/main) | A RAG tutorial featuring Redis with Vertex AI |
