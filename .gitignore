@@ -1,5 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,venv,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,venv,macos
+python-recipes/vector-search/beir_datasets
+python-recipes/vector-search/datasets
 
 ### macOS ###
 # General
