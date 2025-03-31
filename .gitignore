@@ -221,3 +221,6 @@ libs/redis/docs/.Trash*
 .python-version
 .idea/*
 java-recipes/.*
+
+python-recipes/vector-search/beir_datasets/
+python-recipes/vector-search/datasets
