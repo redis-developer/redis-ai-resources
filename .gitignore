@@ -224,3 +224,5 @@ java-recipes/.*
 
 python-recipes/vector-search/beir_datasets/
 python-recipes/vector-search/datasets
+
+.python-version
