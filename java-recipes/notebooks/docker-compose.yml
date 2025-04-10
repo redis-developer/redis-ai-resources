@@ -2,7 +2,7 @@ name: redis-ai-java
 services:
   jupyter:
     build:
-      context: .
+      context: ..
       dockerfile: ./jupyter/Dockerfile
     ports:
       - "8888:8888"
