@@ -60,7 +60,7 @@ This application uses the following key dependencies:
 <dependency>
     <groupId>com.redis.om.spring</groupId>
     <artifactId>redis-om-spring</artifactId>
-    <version>0.9.11-SNAPSHOT</version>
+    <version>0.9.11</version>
 </dependency>
 
 <!-- Spring AI for embeddings -->
