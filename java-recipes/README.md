@@ -47,7 +47,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 
    ```bash
    git clone https://github.com/redis-developer/redis-ai-resources.git
-   cd redis-ai-resources/java-resources
+   cd redis-ai-resources/java-recipes
    ```
 
 2. Start the Docker containers:
