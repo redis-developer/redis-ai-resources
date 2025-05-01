@@ -20,6 +20,63 @@
 </div>
 <br>
 
+## Setup
+
+This project uses Docker Compose to set up a complete environment for running Java-based AI applications with Redis. The environment includes:
+
+- A Jupyter Notebook server with Java kernel support
+- Redis Stack (includes Redis and RedisInsight)
+- Pre-installed dependencies for AI/ML workloads
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+- OpenAI API key (for notebooks that use OpenAI services)
+
+### Environment Configuration
+
+1. Create a `.env` file in the project root with your OpenAI API key:
+
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+## Running the Project
+
+1. Clone the repository (if you haven't already):
+
+   ```bash
+   git clone https://github.com/redis-developer/redis-ai-resources.git
+   cd redis-ai-resources/java-recipes
+   ```
+
+2. Start the Docker containers:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+3. Access the Jupyter environment:
+   - Open your browser and navigate to [http://localhost:8888](http://localhost:8888)
+   - The token is usually shown in the docker-compose logs. You can view them with:
+
+     ```bash
+     docker-compose logs jupyter
+     ```
+
+4. Access RedisInsight:
+   - Open your browser and navigate to [http://localhost:8001](http://localhost:8001)
+   - Connect to Redis using the following details:
+     - Host: redis-java
+     - Port: 6379
+     - No password (unless configured)
+
+5. When finished, stop the containers:
+
+   ```bash
+   docker-compose down
+   ```
+
 ## Notebooks
 
 | Notebook                                                                             | Description                                                                                                  |
