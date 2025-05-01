@@ -1,0 +1,15 @@
+litellm_settings:
+  cache: true
+  cache_params:
+    host: localhost
+    password: ''
+    port: '6379'
+    type: redis
+  set_verbose: true
+model_list:
+- litellm_params:
+    model: gpt-3.5-turbo
+  model_name: openai-old
+- litellm_params:
+    model: gpt-4o
+  model_name: openai-new
