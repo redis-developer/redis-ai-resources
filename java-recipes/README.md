@@ -1,5 +1,5 @@
 <div align="center">
-<div><img src="../assets/redis-logo.svg" style="width: 130px"> </div>
+<div><img src="../../assets/redis-logo.svg" style="width: 130px"> </div>
 <h1>Redis AI Java Resources</h1>
 <div align="center">
 
@@ -15,7 +15,7 @@
 <div></div>
 <br>
 
-[**Setup**](#setup) | [**Running the Project**](#running-the-project) | [**Notebooks**](#notebooks) | [**Project Structure**](#project-structure) | [**Implementation Details**](#implementation-details)
+[**Notebooks**](#notebooks) | [**Applications**](#applications) | [**Example Applications**](#example-applications)
 
 </div>
 <br>
@@ -79,63 +79,18 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 ## Notebooks
 
-| Notebook | Description |
-| --- | --- |
-| [RAG/spring_ai_redis_rag.ipynb](./RAG/spring_ai_redis_rag.ipynb) | Demonstrates building a RAG-based beer recommendation chatbot using Spring AI and Redis as the vector store |
+| Notebook                                                                             | Description                                                                                                  |
+|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| [notebooks/RAG/spring_ai_redis_rag.ipynb](./notebooks/RAG/spring_ai_redis_rag.ipynb) | Demonstrates building a RAG-ba sed beer recommendation chatbot using Spring AI and Redis as the vector store |
 
-## Project Structure
+## Applications
 
-```bash
-java-recipes/
-├── .env                         # Environment variables (create this)
-├── docker-compose.yml           # Docker Compose configuration
-├── jupyter/                     # Jupyter configuration files
-│   ├── Dockerfile               # Dockerfile for Jupyter with Java kernel
-│   ├── environment.yml          # Conda environment specification
-│   ├── install.py               # JJava kernel installation script
-│   ├── kernel.json              # Kernel specification
-│   └── java/                    # Java dependencies and configuration
-│       └── pom.xml              # Maven project file with dependencies
-└── resources/                   # Data files for notebooks
-    └── beers.json.gz            # Compressed beer dataset
-```
+| Application                                                                                                                 | Description                                                                                        |
+|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| [applications/vector-similarity-search/spring_boot](./applications/vector-similarity-search/spring_boot_redis_om_spring.md) | Demonstrates building a vector similarity search application using Spring Boot and Redis OM Spring |
 
-## Implementation Details
 
-### Java Jupyter Kernel
-
-The project uses [JJava](https://github.com/dflib/jjava), a Jupyter kernel for Java based on JShell. This allows for interactive Java development in Jupyter notebooks.
-
-Key components:
-
-- Java 21 for modern Java features
-- Maven for dependency management
-- JJava kernel for Jupyter integration
-
-### Spring AI Integration
-
-The Spring AI notebooks showcase how to use Spring's AI capabilities with Redis:
-
-- **Spring AI**: Framework for building AI-powered applications
-- **Redis Vector Store**: Used for storing and querying vector embeddings
-- **Transformer Models**: For generating embeddings locally
-- **RAG Pattern**: Demonstrates the Retrieval Augmented Generation pattern
-
-### Docker Configuration
-
-The Docker setup includes:
-
-1. **Jupyter Container**:
-   - Based on minimal Jupyter notebook image
-   - Adds Java 21, Maven, and the JJava kernel
-   - Includes Python environment with PyTorch and other ML libraries
-
-2. **Redis Container**:
-   - Uses Redis Stack image with Vector Search capabilities
-   - Persists data using Docker volumes
-   - Exposes Redis on port 6379 and RedisInsight on port 8001
-
-## Example Applications
+## Example Notebooks & Applications
 
 ### Beer Recommendation Chatbot
 
@@ -146,3 +101,11 @@ The `spring-ai-rag.ipynb` notebook demonstrates:
 - Connecting to OpenAI for LLM capabilities
 - Building a RAG pipeline to answer beer-related queries
 - Semantic search over beer properties and descriptions
+
+### Vector Similarity Search with Redis OM Spring and Spring Boot
+
+The `spring_boot_redis_om_spring` directory contains a Spring Boot application that demonstrates how to use Redis OM Spring for vector similarity search. The application allows you to:
+- Add movies to the Redis database
+- Search for movies based on semantic similarity on the synopsis of the movie
+- Perform hybrid search by adding filters to genre, cast, and year 
+

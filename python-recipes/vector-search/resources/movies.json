@@ -1,119 +1,139 @@
 [
     {
+        "id": 1,
         "title": "Explosive Pursuit",
         "genre": "action",
         "rating": 7,
         "description": "A daring cop chases a notorious criminal across the city in a high-stakes game of cat and mouse."
     },
     {
+        "id": 2,
         "title": "Skyfall",
         "genre": "action",
         "rating": 8,
         "description": "James Bond returns to track down a dangerous new enemy who threatens global security."
     },
     {
+        "id": 3,
         "title": "Fast & Furious 9",
         "genre": "action",
         "rating": 6,
         "description": "Dom and his crew face off against a high-tech enemy with advanced weapons and technology."
     },
     {
+        "id": 4,
         "title": "Black Widow",
         "genre": "action",
         "rating": 7,
         "description": "Natasha Romanoff confronts her dark past and family ties as she battles a new enemy."
     },
     {
+        "id": 5,
         "title": "John Wick",
         "genre": "action",
         "rating": 8,
         "description": "A retired hitman seeks vengeance against those who wronged him, leaving a trail of destruction in his wake."
     },
     {
+        "id": 6,
         "title": "Mad Max: Fury Road",
         "genre": "action",
         "rating": 8,
         "description": "In a post-apocalyptic wasteland, Max teams up with Furiosa to escape a tyrant's clutches and find freedom."
     },
     {
+        "id": 7,
         "title": "The Dark Knight",
         "genre": "action",
         "rating": 9,
         "description": "Batman faces off against the Joker, a criminal mastermind who threatens to plunge Gotham into chaos."
     },
     {
+        "id": 8,
         "title": "Gladiator",
         "genre": "action",
         "rating": 8,
         "description": "A betrayed Roman general seeks revenge against the corrupt emperor who murdered his family."
     },
     {
+        "id": 9,
         "title": "Inception",
         "genre": "action",
         "rating": 9,
         "description": "A thief who enters dreams to steal secrets faces his toughest mission yet, with reality itself at stake."
     },
     {
+        "id": 10,
         "title": "The Avengers",
         "genre": "action",
         "rating": 8,
         "description": "Earth's mightiest heroes come together to stop an alien invasion that threatens the entire planet."
     },
     {
+        "id": 11,
         "title": "Toy Story",
         "genre": "comedy",
         "rating": 8,
         "description": "Woody, a good-hearted cowboy doll who belongs to a young boy named Andy, sees his position as Andy's favorite toy jeopardized when his parents buy him a Buzz Lightyear action figure. Even worse, the arrogant Buzz thinks he's a real spaceman on a mission to return to his home planet."
     },
     {
+        "id": 12,
         "title": "The Lego Movie",
         "genre": "comedy",
         "rating": 7,
         "description": "An ordinary Lego construction worker, thought to be the prophesied 'Special', is recruited to join a quest to stop an evil tyrant from gluing the Lego universe into eternal stasis."
     },
     {
+        "id": 13,
         "title": "Aladdin",
         "genre": "comedy",
         "rating": 8,
         "description": "A kind-hearted street urchin and a power-hungry Grand Vizier vie for a magic lamp that has the power to make their deepest wishes come true."
     },
     {
+        "id": 14,
         "title": "Finding Nemo",
         "genre": "comedy",
         "rating": 8,
         "description": "After his son is captured in the Great Barrier Reef and taken to Sydney, a timid clownfish sets out on a journey to bring him home."
     },
     {
+        "id": 15,
         "title": "Shrek",
         "genre": "comedy",
         "rating": 8,
         "description": "A mean lord exiles fairytale creatures to the swamp of a grumpy ogre, who must go on a quest and rescue a princess for the lord in order to get his land back."
     },
     {
+        "id": 16,
         "title": "The Incredibles",
         "genre": "comedy",
         "rating": 8,
         "description": "A family of undercover superheroes, while trying to live the quiet suburban life, are forced into action to save the world. Bob Parr (Mr. Incredible) and his wife Helen (Elastigirl) were among the world's greatest crime fighters, but now they must assume civilian identities and retreat to the suburbs to live a 'normal' life with their three children. However, the family's desire to help the world pulls them back into action when they face a new and dangerous enemy."
     },
     {
+        "id": 17,
         "title": "Monsters, Inc.",
         "genre": "comedy",
         "rating": 8,
         "description": "In order to power the city, monsters have to scare children so that they scream. However, the children are toxic to the monsters, and after a child gets through, two monsters realize things may not be what they think."
     },
     {
+        "id": 18,
         "title": "Despicable Me",
         "genre": "comedy",
         "rating": 7,
         "description": "When a criminal mastermind uses a trio of orphan girls as pawns for a grand scheme, he finds their love is profoundly changing him for the better."
     },
     {
+        "id": 19,
         "title": "Madagascar",
         "genre": "comedy",
         "rating": 7,
         "description": "A group of animals who have spent all their life in a New York zoo end up in the jungles of Madagascar, and must adjust to living in the wild."
     },
     {
+        "id": 20,
         "title": "The Princess Diaries",
         "genre": "comedy",
         "rating": 6,
