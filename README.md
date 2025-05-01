@@ -71,11 +71,11 @@ To get started with RAG, either from scratch or using a popular framework like L
 | [/RAG/07_user_role_based_rag.ipynb](python-recipes/RAG/07_user_role_based_rag.ipynb) | Implement a simple RBAC policy with vector search using Redis |
 
 ### LLM Memory
-LLMs are stateless. To maintain context within a conversation chat sessions must be stored and resent to the LLM. Redis manages the storage and retrieval of chat sessions to maintain context and conversational relevance.
+LLMs are stateless. To maintain context within a conversation chat sessions must be stored and resent to the LLM. Redis manages the storage and retrieval of message histories to maintain context and conversational relevance.
 | Recipe | Description |
 | --- | --- |
-| [/llm-session-manager/00_session_manager.ipynb](python-recipes/llm-session-manager/00_llm_session_manager.ipynb) | LLM session manager with semantic similarity |
-| [/llm-session-manager/01_multiple_sessions.ipynb](python-recipes/llm-session-manager/01_multiple_sessions.ipynb) | Handle multiple simultaneous chats with one instance |
+| [/llm-message-history/00_message_history.ipynb](python-recipes/llm-message-history/00_llm_message_history.ipynb) | LLM message history with semantic similarity |
+| [/llm-message-history/01_multiple_sessions.ipynb](python-recipes/llm-message-history/01_multiple_sessions.ipynb) | Handle multiple simultaneous chats with one instance |
 
 ### Semantic Cache
 An estimated 31% of LLM queries are potentially redundant ([source](https://arxiv.org/pdf/2403.02694)). Redis enables semantic caching to help cut down on LLM costs quickly.
