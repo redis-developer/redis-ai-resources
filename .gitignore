@@ -217,6 +217,7 @@ pyrightconfig.json
 pyvenv.cfg
 pip-selfcheck.json
 
+# other
 libs/redis/docs/.Trash*
 .python-version
 .idea/*
@@ -224,3 +225,6 @@ java-recipes/.*
 
 python-recipes/vector-search/beir_datasets
 python-recipes/vector-search/datasets
+
+litellm_proxy.log
+litellm_redis.yml

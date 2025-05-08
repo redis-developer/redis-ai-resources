@@ -38,6 +38,13 @@ No faster way to get started than by diving in and playing around with a demo.
 
 Need quickstarts to begin your Redis AI journey? **Start here.**
 
+### Non-Python Redis AI Recipes
+
+#### ☕️ Java
+
+A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md).
+
+
 ### Getting started with Redis & Vector Search
 
 | Recipe | Description |
@@ -48,11 +55,6 @@ Need quickstarts to begin your Redis AI journey? **Start here.**
 | [/vector-search/02_hybrid_search.ipynb](/python-recipes/vector-search/02_hybrid_search.ipynb) | Hybrid search techniques with Redis (BM25 + Vector) |
 | [/vector-search/03_dtype_support.ipynb](/python-recipes/vector-search/03_dtype_support.ipynb) | Shows how to convert a float32 index to float16 or integer dataypes|
 
-### Non-Python Redis AI Recipes
-
-#### ☕️ Java
-
-A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md).
 
 ### Retrieval Augmented Generation (RAG)
 
@@ -77,7 +79,7 @@ LLMs are stateless. To maintain context within a conversation chat sessions must
 | [/llm-message-history/00_message_history.ipynb](python-recipes/llm-message-history/00_llm_message_history.ipynb) | LLM message history with semantic similarity |
 | [/llm-message-history/01_multiple_sessions.ipynb](python-recipes/llm-message-history/01_multiple_sessions.ipynb) | Handle multiple simultaneous chats with one instance |
 
-### Semantic Cache
+### Semantic Caching
 An estimated 31% of LLM queries are potentially redundant ([source](https://arxiv.org/pdf/2403.02694)). Redis enables semantic caching to help cut down on LLM costs quickly.
 
 | Recipe | Description |
@@ -93,6 +95,15 @@ Routing is a simple and effective way of preventing misuses with your AI applica
 | --- | --- |
 | [/semantic-router/00_semantic_routing.ipynb](python-recipes/semantic-router/00_semantic_routing.ipynb) | Simple examples of how to build an allow/block list router in addition to a multi-topic router |
 | [/semantic-router/01_routing_optimization.ipynb](python-recipes/semantic-router/01_routing_optimization.ipynb) | Use RouterThresholdOptimizer from redisvl to setup best router config |
+
+
+### AI Gateways
+AI gateways manage LLM traffic through a centralized, managed layer that can implement routing, rate limiting, caching, and more.
+
+| Recipe | Description |
+| --- | --- |
+| [/gateway/00_litellm_proxy_redis.ipynb](python-recipes/gateway/00_litellm_proxy_redis.ipynb) | Getting started with LiteLLM proxy and Redis. |
+
 
 ### Agents
 
