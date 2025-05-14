@@ -144,7 +144,7 @@ AI gateways manage LLM traffic through a centralized, managed layer that can imp
 | Recipe | GitHub | Google Colab |
 | ------ | ------ | ------------ |
 | 💳 **Credit Scoring** - Credit scoring system using Feast with Redis as the online store | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/feature-store/00_feast_credit_score.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/feature-store/00_feast_credit_score.ipynb) |
-| 🔍 **Transaction Search** - Real-time transaction feature search with Redis | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/feature-store/01_transaction_search.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/feature-store/01_transaction_search.ipynb) |
+| 🔍 **Transaction Search** - Real-time transaction feature search with Redis | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/feature-store/01_card_transaction_search.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/feature-store/01_card_transaction_search.ipynb) |
 
 ### ☕️ Java AI Recipes
 
