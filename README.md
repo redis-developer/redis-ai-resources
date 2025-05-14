@@ -101,7 +101,7 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 | ⚙️ **Cache Optimization** - Use CacheThresholdOptimizer from redisvl to setup best cache config | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/semantic-cache/02_semantic_cache_optimization.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/semantic-cache/02_semantic_cache_optimization.ipynb) |
 
 ### Semantic Routing
-Routing is a simple and effective way of preventing misuses with your AI application or for creating branching logic between data sources etc.
+Routing is a simple and effective way of preventing misuse with your AI application or for creating branching logic between data sources etc.
 
 | Recipe | GitHub | Google Colab |
 | --- | --- | --- |
