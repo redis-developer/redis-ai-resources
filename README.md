@@ -54,12 +54,7 @@ No faster way to get started than by diving in and playing around with a demo.
 
 ## Recipes
 
-Need quickstarts to begin your Redis AI journey? **Start here.**
-
-### ☕️ Java AI Recipes
-
-A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md).
-
+Need quickstarts to begin your Redis AI journey?
 
 ### Getting started with Redis & Vector Search
 
@@ -89,7 +84,7 @@ To get started with RAG, either from scratch or using a popular framework like L
 | 🔒 **Role-Based RAG** - Implement a simple RBAC policy with vector search using Redis | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/RAG/07_user_role_based_rag.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/RAG/07_user_role_based_rag.ipynb) |
 
 ### LLM Memory
-LLMs are stateless. To maintain context within a conversation chat sessions must be stored and resent to the LLM. Redis manages the storage and retrieval of message histories to maintain context and conversational relevance.
+LLMs are stateless. To maintain context within a conversation chat sessions must be stored and re-sent to the LLM. Redis manages the storage and retrieval of message histories to maintain context and conversational relevance.
 
 | Recipe | GitHub | Google Colab |
 | --- | --- | --- |
@@ -128,6 +123,7 @@ AI gateways manage LLM traffic through a centralized, managed layer that can imp
 | --- | --- | --- |
 | 🕸️ **LangGraph Agents** - Notebook to get started with lang-graph and agents | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/agents/00_langgraph_redis_agentic_rag.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/agents/00_langgraph_redis_agentic_rag.ipynb) |
 | 👥 **CrewAI Agents** - Notebook to get started with CrewAI and lang-graph | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/agents/01_crewai_langgraph_redis.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/agents/01_crewai_langgraph_redis.ipynb) |
+| 🧠 **Memory Agent** - Building an agent with short term and long term memory using Redis | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/agents/03_memory_agent.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/agents/03_memory_agent.ipynb) |
 | 🛠️ **Full-Featured Agent** - Notebook builds full tool calling agent with semantic cache and router | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/agents/02_full_featured_agent.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/agents/02_full_featured_agent.ipynb) |
 
 ### Computer Vision
@@ -149,6 +145,10 @@ AI gateways manage LLM traffic through a centralized, managed layer that can imp
 | ------ | ------ | ------------ |
 | 💳 **Credit Scoring** - Credit scoring system using Feast with Redis as the online store | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/feature-store/00_feast_credit_score.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/feature-store/00_feast_credit_score.ipynb) |
 | 🔍 **Transaction Search** - Real-time transaction feature search with Redis | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/feature-store/01_transaction_search.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/feature-store/01_transaction_search.ipynb) |
+
+### ☕️ Java AI Recipes
+
+A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md).
 
 
 ## Tutorials
