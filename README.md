@@ -98,7 +98,7 @@ An estimated 31% of LLM queries are potentially redundant ([source](https://arxi
 | --- | --- | --- |
 | 🧠 **Gemini Semantic Cache** - Build a semantic cache with Redis and Google Gemini | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/semantic-cache/00_semantic_caching_gemini.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/semantic-cache/00_semantic_caching_gemini.ipynb) |
 | 🦙 **Llama3.1 Doc2Cache** - Build a semantic cache using the Doc2Cache framework and Llama3.1 | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/semantic-cache/01_doc2cache_llama3_1.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/semantic-cache/01_doc2cache_llama3_1.ipynb) |
-| ⚙️ **Cache Optimization** - Use CacheThresholdOptimizer from redisvl to setup best cache config | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/semantic-cache/02_semantic_cache_optimization.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/semantic-cache/02_semantic_cache_optimization.ipynb) |
+| ⚙️ **Cache Optimization** - Use CacheThresholdOptimizer from [redis-retrieval-optimizer](https://pypi.org/project/redis-retrieval-optimizer/) to setup best cache config | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/semantic-cache/02_semantic_cache_optimization.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/semantic-cache/02_semantic_cache_optimization.ipynb) |
 
 ### Semantic Routing
 Routing is a simple and effective way of preventing misuse with your AI application or for creating branching logic between data sources etc.
@@ -106,7 +106,7 @@ Routing is a simple and effective way of preventing misuse with your AI applicat
 | Recipe | GitHub | Google Colab |
 | --- | --- | --- |
 | 🔀 **Basic Routing** - Simple examples of how to build an allow/block list router in addition to a multi-topic router | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/semantic-router/00_semantic_routing.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/semantic-router/00_semantic_routing.ipynb) |
-| ⚙️ **Router Optimization** - Use RouterThresholdOptimizer from redisvl to setup best router config | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/semantic-router/01_routing_optimization.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/semantic-router/01_routing_optimization.ipynb) |
+| ⚙️ **Router Optimization** - Use RouterThresholdOptimizer from [redis-retrieval-optimizer](https://pypi.org/project/redis-retrieval-optimizer/) to setup best router config | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/semantic-router/01_routing_optimization.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/semantic-router/01_routing_optimization.ipynb) |
 
 
 ### AI Gateways
@@ -203,6 +203,7 @@ Redis integrates with many different players in the AI ecosystem. Here's a curat
 - [Benchmarking results for vector databases](https://redis.io/blog/benchmarking-results-for-vector-databases/) - Benchmarking results for vector databases, including Redis and 7 other Vector Database players.
 - [Redis Vector Library Docs](https://docs.redisvl.com)
 - [Redis Vector Search API Docs](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/) - Official Redis literature for Vector Similarity Search.
+- [Redis Retrieval Optimizer](https://pypi.org/project/redis-retrieval-optimizer/) - Library for optimizing index, embedding, and search method usage within Redis.
 
 <hr>
 
