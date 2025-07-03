@@ -178,11 +178,6 @@ Need a *deeper-dive* through different use cases and topics?
       <b><a href="https://github.com/redis-developer/redis-movies-searcher-workshop">🧑🏻‍💻 Redis Movies Searcher Workshop</a></b>
       <br>
       A hands-on workshop to create the Redis Movies Searcher application
-    </td>
-    <td align="center" width="33%">
-    </td>
-    <td align="center" width="33%">
-    </td>
   </tr>
 </table>
 
