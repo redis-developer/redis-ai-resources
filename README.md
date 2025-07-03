@@ -43,13 +43,14 @@ New to Redis for AI applications? Here's how to get started:
 ## Demos
 No faster way to get started than by diving in and playing around with a demo.
 
-| Demo | Description |
-| --- | --- |
-| [Redis RAG Workbench](https://github.com/redis-developer/redis-rag-workbench) | Interactive demo to build a RAG-based chatbot over a user-uploaded PDF. Toggle different settings and configurations to improve chatbot performance and quality. Utilizes RedisVL, LangChain, RAGAs, and more. |
-| [Redis VSS - Simple Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search |
-| [ArXiv Search](https://github.com/redis-developer/redis-arxiv-search) | Full stack implementation of Redis with React FE |
-| [Product Search](https://github.com/redis-developer/redis-product-search) |  Vector search with Redis Stack and Redis Enterprise |
-| [ArxivChatGuru](https://github.com/redis-developer/ArxivChatGuru) | Streamlit demo of RAG over Arxiv documents with Redis & OpenAI |
+| Demo                                                                                | Description                                                                                                                                                                                                    |
+|-------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Redis RAG Workbench](https://github.com/redis-developer/redis-rag-workbench)       | Interactive demo to build a RAG-based chatbot over a user-uploaded PDF. Toggle different settings and configurations to improve chatbot performance and quality. Utilizes RedisVL, LangChain, RAGAs, and more. |
+| [Redis VSS - Simple Streamlit Demo](https://github.com/antonum/Redis-VSS-Streamlit) | Streamlit demo of Redis Vector Search                                                                                                                                                                          |
+| [ArXiv Search](https://github.com/redis-developer/redis-arxiv-search)               | Full stack implementation of Redis with React FE                                                                                                                                                               |
+| [Product Search](https://github.com/redis-developer/redis-product-search)           | Vector search with Redis Stack and Redis Enterprise                                                                                                                                                            |
+| [ArxivChatGuru](https://github.com/redis-developer/ArxivChatGuru)                   | Streamlit demo of RAG over Arxiv documents with Redis & OpenAI                                                                                                                                                 |
+| [Redis Movies Searcher](https://github.com/redis-developer/redis-movies-searcher)   | Demo of hybrid search using Java, Spring Boot, and Redis OM                                                                                                                                                    |
 
 
 ## Recipes
@@ -170,6 +171,17 @@ Need a *deeper-dive* through different use cases and topics?
       <b><a href="https://github.com/redis-developer/redis-nvidia-recsys">🔍 Recommendation Systems</a></b>
       <br>
       Building realtime recsys with NVIDIA Merlin & Redis
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <b><a href="https://github.com/redis-developer/redis-movies-searcher-workshop">🧑🏻‍💻 Redis Movies Searcher Workshop</a></b>
+      <br>
+      A hands-on workshop to create the Redis Movies Searcher application
+    </td>
+    <td align="center" width="33%">
+    </td>
+    <td align="center" width="33%">
     </td>
   </tr>
 </table>
