@@ -228,3 +228,4 @@ python-recipes/vector-search/datasets
 
 litellm_proxy.log
 litellm_redis.yml
+.vscode/
