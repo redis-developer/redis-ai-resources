@@ -7,3 +7,4 @@
 02_semantic_cache_optimization
 spring_ai_redis_rag.ipynb
 00_litellm_proxy_redis.ipynb
+04_redisvl_benchmarking_basics.ipynb
