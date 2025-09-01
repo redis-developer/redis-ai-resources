@@ -32,9 +32,10 @@ Notebooks require a Jupyter Notebook environment to run. Check out the [Setup In
 
 ## Applications
 
-| Application                                                                                                                 | Description                                                                                        |
-|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| [applications/vector-similarity-search/spring_boot](./applications/vector-similarity-search/spring_boot_redis_om_spring.md) | Demonstrates building a vector similarity search application using Spring Boot and Redis OM Spring |
+| Application                                                                                                                                     | Description                                                                                        |
+|-------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| [applications/vector-similarity-search/redis-om-spring](./applications/vector-similarity-search/redis-om-spring/spring_boot_redis_om_spring.md) | Demonstrates building a vector similarity search application using Spring Boot and Redis OM Spring |
+| [applications/vector-similarity-search/spring-ai](./applications/vector-similarity-search/spring-ai/spring_boot_spring_ai.md)                   | Demonstrates building a vector similarity search application using Spring Boot and Spring AI       |
 
 
 ## Example Notebooks & Applications
