@@ -32,28 +32,9 @@ Notebooks require a Jupyter Notebook environment to run. Check out the [Setup In
 
 ## Applications
 
-| Application                                                                                                                                     | Description                                                                                        |
-|-------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| [applications/vector-similarity-search/redis-om-spring](./applications/vector-similarity-search/redis-om-spring/spring_boot_redis_om_spring.md) | Demonstrates building a vector similarity search application using Spring Boot and Redis OM Spring |
-| [applications/vector-similarity-search/spring-ai](./applications/vector-similarity-search/spring-ai/spring_boot_spring_ai.md)                   | Demonstrates building a vector similarity search application using Spring Boot and Spring AI       |
-
-
-## Example Notebooks & Applications
-
-### Beer Recommendation Chatbot
-
-The `spring-ai-rag.ipynb` notebook demonstrates:
-
-- Loading and embedding beer data into Redis Vector Store
-- Using local transformer models for generating embeddings
-- Connecting to OpenAI for LLM capabilities
-- Building a RAG pipeline to answer beer-related queries
-- Semantic search over beer properties and descriptions
-
-### Vector Similarity Search with Redis OM Spring and Spring Boot
-
-The `spring_boot_redis_om_spring` directory contains a Spring Boot application that demonstrates how to use Redis OM Spring for vector similarity search. The application allows you to:
-- Add movies to the Redis database
-- Search for movies based on semantic similarity on the synopsis of the movie
-- Perform hybrid search by adding filters to genre, cast, and year 
+| Application                                                                                                                                     | Description                                                                                                 |
+|-------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| [applications/agent-memory](./applications/agent-memory/spring_boot_agent_memory.md)                                                            | Demonstrates how to implement short-term and long-term memory for AI agents using Redis vector capabilities |
+| [applications/vector-similarity-search/redis-om-spring](./applications/vector-similarity-search/redis-om-spring/spring_boot_redis_om_spring.md) | Demonstrates building a vector similarity search application using Spring Boot and Redis OM Spring          |
+| [applications/vector-similarity-search/spring-ai](./applications/vector-similarity-search/spring-ai/spring_boot_spring_ai.md)                   | Demonstrates building a vector similarity search application using Spring Boot and Spring AI                |
 

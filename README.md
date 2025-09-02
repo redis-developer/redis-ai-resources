@@ -153,6 +153,20 @@ AI gateways manage LLM traffic through a centralized, managed layer that can imp
 
 A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md).
 
+#### Notebooks
+
+| Notebook                                                                                          | Description                                                                                                  |
+|---------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| [notebooks/RAG/spring_ai_redis_rag.ipynb](./java-recipes/notebooks/RAG/spring_ai_redis_rag.ipynb) | Demonstrates building a RAG-ba sed beer recommendation chatbot using Spring AI and Redis as the vector store |
+
+#### Applications
+
+| Application                                                                                                                                                  | Description                                                                                                 |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| [applications/agent-memory](./java-recipes/applications/agent-memory/spring_boot_agent_memory.md)                                                            | Demonstrates how to implement short-term and long-term memory for AI agents using Redis vector capabilities |
+| [applications/vector-similarity-search/redis-om-spring](./java-recipes/applications/vector-similarity-search/redis-om-spring/spring_boot_redis_om_spring.md) | Demonstrates building a vector similarity search application using Spring Boot and Redis OM Spring          |
+| [applications/vector-similarity-search/spring-ai](./java-recipes/applications/vector-similarity-search/spring-ai/spring_boot_spring_ai.md)                   | Demonstrates building a vector similarity search application using Spring Boot and Spring AI                |
+
 
 ## Tutorials
 Need a *deeper-dive* through different use cases and topics?
