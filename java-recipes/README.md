@@ -32,9 +32,10 @@ Notebooks require a Jupyter Notebook environment to run. Check out the [Setup In
 
 ## Applications
 
-| Application                                                                                                                                     | Description                                                                                                 |
-|-------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| [applications/agent-memory](./applications/agent-memory/spring_boot_agent_memory.md)                                                            | Demonstrates how to implement short-term and long-term memory for AI agents using Redis vector capabilities |
-| [applications/vector-similarity-search/redis-om-spring](./applications/vector-similarity-search/redis-om-spring/spring_boot_redis_om_spring.md) | Demonstrates building a vector similarity search application using Spring Boot and Redis OM Spring          |
-| [applications/vector-similarity-search/spring-ai](./applications/vector-similarity-search/spring-ai/spring_boot_spring_ai.md)                   | Demonstrates building a vector similarity search application using Spring Boot and Spring AI                |
+| Application                                                                                                                                     | Description                                                                                                               |
+|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| [applications/agent-long-term-memory](applications/agent-long-term-memory/spring_boot_agent_memory.md)                                          | Demonstrates how to implement long-term memory for AI agents using Spring AI Advisor abstraction with Redis Vector Search |
+| [applications/agent-short-term-memory](applications/agent-short-term-memory/spring_boot_agent_memory.md)                                        | Demonstrates how to implement short-term memory for AI agents using Spring AI ChatHistory abstraction                     |
+| [applications/vector-similarity-search/redis-om-spring](./applications/vector-similarity-search/redis-om-spring/spring_boot_redis_om_spring.md) | Demonstrates building a vector similarity search application using Spring Boot and Redis OM Spring                        |
+| [applications/vector-similarity-search/spring-ai](./applications/vector-similarity-search/spring-ai/spring_boot_spring_ai.md)                   | Demonstrates building a vector similarity search application using Spring Boot and Spring AI                              |
 

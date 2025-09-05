@@ -1,4 +1,4 @@
-# Redis Agent Memory
+# Redis Agent Long-Term Memory
 
 Modern AI agents rely on memory to go beyond single-turn responses and behave more like intelligent, adaptive assistants. Memory enables agents to understand user context, retain important facts, recall past interactions, and personalize conversations over time. Without memory, an agent starts each interaction from scratch — forgetting preferences, goals, and history — which limits its usefulness and realism.
 
@@ -6,18 +6,18 @@ In AI systems, memory is typically divided into two types:
 - Short-term memory maintains context within a single session or conversation thread. This allows the agent to track recent messages, follow up on prior turns, and provide coherent responses.
 - Long-term memory stores information across sessions, including facts (semantic memory) and personal experiences or preferences (episodic memory). This allows the agent to “remember” what it has learned about a user or domain, making interactions feel more consistent and personalized.
 
-This demo implements both memory types using Redis and Spring AI, combining the speed and flexibility of Redis with the semantic capabilities of vector embeddings. With vector similarity search, agents can retrieve relevant memories even if a user’s phrasing is different from how the information was originally stored. You’ll also see features like memory deduplication, summarization, and filtering — all designed to give AI agents a robust and scalable memory system.
+This demo implements both memory types using Redis and Spring AI, combining the speed and flexibility of Redis with the semantic capabilities of vector embeddings. With vector similarity search, agents can retrieve relevant memories even if a user’s phrasing is different from how the information was originally stored. You’ll also see features like memory deduplication and filtering — all designed to give AI agents a robust and scalable memory system.
 
 ## Learning resources:
 
 - Video: [What is an embedding model?](https://youtu.be/0U1S0WSsPuE)
-- Video: [Exact vs Approximate Nearest Neighbors - What's the difference?](https://youtu.be/9NvO-VdjY80)
+- Video: [Exact vs Approximate Nearest Neighbors—What's the difference?](https://youtu.be/9NvO-VdjY80)
 - Video: [What is semantic search?](https://youtu.be/o3XN4dImESE)
 - Video: [What is a vector database?](https://youtu.be/Yhv19le0sBw)
 
 ## Repository
 
-The repository for this demo can be found [here](https://github.com/redis-developer/redis-springboot-resources/tree/main/artificial-intelligence/agent-memory-with-spring-ai)
+The repository for this demo can be found [here](https://github.com/redis-developer/redis-springboot-resources/tree/main/artificial-intelligence/agent-long-term-memory-with-spring-ai)
 
 ## Requirements
 
@@ -36,7 +36,7 @@ If you haven’t already:
 
 ```bash
 git clone https://github.com/redis-developer/redis-springboot-recipes.git
-cd redis-springboot-recipes/artificial-intelligence/agent-memory-with-spring-ai
+cd redis-springboot-recipes/artificial-intelligence/agent-long-term-memory-with-spring-ai
 ```
 
 ### Step 2: Configure your environment
@@ -121,45 +121,64 @@ If we go to the workbench on the sidebar, and then run the `FT.INDEX 'memoryIdx'
 
 ## How It Is Implemented
 
+Agents rely on short and long-term memory. Short-term memory is typically the chat history, the list of messages exchanged between the agent and the user or the context the agent is using during its current session.
+
+To implement both of these memories, we're going to rely on the Spring AI Advisors API. Advisors are a way to intercept, modify, and enhance AI-driven interactions.
+
+We are going to create two advisors. The first one, for shot-term memory, is going to rely on the ChatMemory abstraction provided by Spring AI while the second one is going to be implemented from scratch by ourselves.
+
+### Short-term memory
+
+To see how to implement short-term memory (or chat history) with Spring AI, refer to the dedicated recipe: ![Chat History with Spring AI](../agent-short-term-memory/spring_boot_agent_memory.md)
+
+### Long-term memory
+
+Long-term memory is the memory the agent needs to remember across different sessions or interactions. There are two types of long-term memory:
+
+- Episodic: episodic memories are related to past events. Personal experiences and user-specific preferences. E.g. "User went to Paris in 2009 for his honeymoon"
+- Semantic: semantic memories are general domain knowledge and facts. E.g. "Americans don't require a visa to travel to Paris"
+
+Different from short-term memory, not all of this memory needs to be accessed at every interaction, and not every information must be remembered in the long term. Because of that, we will rely on semantic search to retrieve long-term memory and LLMs to extract them from current interactions.
+
 The application uses Spring AI's `RedisVectorStore` to store and search vector embeddings of memories.
 
-### Configuring the Vector Store
+#### Configuring the Vector Store
 
 ```kotlin
 @Bean
 fun memoryVectorStore(
-    embeddingModel: EmbeddingModel,
-    jedisPooled: JedisPooled
+  embeddingModel: EmbeddingModel,
+  jedisPooled: JedisPooled
 ): RedisVectorStore {
-    return RedisVectorStore.builder(jedisPooled, embeddingModel)
-        .indexName("memoryIdx")
-        .contentFieldName("content")
-        .embeddingFieldName("embedding")
-        .metadataFields(
-            RedisVectorStore.MetadataField("memoryType", Schema.FieldType.TAG),
-            RedisVectorStore.MetadataField("metadata", Schema.FieldType.TEXT),
-            RedisVectorStore.MetadataField("userId", Schema.FieldType.TAG),
-            RedisVectorStore.MetadataField("createdAt", Schema.FieldType.TEXT)
-        )
-        .prefix("memory:")
-        .initializeSchema(true)
-        .vectorAlgorithm(RedisVectorStore.Algorithm.HSNW)
-        .build()
+  return RedisVectorStore.builder(jedisPooled, embeddingModel)
+    .indexName("longTermMemoryIdx")
+    .contentFieldName("content")
+    .embeddingFieldName("embedding")
+    .metadataFields(
+      RedisVectorStore.MetadataField("memoryType", Schema.FieldType.TAG),
+      RedisVectorStore.MetadataField("metadata", Schema.FieldType.TEXT),
+      RedisVectorStore.MetadataField("userId", Schema.FieldType.TAG),
+      RedisVectorStore.MetadataField("createdAt", Schema.FieldType.TEXT)
+    )
+    .prefix("short-term-memory:")
+    .initializeSchema(true)
+    .vectorAlgorithm(RedisVectorStore.Algorithm.HSNW)
+    .build()
 }
 ```
 
 Let's break this down:
 
-- **Index Name**: `memoryIdx` - Redis will create an index with this name for searching memories
+- **Index Name**: `longTermMemoryIdx` - Redis will create an index with this name for searching memories
 - **Content Field**: `content` - The raw memory content that will be embedded
 - **Embedding Field**: `embedding` - The field that will store the resulting vector embedding
 - **Metadata Fields**:
-    - `memoryType`: TAG field for filtering by memory type (EPISODIC or SEMANTIC)
-    - `metadata`: TEXT field for storing additional context about the memory
-    - `userId`: TAG field for filtering by user ID
-    - `createdAt`: TEXT field for storing the creation timestamp
+  - `memoryType`: TAG field for filtering by memory type (EPISODIC or SEMANTIC)
+  - `metadata`: TEXT field for storing additional context about the memory
+  - `userId`: TAG field for filtering by user ID
+  - `createdAt`: TEXT field for storing the creation timestamp
 
-### Storing Memories
+##### Storing Memories
 
 Memories are stored as Spring AI `Document` objects with metadata:
 
@@ -185,7 +204,7 @@ val document = Document(
 memoryVectorStore.add(listOf(document))
 ```
 
-### Retrieving Memories
+##### Retrieving Memories
 
 The memory service uses Spring AI's `SearchRequest` and `FilterExpressionBuilder` to perform vector similarity search with filters:
 
@@ -224,6 +243,178 @@ This performs a vector similarity search using:
 - A topK setting to limit how many nearest matches to return
 - A Redis filter expression to narrow down by memory type, user ID, and thread ID
 
+#### Advisor for Long-term memory retrieval
+
+We will implement two advisors: one for retrieval and another for recorder. These advisors will be plugged in our `ChatClient` and intercept every interaction with the LLM.
+
+The retrieval advisor runs before your LLM call. It takes the user’s current message, performs a vector similarity search over Redis, and injects the most relevant memories into the system portion of the prompt so the model can ground its answer.
+
+```kotlin
+@Component
+class LongTermMemoryRetrievalAdvisor(
+  private val memoryService: MemoryService,
+) : CallAdvisor, Ordered {
+
+  companion object {
+    const val USER_ID = "ltm_user_id"   // pass per-call
+    const val TOP_K = "ltm_top_k"       // pass per-call (default 5)
+  }
+
+  override fun getOrder() = Ordered.HIGHEST_PRECEDENCE + 40
+  override fun getName() = "LongTermMemoryRetrievalAdvisor"
+
+  override fun adviseCall(req: ChatClientRequest, chain: CallAdvisorChain): ChatClientResponse {
+    val userId = (req.context()[USER_ID] as? String) ?: "system"
+    val k = (req.context()[TOP_K] as? Int) ?: 5
+
+    val query = req.prompt().userMessage.text
+    val memories = memoryService.retrieveRelevantMemories(query, userId = userId)
+      .take(k)
+
+    val memoryBlock = buildString {
+      appendLine("Use the MEMORY below if relevant. Keep answers factual and concise.")
+      appendLine("----- MEMORY -----")
+      memories.forEachIndexed { i, m -> appendLine("${i+1}. ${m.memory.content}") }
+      appendLine("------------------")
+    }
+
+    val enrichedPrompt = req.prompt().augmentSystemMessage { sys ->
+      val existing = sys.text
+      sys.mutate()
+        .text(
+          buildString {
+            appendLine(memoryBlock)
+            if (existing.isNotBlank()) {
+              appendLine()
+              append(existing)
+            }
+          }
+        ).build()
+    }
+
+    val enrichedReq = req.mutate()
+      .prompt(enrichedPrompt)
+      .build()
+
+    return chain.nextCall(enrichedReq)
+  }
+}
+```
+
+#### Advisor for Long-term memory recording
+
+The recorder advisor runs after the assistant responds. It looks at the last user message and the assistant’s reply, asks the model to extract atomic, useful facts (episodic or semantic), deduplicates them, and stores them in Redis.
+
+```kotlin
+@Component
+class LongTermMemoryRecorderAdvisor(
+  private val memoryService: MemoryService,
+  private val chatModel: ChatModel
+) : CallAdvisor, Ordered {
+
+  data class MemoryCandidate(val content: String, val type: MemoryType, val userId: String?)
+  data class ExtractionResult(val memories: List<MemoryCandidate> = emptyList())
+
+  private val extractorConverter = BeanOutputConverter(ExtractionResult::class.java)
+
+  override fun getOrder(): Int = Ordered.HIGHEST_PRECEDENCE + 60
+  override fun getName(): String = "LongTermMemoryRecorderAdvisor"
+
+  override fun adviseCall(req: ChatClientRequest, chain: CallAdvisorChain): ChatClientResponse {
+    // 1) Proceed with the normal call (other advisors may have enriched the prompt)
+    val res = chain.nextCall(req)
+
+    // 2) Build extraction prompt (user + assistant text of *this* turn)
+    val userText = req.prompt().userMessage.text
+    val assistantText = res.chatResponse()?.result?.output?.text
+
+    // 3) Ask the model to extract long-term memories as structured JSON
+    val schemaHint = extractorConverter.jsonSchema // JSON schema string for the POJO
+    val extractSystem = """
+            You extract LONG-TERM MEMORIES from a dialogue turn.
+
+            A memory is either:
+
+            1. EPISODIC MEMORIES: Personal experiences and user-specific preferences
+               Examples: "User prefers Delta airlines", "User visited Paris last year"
+
+            2. SEMANTIC MEMORIES: General domain knowledge and facts
+               Examples: "Singapore requires passport", "Tokyo has excellent public transit"
+
+            Only extract clear, factual information. Do not make assumptions or infer information that isn't explicitly stated.
+            If no memories can be extracted, return an empty array.
+            
+            The instance must conform to this JSON Schema (for validation, do not output it):
+              $schemaHint
+
+            Do not include code fences, schema, or properties. Output a single-line JSON object.
+        """.trimIndent()
+
+    val extractUser = """
+            USER SAID:
+            $userText
+
+            ASSISTANT REPLIED:
+            $assistantText
+
+            Extract up to 5 memories with correct type; set userId if present/known.
+        """.trimIndent()
+
+    val options: ChatOptions = OpenAiChatOptions.builder()
+      .responseFormat(ResponseFormat.builder().type(ResponseFormat.Type.JSON_OBJECT).build())
+      .build()
+
+    val extraction = chatModel.call(
+      Prompt(
+        listOf(
+          UserMessage(extractUser),
+          SystemMessage(extractSystem)
+        ),
+        options
+      ),
+    )
+
+    val parsed = extractorConverter.convert(extraction.result.output.text ?: "")
+      ?: ExtractionResult()
+
+    // 4) Persist memories (MemoryService handles dedupe/thresholding)
+    val userId = (req.context["ltm_user_id"] as? String) // optional per-call param
+    parsed.memories.forEach { m ->
+      val owner = m.userId ?: userId
+      memoryService.storeMemory(
+        content = m.content,
+        memoryType = m.type,
+        userId = owner
+      )
+    }
+
+    return res
+  }
+}
+```
+
+#### Plugging advisors in `ChatClient`
+
+In our `ChatConfig` class, we will configure our `ChatClient` as:
+
+```kotlin
+    @Bean
+    fun chatClient(
+        chatModel: ChatModel,
+        chatMemory: ChatMemory,
+        longTermRecorder: LongTermMemoryRecorderAdvisor,
+        longTermMemoryRetrieval: LongTermMemoryRetrievalAdvisor
+    ): ChatClient {
+        return ChatClient.builder(chatModel)
+            .defaultAdvisors(
+                MessageChatMemoryAdvisor.builder(chatMemory).build(),
+                longTermRecorder,
+                longTermMemoryRetrieval
+            ).build()
+    }
+```
+
+
 ### Agent System Prompt
 
 The agent is configured with a system prompt that explains its capabilities and access two different types of memory:
@@ -252,227 +443,32 @@ fun travelAgentSystemPrompt(): Message {
 
 ### Agent Memory Orchestration
 
-The agent orchestrates memory through the `ChatService`, which handles the flow of retrieving, using, and storing memories during conversations. Here's how it works:
-
-#### 1. Processing User Messages
-
-When a user sends a message, the agent processes it through the `sendMessage` method:
+Since the advisors have been plugged in the `ChatClient` itself, we don't need to worry about managing memory ourselves when interacting with the LLM. The only thing we need to make sure is that with every interaction we send the expected parameters, namely the session or user ID, so that the advisors know which history to look at.
 
 ```kotlin
-fun sendMessage(
-    message: String,
-    userId: String,
-): ChatResult {
-    // Get or create conversation history (try to load from Redis first)
-    val history = conversationHistory.computeIfAbsent(userId) {
-        // Try to load from Redis first
-        val redisHistory = loadConversationHistoryFromRedis(userId)
-        if (redisHistory.isNotEmpty()) {
-            redisHistory.toMutableList()
-        } else {
-            mutableListOf(travelAgentSystemPrompt)
-        }
+    fun sendMessage(
+        message: String,
+        userId: String,
+    ): ChatResult {
+        // Use userId as the key for conversation history and long-term memory
+        log.info("Processing message from user $userId: $message")
+        val response = chatClient
+            .prompt(
+                Prompt(
+                    travelAgentSystemPrompt,
+                    UserMessage(message)
+                )
+            )
+            .advisors { it
+                .param(ChatMemory.CONVERSATION_ID, userId)
+                .param("ltm_user_id", userId)
+            }
+            .call()
+
+        return ChatResult(
+            response = response.chatResponse()!!
+        )
     }
-
-    // Retrieve relevant memories with timing
-    val (memories, embTime) = retrieveRelevantMemoriesWithTiming(message, userId)
-
-    // Add memory context if available
-    if (memories.isNotEmpty()) {
-        val memoryContext = formatMemoriesAsContext(memories)
-        // Add memory context as a system message
-        history.add(SystemMessage(memoryContext))
-    }
-
-    // Add user's message to history
-    val userMessage = UserMessage(message)
-    history.add(userMessage)
-
-    // Create prompt with conversation history
-    val prompt = Prompt(history)
-
-    // Generate response
-    val response = chatModel.call(prompt)
-
-    // Add assistant response to history
-    history.add(AssistantMessage(response.result.output.text ?: ""))
-
-    // Save conversation history to Redis
-    saveConversationHistoryToRedis(userId, history)
-
-    // Extract and store memories from the conversation
-    extractAndStoreMemoriesWithTiming(message, response.result.output.text ?: "", userId)
-
-    // Summarize conversation if it's getting too long
-    if (history.size > 10) {
-        summarizeConversation(history, userId)
-        // Save the summarized history to Redis
-        saveConversationHistoryToRedis(userId, history)
-    }
-
-    // Return result
-    return ChatResult(response, metrics)
-}
-```
-
-#### 2. Retrieving Relevant Memories
-
-For each user message, the agent retrieves relevant memories from long-term storage:
-
-```kotlin
-private fun retrieveRelevantMemoriesWithTiming(
-    query: String,
-    userId: String
-): Pair<List<Memory>, Long> {
-    val memories = memoryService.retrieveMemories(
-        query = query,
-        userId = userId,
-        distanceThreshold = 0.3f
-    ).map { it.memory }
-
-    return Pair(memories, embeddingTimeMs)
-}
-```
-
-#### 3. Adding Memory Context to Conversation
-
-Retrieved memories are formatted and added to the conversation context:
-
-```kotlin
-private fun formatMemoriesAsContext(memories: List<Memory>): String {
-    val formattedMemories = memories.joinToString("\n") {
-        "- [${it.memoryType}] ${it.content}"
-    }
-
-    return """
-        I have access to the following relevant memories about this user or topic:
-
-        $formattedMemories
-
-        Use this information to personalize your response, but don't explicitly mention 
-        that you're using stored memories unless directly asked about your memory capabilities.
-    """.trimIndent()
-}
-```
-
-#### 4. Extracting and Storing New Memories
-
-After each interaction, the agent extracts potential new memories from the conversation:
-
-```kotlin
-private fun extractAndStoreMemoriesWithTiming(
-    userMessage: String,
-    assistantResponse: String,
-    userId: String
-): ExtractAndStoreTimings {
-    // Create extraction prompt
-    val extractionPrompt = """
-        Analyze the following conversation and extract potential memories.
-
-        USER MESSAGE:
-        $userMessage
-
-        ASSISTANT RESPONSE:
-        $assistantResponse
-
-        Extract two types of memories:
-
-        1. EPISODIC MEMORIES: Personal experiences and user-specific preferences
-           Examples: "User prefers Delta airlines", "User visited Paris last year"
-
-        2. SEMANTIC MEMORIES: General domain knowledge and facts
-           Examples: "Singapore requires passport", "Tokyo has excellent public transit"
-
-        Format your response as a JSON array with objects containing:
-        - "type": Either "EPISODIC" or "SEMANTIC"
-        - "content": The memory content
-    """.trimIndent()
-
-    // Call the LLM to extract memories
-    val extractionResponse = chatModel.call(
-        Prompt(listOf(SystemMessage(extractionPrompt)))
-    )
-
-    // Parse the response and store memories
-    // ...
-
-    // Store each extracted memory
-    memoryService.storeMemory(
-        content = content,
-        memoryType = memoryType,
-        userId = memoryUserId,
-        metadata = "{}"
-    )
-
-    return ExtractAndStoreTimings(llmExtractionTimeMs, memoryStorageTimeMs)
-}
-```
-
-#### 5. Managing Short-Term Memory
-
-The agent manages short-term memory through conversation history:
-
-```kotlin
-// Save conversation history to Redis
-private fun saveConversationHistoryToRedis(userId: String, history: List<Message>) {
-    val redisKey = "$conversationKeyPrefix$userId"
-
-    // Delete existing key if it exists
-    jedisPooled.del(redisKey)
-
-    // Serialize each message and add to Redis list
-    for (message in history) {
-        val serializedMessage = serializeMessage(message)
-        jedisPooled.rpush(redisKey, serializedMessage)
-    }
-
-    // Set TTL of one hour (3600 seconds)
-    jedisPooled.expire(redisKey, 3600)
-}
-
-// Load conversation history from Redis
-private fun loadConversationHistoryFromRedis(userId: String): List<Message> {
-    val redisKey = "$conversationKeyPrefix$userId"
-
-    // Get all messages from Redis list
-    val serializedMessages = jedisPooled.lrange(redisKey, 0, -1)
-
-    // Deserialize messages
-    return serializedMessages.mapNotNull { deserializeMessage(it) }.toMutableList()
-}
-```
-
-#### 6. Summarizing Long Conversations
-
-To prevent context windows from getting too large, the agent summarizes long conversations:
-
-```kotlin
-private fun summarizeConversation(
-    history: MutableList<Message>,
-    userId: String
-) {
-    // Keep the system prompt and the last 4 messages
-    val systemPrompt = history.first()
-    val recentMessages = history.takeLast(4)
-
-    // Create a summary prompt
-    val summaryPrompt = """
-        Summarize the key points of this conversation, including:
-        1. User preferences and important details
-        2. Topics discussed
-        3. Any decisions or conclusions reached
-    """.trimIndent()
-
-    // Generate summary
-    val summaryResponse = chatModel.call(summaryRequest)
-    val summary = summaryResponse.result.output.text
-
-    // Replace history with summary and recent messages
-    history.clear()
-    history.add(systemPrompt)
-    history.add(SystemMessage("Conversation summary: $summary"))
-    history.addAll(recentMessages)
-}
 ```
 
 This orchestration allows the agent to maintain context across multiple interactions, personalize responses based on user history, and continuously learn from conversations.
