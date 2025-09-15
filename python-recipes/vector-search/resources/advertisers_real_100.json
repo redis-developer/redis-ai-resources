@@ -1,0 +1,402 @@
+[
+    {
+        "Advertiser Name": "Nike",
+        "Category": "Fashion & Sportswear",
+        "Region": "North America",
+        "Product Description": "Sports apparel, footwear, and accessories with global brand appeal",
+        "Target Demographics": "18\u201340, athletes, fitness enthusiasts, sports fans",
+        "Location (HQ)": "Beaverton, USA"
+    },
+    {
+        "Advertiser Name": "Adidas",
+        "Category": "Fashion & Sportswear",
+        "Region": "Europe",
+        "Product Description": "Global sportswear brand offering footwear, apparel, and gear",
+        "Target Demographics": "18\u201340, athletes, fitness and lifestyle consumers",
+        "Location (HQ)": "Herzogenaurach, Germany"
+    },
+    {
+        "Advertiser Name": "Zara",
+        "Category": "Fashion & Apparel",
+        "Region": "Europe",
+        "Product Description": "Fast-fashion retailer with global reach",
+        "Target Demographics": "16\u201335, Gen Z and young professionals",
+        "Location (HQ)": "Arteixo, Spain"
+    },
+    {
+        "Advertiser Name": "H&M",
+        "Category": "Fashion & Apparel",
+        "Region": "Europe",
+        "Product Description": "Affordable fashion retailer for men, women, and kids",
+        "Target Demographics": "16\u201340, budget-conscious fashion buyers",
+        "Location (HQ)": "Stockholm, Sweden"
+    },
+    {
+        "Advertiser Name": "Uniqlo",
+        "Category": "Fashion & Apparel",
+        "Region": "Asia",
+        "Product Description": "Japanese casual wear designer, manufacturer, and retailer",
+        "Target Demographics": "18\u201345, minimalistic fashion enthusiasts",
+        "Location (HQ)": "Tokyo, Japan"
+    },
+    {
+        "Advertiser Name": "Levi\u2019s",
+        "Category": "Fashion & Apparel",
+        "Region": "North America",
+        "Product Description": "Denim jeans and casual wear with iconic American style",
+        "Target Demographics": "18\u201350, casual fashion consumers",
+        "Location (HQ)": "San Francisco, USA"
+    },
+    {
+        "Advertiser Name": "Gucci",
+        "Category": "Luxury Fashion",
+        "Region": "Europe",
+        "Product Description": "Luxury fashion brand offering clothing, accessories, and fragrances",
+        "Target Demographics": "25\u201360, affluent luxury consumers",
+        "Location (HQ)": "Florence, Italy"
+    },
+    {
+        "Advertiser Name": "Louis Vuitton",
+        "Category": "Luxury Fashion",
+        "Region": "Europe",
+        "Product Description": "Luxury fashion house specializing in handbags, shoes, and apparel",
+        "Target Demographics": "25\u201360, luxury-focused shoppers",
+        "Location (HQ)": "Paris, France"
+    },
+    {
+        "Advertiser Name": "Apple",
+        "Category": "Technology",
+        "Region": "North America",
+        "Product Description": "Consumer electronics, iPhone, Mac, iPad, and services ecosystem",
+        "Target Demographics": "18\u201355, tech-savvy, professionals, students",
+        "Location (HQ)": "Cupertino, USA"
+    },
+    {
+        "Advertiser Name": "Samsung",
+        "Category": "Technology & Electronics",
+        "Region": "Asia",
+        "Product Description": "Smartphones, TVs, appliances, semiconductors",
+        "Target Demographics": "18\u201355, global tech consumers",
+        "Location (HQ)": "Seoul, South Korea"
+    },
+    {
+        "Advertiser Name": "Microsoft",
+        "Category": "Technology",
+        "Region": "North America",
+        "Product Description": "Software, cloud services, gaming (Xbox), and devices",
+        "Target Demographics": "18\u201360, enterprise and consumer markets",
+        "Location (HQ)": "Redmond, USA"
+    },
+    {
+        "Advertiser Name": "Google",
+        "Category": "Technology",
+        "Region": "North America",
+        "Product Description": "Search, advertising, cloud computing, Android, YouTube",
+        "Target Demographics": "18\u201360, global digital users",
+        "Location (HQ)": "Mountain View, USA"
+    },
+    {
+        "Advertiser Name": "Intel",
+        "Category": "Technology",
+        "Region": "North America",
+        "Product Description": "Semiconductors, processors, and computing technologies",
+        "Target Demographics": "25\u201360, enterprises, PC builders, tech enthusiasts",
+        "Location (HQ)": "Santa Clara, USA"
+    },
+    {
+        "Advertiser Name": "IBM",
+        "Category": "Technology",
+        "Region": "North America",
+        "Product Description": "Enterprise technology, AI, consulting, and cloud solutions",
+        "Target Demographics": "30\u201365, enterprises, governments",
+        "Location (HQ)": "Armonk, USA"
+    },
+    {
+        "Advertiser Name": "Meta",
+        "Category": "Technology & Social Media",
+        "Region": "North America",
+        "Product Description": "Social networking, VR, and advertising platforms",
+        "Target Demographics": "18\u201345, global digital users",
+        "Location (HQ)": "Menlo Park, USA"
+    },
+    {
+        "Advertiser Name": "Tencent",
+        "Category": "Technology & Gaming",
+        "Region": "Asia",
+        "Product Description": "Social media, gaming, fintech, and cloud services",
+        "Target Demographics": "18\u201345, tech-savvy consumers in Asia",
+        "Location (HQ)": "Shenzhen, China"
+    },
+    {
+        "Advertiser Name": "Sony",
+        "Category": "Technology & Entertainment",
+        "Region": "Asia",
+        "Product Description": "Consumer electronics, PlayStation, and entertainment content",
+        "Target Demographics": "18\u201350, gamers, tech enthusiasts",
+        "Location (HQ)": "Tokyo, Japan"
+    },
+    {
+        "Advertiser Name": "Coca-Cola",
+        "Category": "Food & Beverage",
+        "Region": "Global",
+        "Product Description": "Non-alcoholic beverages including Coca-Cola, Sprite, Fanta, and Dasani",
+        "Target Demographics": "All ages, mainstream consumers worldwide",
+        "Location (HQ)": "Atlanta, USA"
+    },
+    {
+        "Advertiser Name": "PepsiCo",
+        "Category": "Food & Beverage",
+        "Region": "Global",
+        "Product Description": "Beverages, snacks, and food brands including Pepsi, Lays, Tropicana",
+        "Target Demographics": "All ages, global consumers",
+        "Location (HQ)": "Purchase, USA"
+    },
+    {
+        "Advertiser Name": "Nestl\u00e9",
+        "Category": "Food & Beverage",
+        "Region": "Global",
+        "Product Description": "Food, beverages, baby nutrition, pet care",
+        "Target Demographics": "Families, children, adults worldwide",
+        "Location (HQ)": "Vevey, Switzerland"
+    },
+    {
+        "Advertiser Name": "Starbucks",
+        "Category": "Food & Beverage",
+        "Region": "North America",
+        "Product Description": "Coffeehouse chain offering beverages and snacks",
+        "Target Demographics": "18\u201340, urban professionals, students",
+        "Location (HQ)": "Seattle, USA"
+    },
+    {
+        "Advertiser Name": "McDonald\u2019s",
+        "Category": "Food & Beverage",
+        "Region": "Global",
+        "Product Description": "Fast-food chain serving burgers, fries, and beverages",
+        "Target Demographics": "All ages, mainstream consumers",
+        "Location (HQ)": "Chicago, USA"
+    },
+    {
+        "Advertiser Name": "Domino\u2019s",
+        "Category": "Food & Beverage",
+        "Region": "Global",
+        "Product Description": "Pizza delivery and takeaway service",
+        "Target Demographics": "15\u201345, families, students, urban households",
+        "Location (HQ)": "Ann Arbor, USA"
+    },
+    {
+        "Advertiser Name": "KFC",
+        "Category": "Food & Beverage",
+        "Region": "Global",
+        "Product Description": "Fast-food chain specializing in fried chicken",
+        "Target Demographics": "All ages, global fast-food consumers",
+        "Location (HQ)": "Louisville, USA"
+    },
+    {
+        "Advertiser Name": "Burger King",
+        "Category": "Food & Beverage",
+        "Region": "Global",
+        "Product Description": "Global fast-food chain serving burgers, fries, and drinks",
+        "Target Demographics": "All ages, fast-food consumers",
+        "Location (HQ)": "Miami, USA"
+    },
+    {
+        "Advertiser Name": "JPMorgan Chase",
+        "Category": "Finance",
+        "Region": "North America",
+        "Product Description": "Banking, financial services, wealth management",
+        "Target Demographics": "25\u201365, professionals, businesses, investors",
+        "Location (HQ)": "New York, USA"
+    },
+    {
+        "Advertiser Name": "Citibank",
+        "Category": "Finance",
+        "Region": "North America",
+        "Product Description": "Banking, credit cards, and financial services",
+        "Target Demographics": "25\u201365, urban professionals and global businesses",
+        "Location (HQ)": "New York, USA"
+    },
+    {
+        "Advertiser Name": "HSBC",
+        "Category": "Finance",
+        "Region": "Europe/Asia",
+        "Product Description": "International banking and financial services",
+        "Target Demographics": "25\u201365, global professionals and enterprises",
+        "Location (HQ)": "London, UK"
+    },
+    {
+        "Advertiser Name": "Mastercard",
+        "Category": "Finance",
+        "Region": "Global",
+        "Product Description": "Payment processing and financial solutions",
+        "Target Demographics": "18\u201365, global cardholders and merchants",
+        "Location (HQ)": "Purchase, USA"
+    },
+    {
+        "Advertiser Name": "Visa",
+        "Category": "Finance",
+        "Region": "Global",
+        "Product Description": "Global payments technology company",
+        "Target Demographics": "18\u201365, global cardholders and merchants",
+        "Location (HQ)": "Foster City, USA"
+    },
+    {
+        "Advertiser Name": "Netflix",
+        "Category": "Entertainment & Media",
+        "Region": "North America",
+        "Product Description": "Streaming platform offering movies, TV series, and original content",
+        "Target Demographics": "18\u201345, students, professionals, families",
+        "Location (HQ)": "Los Gatos, USA"
+    },
+    {
+        "Advertiser Name": "Disney",
+        "Category": "Entertainment & Media",
+        "Region": "North America",
+        "Product Description": "Entertainment giant with movies, streaming, and theme parks",
+        "Target Demographics": "All ages, families, entertainment lovers",
+        "Location (HQ)": "Burbank, USA"
+    },
+    {
+        "Advertiser Name": "Warner Bros Discovery",
+        "Category": "Entertainment & Media",
+        "Region": "North America",
+        "Product Description": "Movies, TV, HBO, streaming platforms",
+        "Target Demographics": "18\u201350, global entertainment consumers",
+        "Location (HQ)": "New York, USA"
+    },
+    {
+        "Advertiser Name": "Spotify",
+        "Category": "Entertainment & Media",
+        "Region": "Europe",
+        "Product Description": "Music streaming platform with global reach",
+        "Target Demographics": "16\u201340, music lovers, students, professionals",
+        "Location (HQ)": "Stockholm, Sweden"
+    },
+    {
+        "Advertiser Name": "TikTok",
+        "Category": "Entertainment & Social Media",
+        "Region": "Asia",
+        "Product Description": "Short-form video social platform with global audience",
+        "Target Demographics": "13\u201335, Gen Z, Millennials",
+        "Location (HQ)": "Beijing, China"
+    },
+    {
+        "Advertiser Name": "Pfizer",
+        "Category": "Healthcare & Pharma",
+        "Region": "North America",
+        "Product Description": "Pharmaceuticals, vaccines, and healthcare products",
+        "Target Demographics": "All ages, patients, healthcare providers",
+        "Location (HQ)": "New York, USA"
+    },
+    {
+        "Advertiser Name": "Johnson & Johnson",
+        "Category": "Healthcare & Pharma",
+        "Region": "North America",
+        "Product Description": "Healthcare, pharmaceuticals, consumer health products",
+        "Target Demographics": "All ages, families, healthcare providers",
+        "Location (HQ)": "New Brunswick, USA"
+    },
+    {
+        "Advertiser Name": "Moderna",
+        "Category": "Healthcare & Pharma",
+        "Region": "North America",
+        "Product Description": "Biotech company focused on mRNA vaccines and treatments",
+        "Target Demographics": "Governments, healthcare providers",
+        "Location (HQ)": "Cambridge, USA"
+    },
+    {
+        "Advertiser Name": "GSK",
+        "Category": "Healthcare & Pharma",
+        "Region": "Europe",
+        "Product Description": "Global pharmaceutical and healthcare company",
+        "Target Demographics": "Healthcare providers, patients worldwide",
+        "Location (HQ)": "London, UK"
+    },
+    {
+        "Advertiser Name": "Novartis",
+        "Category": "Healthcare & Pharma",
+        "Region": "Europe",
+        "Product Description": "Pharmaceuticals and healthcare solutions",
+        "Target Demographics": "Healthcare providers, patients worldwide",
+        "Location (HQ)": "Basel, Switzerland"
+    },
+    {
+        "Advertiser Name": "Airbnb",
+        "Category": "Travel & Leisure",
+        "Region": "Global",
+        "Product Description": "Online marketplace for vacation rentals and tourism experiences",
+        "Target Demographics": "18\u201350, travelers, digital nomads, families",
+        "Location (HQ)": "San Francisco, USA"
+    },
+    {
+        "Advertiser Name": "Booking.com",
+        "Category": "Travel & Leisure",
+        "Region": "Europe",
+        "Product Description": "Online travel agency offering hotels, flights, and packages",
+        "Target Demographics": "18\u201355, global travelers",
+        "Location (HQ)": "Amsterdam, Netherlands"
+    },
+    {
+        "Advertiser Name": "Expedia",
+        "Category": "Travel & Leisure",
+        "Region": "North America",
+        "Product Description": "Online travel agency with hotels, flights, and car rentals",
+        "Target Demographics": "18\u201355, budget and luxury travelers",
+        "Location (HQ)": "Seattle, USA"
+    },
+    {
+        "Advertiser Name": "Marriott International",
+        "Category": "Travel & Leisure",
+        "Region": "Global",
+        "Product Description": "Hotel chain with global luxury and budget accommodations",
+        "Target Demographics": "25\u201365, leisure and business travelers",
+        "Location (HQ)": "Bethesda, USA"
+    },
+    {
+        "Advertiser Name": "Hilton Hotels",
+        "Category": "Travel & Leisure",
+        "Region": "Global",
+        "Product Description": "Hospitality company with global hotels and resorts",
+        "Target Demographics": "25\u201365, leisure and business travelers",
+        "Location (HQ)": "McLean, USA"
+    },
+    {
+        "Advertiser Name": "Amazon",
+        "Category": "E-commerce & Retail",
+        "Region": "Global",
+        "Product Description": "E-commerce platform, AWS, and consumer electronics",
+        "Target Demographics": "All ages, online shoppers worldwide",
+        "Location (HQ)": "Seattle, USA"
+    },
+    {
+        "Advertiser Name": "Alibaba",
+        "Category": "E-commerce & Retail",
+        "Region": "Asia",
+        "Product Description": "E-commerce, cloud, and digital services",
+        "Target Demographics": "All ages, online shoppers, businesses",
+        "Location (HQ)": "Hangzhou, China"
+    },
+    {
+        "Advertiser Name": "Walmart",
+        "Category": "E-commerce & Retail",
+        "Region": "North America",
+        "Product Description": "Retail giant offering groceries, electronics, and household goods",
+        "Target Demographics": "All ages, value-focused consumers",
+        "Location (HQ)": "Bentonville, USA"
+    },
+    {
+        "Advertiser Name": "Target",
+        "Category": "E-commerce & Retail",
+        "Region": "North America",
+        "Product Description": "Retail chain offering apparel, electronics, groceries",
+        "Target Demographics": "All ages, families, middle-class consumers",
+        "Location (HQ)": "Minneapolis, USA"
+    },
+    {
+        "Advertiser Name": "eBay",
+        "Category": "E-commerce & Retail",
+        "Region": "Global",
+        "Product Description": "Online auction and e-commerce marketplace",
+        "Target Demographics": "18\u201355, online shoppers worldwide",
+        "Location (HQ)": "San Jose, USA"
+    }
+]
