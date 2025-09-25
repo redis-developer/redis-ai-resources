@@ -1,0 +1,35 @@
+# Core LangGraph and Redis dependencies
+langgraph>=0.2.0
+langgraph-checkpoint>=1.0.0
+langgraph-checkpoint-redis>=0.1.0
+
+# Redis and vector storage
+redis>=6.0.0
+redisvl>=0.8.0
+
+# OpenAI and language models
+openai>=1.0.0
+langchain>=0.2.0
+langchain-openai>=0.1.0
+langchain-core>=0.2.0
+langchain-community>=0.2.0
+
+# Data processing and utilities
+pydantic>=1.8.0,<3.0.0
+python-dotenv>=1.0.0
+click>=8.0.0
+rich>=13.0.0
+faker>=20.0.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Testing and development
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+black>=23.0.0
+isort>=5.12.0
+mypy>=1.5.0
+
+# Optional: For enhanced functionality
+tiktoken>=0.5.0
+python-ulid>=3.0.0

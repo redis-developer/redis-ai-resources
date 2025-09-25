@@ -1,0 +1,142 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "redis-context-course"
+version = "1.0.0"
+authors = [
+    {name = "Redis AI Resources Team", email = "redis-ai@redis.com"},
+]
+description = "Context Engineering with Redis - University Class Agent Reference Implementation"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Database",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = [
+    "redis",
+    "ai",
+    "context-engineering",
+    "langraph",
+    "openai",
+    "vector-database",
+    "semantic-search",
+    "memory-management",
+    "chatbot",
+    "recommendation-system",
+]
+dependencies = [
+    "langgraph>=0.2.0",
+    "langgraph-checkpoint>=1.0.0",
+    "langgraph-checkpoint-redis>=0.1.0",
+    "redis>=6.0.0",
+    "redisvl>=0.8.0",
+    "openai>=1.0.0",
+    "langchain>=0.2.0",
+    "langchain-openai>=0.1.0",
+    "langchain-core>=0.2.0",
+    "langchain-community>=0.2.0",
+    "pydantic>=1.8.0,<3.0.0",
+    "python-dotenv>=1.0.0",
+    "click>=8.0.0",
+    "rich>=13.0.0",
+    "faker>=20.0.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "tiktoken>=0.5.0",
+    "python-ulid>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.5.0",
+    "flake8>=6.0.0",
+]
+docs = [
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "myst-parser>=0.18.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/redis-developer/redis-ai-resources"
+Documentation = "https://github.com/redis-developer/redis-ai-resources/blob/main/python-recipes/context-engineering/README.md"
+Repository = "https://github.com/redis-developer/redis-ai-resources.git"
+"Bug Reports" = "https://github.com/redis-developer/redis-ai-resources/issues"
+
+[project.scripts]
+redis-class-agent = "redis_context_course.cli:main"
+generate-courses = "redis_context_course.scripts.generate_courses:main"
+ingest-courses = "redis_context_course.scripts.ingest_courses:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["redis_context_course*"]
+
+[tool.setuptools.package-data]
+redis_context_course = ["data/*.json", "templates/*.txt"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["redis_context_course"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+asyncio_mode = "auto"
