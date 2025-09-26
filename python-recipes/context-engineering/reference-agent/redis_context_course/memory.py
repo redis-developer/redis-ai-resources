@@ -142,7 +142,9 @@ class MemoryManager:
         
         # Convert results to ConversationMemory objects
         memories = []
-        for result in results.docs:
+        # Handle both old and new RedisVL API formats
+        docs = results.docs if hasattr(results, 'docs') else results
+        for result in docs:
             if result.vector_score >= similarity_threshold:
                 memory = ConversationMemory(
                     id=result.id,
