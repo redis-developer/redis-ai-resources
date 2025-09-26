@@ -145,15 +145,37 @@ class MemoryManager:
         # Handle both old and new RedisVL API formats
         docs = results.docs if hasattr(results, 'docs') else results
         for result in docs:
-            if result.vector_score >= similarity_threshold:
+            # Handle both object and dictionary formats
+            if isinstance(result, dict):
+                # New API returns dictionaries
+                vector_score = result.get('vector_score', 1.0)
+                result_id = result.get('id')
+                student_id = result.get('student_id')
+                content = result.get('content')
+                memory_type = result.get('memory_type')
+                importance = result.get('importance', 0.5)
+                created_at = result.get('created_at')
+                metadata = result.get('metadata', '{}')
+            else:
+                # Old API returns objects with attributes
+                vector_score = result.vector_score
+                result_id = result.id
+                student_id = result.student_id
+                content = result.content
+                memory_type = result.memory_type
+                importance = result.importance
+                created_at = result.created_at
+                metadata = result.metadata
+
+            if vector_score >= similarity_threshold:
                 memory = ConversationMemory(
-                    id=result.id,
-                    student_id=result.student_id,
-                    content=result.content,
-                    memory_type=result.memory_type,
-                    importance=float(result.importance),
-                    created_at=datetime.fromtimestamp(float(result.created_at)),
-                    metadata=json.loads(result.metadata) if result.metadata else {}
+                    id=result_id,
+                    student_id=student_id,
+                    content=content,
+                    memory_type=memory_type,
+                    importance=float(importance),
+                    created_at=datetime.fromtimestamp(float(created_at)),
+                    metadata=json.loads(metadata) if metadata else {}
                 )
                 memories.append(memory)
         
