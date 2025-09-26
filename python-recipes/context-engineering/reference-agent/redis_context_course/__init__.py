@@ -45,13 +45,8 @@ from .models import (
     Semester, DayOfWeek
 )
 
-# Conditional imports for components that require external dependencies
-try:
-    from .agent import ClassAgent, AgentState
-except (ImportError, TypeError, AttributeError, Exception) as e:
-    # Handle various import errors that can occur with complex dependencies
-    ClassAgent = None
-    AgentState = None
+# Import agent components
+from .agent import ClassAgent, AgentState
 
 try:
     from .memory import MemoryManager

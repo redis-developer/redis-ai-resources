@@ -106,6 +106,10 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install pytest nbval
 
+          # Install the redis-context-course package and its dependencies
+          cd python-recipes/context-engineering/reference-agent
+          pip install -e .
+
       - name: Test notebook
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
