@@ -8,7 +8,3 @@
 spring_ai_redis_rag.ipynb
 00_litellm_proxy_redis.ipynb
 04_redisvl_benchmarking_basics.ipynb
-# Context engineering notebooks - temporarily ignored due to complex dependencies
-01_what_is_context_engineering.ipynb
-02_role_of_context_engine.ipynb
-03_project_overview.ipynb

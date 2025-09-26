@@ -48,7 +48,8 @@ from .models import (
 # Conditional imports for components that require external dependencies
 try:
     from .agent import ClassAgent, AgentState
-except ImportError:
+except (ImportError, TypeError, AttributeError, Exception) as e:
+    # Handle various import errors that can occur with complex dependencies
     ClassAgent = None
     AgentState = None
 
