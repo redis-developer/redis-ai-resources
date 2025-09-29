@@ -48,6 +48,10 @@ from .models import (
 # Import agent components
 from .agent import ClassAgent, AgentState
 
+# Import working memory components
+from .working_memory import WorkingMemory, MessageCountStrategy, LongTermExtractionStrategy
+from .working_memory_tools import WorkingMemoryToolProvider
+
 try:
     from .memory import MemoryManager
 except ImportError:

@@ -20,6 +20,8 @@ from pydantic import BaseModel
 from .models import StudentProfile, CourseRecommendation, AgentResponse
 from .memory import MemoryManager
 from .course_manager import CourseManager
+from .working_memory import WorkingMemory, MessageCountStrategy
+from .working_memory_tools import WorkingMemoryToolProvider
 from .redis_config import redis_config
 
 
@@ -36,26 +38,40 @@ class AgentState(BaseModel):
 
 class ClassAgent:
     """Redis University Class Agent using LangGraph."""
-    
-    def __init__(self, student_id: str):
+
+    def __init__(self, student_id: str, extraction_strategy: str = "message_count"):
         self.student_id = student_id
         self.memory_manager = MemoryManager(student_id)
         self.course_manager = CourseManager()
+
+        # Initialize working memory with extraction strategy
+        if extraction_strategy == "message_count":
+            strategy = MessageCountStrategy(message_threshold=10, min_importance=0.6)
+        else:
+            strategy = MessageCountStrategy()  # Default fallback
+
+        self.working_memory = WorkingMemory(student_id, strategy)
+        self.working_memory_tools = WorkingMemoryToolProvider(self.working_memory, self.memory_manager)
+
         self.llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
-        
+
         # Build the agent graph
         self.graph = self._build_graph()
     
     def _build_graph(self) -> StateGraph:
         """Build the LangGraph workflow."""
-        # Define tools
-        tools = [
+        # Define base tools
+        base_tools = [
             self._search_courses_tool,
             self._get_recommendations_tool,
             self._store_preference_tool,
             self._store_goal_tool,
             self._get_student_context_tool
         ]
+
+        # Add working memory tools with extraction strategy awareness
+        working_memory_tools = self.working_memory_tools.get_memory_tool_schemas()
+        tools = base_tools + working_memory_tools
         
         # Create tool node
         tool_node = ToolNode(tools)
@@ -102,16 +118,30 @@ class ClassAgent:
     
     async def _agent_node(self, state: AgentState) -> AgentState:
         """Main agent reasoning node."""
+        # Add new messages to working memory
+        for message in state.messages:
+            if message not in getattr(self, '_processed_messages', set()):
+                self.working_memory.add_message(message)
+                getattr(self, '_processed_messages', set()).add(message)
+
+        # Initialize processed messages set if it doesn't exist
+        if not hasattr(self, '_processed_messages'):
+            self._processed_messages = set(state.messages)
+
         # Build system message with context
         system_prompt = self._build_system_prompt(state.context)
-        
+
         # Prepare messages for the LLM
         messages = [SystemMessage(content=system_prompt)] + state.messages
-        
+
         # Get LLM response
         response = await self.llm.ainvoke(messages)
         state.messages.append(response)
-        
+
+        # Add AI response to working memory
+        self.working_memory.add_message(response)
+        self._processed_messages.add(response)
+
         return state
     
     def _should_use_tools(self, state: AgentState) -> str:
@@ -128,10 +158,27 @@ class ClassAgent:
     
     async def _store_memory_node(self, state: AgentState) -> AgentState:
         """Store important information from the conversation."""
-        # Store conversation summary if conversation is getting long
-        if len(state.messages) > 20:
+        # Check if working memory should extract to long-term storage
+        if self.working_memory.should_extract_to_long_term():
+            extracted_memories = self.working_memory.extract_to_long_term()
+
+            # Store extracted memories in long-term storage
+            for memory in extracted_memories:
+                try:
+                    await self.memory_manager.store_memory(
+                        content=memory.content,
+                        memory_type=memory.memory_type,
+                        importance=memory.importance,
+                        metadata=memory.metadata
+                    )
+                except Exception as e:
+                    # Log error but continue
+                    print(f"Error storing extracted memory: {e}")
+
+        # Fallback: Store conversation summary if conversation is getting very long
+        elif len(state.messages) > 30:
             await self.memory_manager.store_conversation_summary(state.messages)
-        
+
         return state
     
     def _build_system_prompt(self, context: Dict[str, Any]) -> str:
@@ -144,6 +191,8 @@ class ClassAgent:
         - Get personalized course recommendations
         - Store student preferences and goals
         - Retrieve student context and history
+        - Manage working memory with intelligent extraction strategies
+        - Add memories to working memory or create memories directly
 
         Current student context:"""
         
@@ -155,13 +204,18 @@ class ClassAgent:
         
         if context.get("recent_conversations"):
             prompt += f"\nRecent conversation context: {', '.join(context['recent_conversations'])}"
-        
+
+        # Add working memory context
+        working_memory_context = self.working_memory_tools.get_strategy_context_for_system_prompt()
+        prompt += f"\n\n{working_memory_context}"
+
         prompt += """
 
         Guidelines:
         - Be helpful, friendly, and encouraging
         - Ask clarifying questions when needed
         - Provide specific course recommendations when appropriate
+        - Use memory tools intelligently based on the working memory extraction strategy
         - Remember and reference previous conversations
         - Store important preferences and goals for future reference
         - Explain course prerequisites and requirements clearly
