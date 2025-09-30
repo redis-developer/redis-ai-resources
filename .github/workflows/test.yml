@@ -115,7 +115,7 @@ jobs:
             -e REDIS_URL=redis://localhost:6379 \
             -e OPENAI_API_KEY=$OPENAI_API_KEY \
             -e LOG_LEVEL=info \
-            redis/agent-memory-server:latest
+            ghcr.io/redis/agent-memory-server:latest
 
           # Wait for memory server to be ready
           echo "Waiting for Agent Memory Server to be ready..."

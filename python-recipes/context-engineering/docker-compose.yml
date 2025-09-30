@@ -18,7 +18,7 @@ services:
       retries: 5
 
   agent-memory-server:
-    image: redis/agent-memory-server:latest
+    image: ghcr.io/redis/agent-memory-server:latest
     container_name: agent-memory-server
     ports:
       - "8000:8000"
