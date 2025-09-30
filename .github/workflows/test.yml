@@ -87,9 +87,14 @@ jobs:
 
     services:
       redis:
-        image: redis:8.0-M03
+        image: redis/redis-stack:latest
         ports:
           - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
@@ -98,6 +103,30 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      # Start Agent Memory Server
+      - name: Start Agent Memory Server
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          docker run -d \
+            --name agent-memory-server \
+            --network host \
+            -e REDIS_URL=redis://localhost:6379 \
+            -e OPENAI_API_KEY=$OPENAI_API_KEY \
+            -e LOG_LEVEL=info \
+            redis/agent-memory-server:latest
+
+          # Wait for memory server to be ready
+          echo "Waiting for Agent Memory Server to be ready..."
+          for i in {1..30}; do
+            if curl -f http://localhost:8000/health 2>/dev/null; then
+              echo "Agent Memory Server is ready!"
+              break
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
 
       - name: Create and activate venv
         run: |
@@ -114,7 +143,14 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          AGENT_MEMORY_URL: http://localhost:8000
+          REDIS_URL: redis://localhost:6379
         run: |
           echo "Testing notebook: ${{ matrix.notebook }}"
           source venv/bin/activate
           pytest --nbval-lax --disable-warnings "${{ matrix.notebook }}"
+
+      - name: Show Agent Memory Server logs on failure
+        if: failure()
+        run: |
+          docker logs agent-memory-server

@@ -86,26 +86,47 @@ These modules are designed to be imported in notebooks and used as building bloc
 
 ## Getting Started
 
-1. **Set up the environment**: Install required dependencies
-2. **Run the reference agent**: Start with the complete implementation
-3. **Explore the notebooks**: Work through the educational content
-4. **Experiment**: Modify and extend the agent for your use cases
+### Prerequisites
 
-## Prerequisites
-
-- Python 3.8+
-- Redis 8 (local or cloud)
+- Python 3.10+
+- Docker and Docker Compose (for running Redis and Agent Memory Server)
 - OpenAI API key
 - Basic understanding of AI agents and vector databases
 
-## Quick Start
+### Quick Start
+
+#### 1. Start Required Services
+
+The notebooks and reference agent require Redis and the Agent Memory Server to be running:
+
+```bash
+# Navigate to the context-engineering directory
+cd python-recipes/context-engineering
+
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env and add your OpenAI API key
+# OPENAI_API_KEY=your-key-here
+
+# Start Redis and Agent Memory Server
+docker-compose up -d
+
+# Verify services are running
+docker-compose ps
+
+# Check Agent Memory Server health
+curl http://localhost:8000/health
+```
+
+#### 2. Set Up the Reference Agent
 
 ```bash
 # Navigate to the reference agent directory
-cd python-recipes/context-engineering/reference-agent
+cd reference-agent
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -e .
 
 # Generate sample course data
 python -m redis_context_course.scripts.generate_courses
@@ -115,6 +136,31 @@ python -m redis_context_course.scripts.ingest_courses
 
 # Start the CLI agent
 python -m redis_context_course.cli
+```
+
+#### 3. Run the Notebooks
+
+```bash
+# Install Jupyter
+pip install jupyter
+
+# Start Jupyter
+jupyter notebook notebooks/
+
+# Open any notebook and run the cells
+```
+
+### Stopping Services
+
+```bash
+# Stop services but keep data
+docker-compose stop
+
+# Stop and remove services (keeps volumes)
+docker-compose down
+
+# Stop and remove everything including data
+docker-compose down -v
 ```
 
 ## Learning Path
