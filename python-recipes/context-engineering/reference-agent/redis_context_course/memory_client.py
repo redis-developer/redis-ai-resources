@@ -138,7 +138,12 @@ class MemoryClient:
             model_name=model_name
         )
 
-        return await self.client.put_working_memory(working_memory)
+        return await self.client.put_working_memory(
+            session_id=session_id,
+            memory=working_memory,
+            user_id=self.user_id,
+            model_name=model_name
+        )
     
     async def add_message_to_working_memory(
         self,
