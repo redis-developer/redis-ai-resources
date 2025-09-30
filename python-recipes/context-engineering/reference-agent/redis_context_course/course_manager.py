@@ -9,18 +9,8 @@ import json
 from typing import List, Optional, Dict, Any
 import numpy as np
 
-# Conditional imports for RedisVL - may not be available in all environments
-try:
-    from redisvl.query import VectorQuery, FilterQuery
-    from redisvl.query.filter import Tag, Num
-    REDISVL_AVAILABLE = True
-except ImportError:
-    # Fallback for environments without RedisVL
-    VectorQuery = None
-    FilterQuery = None
-    Tag = None
-    Num = None
-    REDISVL_AVAILABLE = False
+from redisvl.query import VectorQuery, FilterQuery
+from redisvl.query.filter import Tag, Num
 
 from .models import Course, CourseRecommendation, StudentProfile, DifficultyLevel, CourseFormat
 from .redis_config import redis_config
@@ -35,66 +25,39 @@ class CourseManager:
         self.embeddings = redis_config.embeddings
 
     def _build_filters(self, filters: Dict[str, Any]) -> str:
-        """
-        Build filter expressions for Redis queries.
-
-        Uses RedisVL filter classes if available, otherwise falls back to string construction.
-        This provides compatibility across different environments.
-        """
+        """Build filter expressions for Redis queries using RedisVL filter classes."""
         if not filters:
             return ""
 
-        if REDISVL_AVAILABLE and Tag is not None and Num is not None:
-            # Use RedisVL filter classes (preferred approach)
-            filter_conditions = []
-
-            if "department" in filters:
-                filter_conditions.append(Tag("department") == filters["department"])
-            if "major" in filters:
-                filter_conditions.append(Tag("major") == filters["major"])
-            if "difficulty_level" in filters:
-                filter_conditions.append(Tag("difficulty_level") == filters["difficulty_level"])
-            if "format" in filters:
-                filter_conditions.append(Tag("format") == filters["format"])
-            if "semester" in filters:
-                filter_conditions.append(Tag("semester") == filters["semester"])
-            if "year" in filters:
-                filter_conditions.append(Num("year") == filters["year"])
-            if "credits_min" in filters:
-                min_credits = filters["credits_min"]
-                max_credits = filters.get("credits_max", 10)
-                filter_conditions.append(Num("credits") >= min_credits)
-                if max_credits != min_credits:
-                    filter_conditions.append(Num("credits") <= max_credits)
-
-            # Combine filters with AND logic
-            if filter_conditions:
-                combined_filter = filter_conditions[0]
-                for condition in filter_conditions[1:]:
-                    combined_filter = combined_filter & condition
-                return combined_filter
-
-        # Fallback to string-based filter construction
-        filter_expressions = []
+        filter_conditions = []
 
         if "department" in filters:
-            filter_expressions.append(f"@department:{{{filters['department']}}}")
+            filter_conditions.append(Tag("department") == filters["department"])
         if "major" in filters:
-            filter_expressions.append(f"@major:{{{filters['major']}}}")
+            filter_conditions.append(Tag("major") == filters["major"])
         if "difficulty_level" in filters:
-            filter_expressions.append(f"@difficulty_level:{{{filters['difficulty_level']}}}")
+            filter_conditions.append(Tag("difficulty_level") == filters["difficulty_level"])
         if "format" in filters:
-            filter_expressions.append(f"@format:{{{filters['format']}}}")
+            filter_conditions.append(Tag("format") == filters["format"])
         if "semester" in filters:
-            filter_expressions.append(f"@semester:{{{filters['semester']}}}")
+            filter_conditions.append(Tag("semester") == filters["semester"])
         if "year" in filters:
-            filter_expressions.append(f"@year:[{filters['year']} {filters['year']}]")
+            filter_conditions.append(Num("year") == filters["year"])
         if "credits_min" in filters:
             min_credits = filters["credits_min"]
             max_credits = filters.get("credits_max", 10)
-            filter_expressions.append(f"@credits:[{min_credits} {max_credits}]")
+            filter_conditions.append(Num("credits") >= min_credits)
+            if max_credits != min_credits:
+                filter_conditions.append(Num("credits") <= max_credits)
 
-        return " ".join(filter_expressions) if filter_expressions else ""
+        # Combine filters with AND logic
+        if filter_conditions:
+            combined_filter = filter_conditions[0]
+            for condition in filter_conditions[1:]:
+                combined_filter = combined_filter & condition
+            return combined_filter
+
+        return ""
     
     async def store_course(self, course: Course) -> str:
         """Store a course in Redis with vector embedding."""

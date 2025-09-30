@@ -123,17 +123,6 @@ class StudentProfile(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.now)
 
 
-class ConversationMemory(BaseModel):
-    """Memory entry for long-term storage."""
-    id: str = Field(default_factory=lambda: str(ULID()))
-    student_id: str
-    content: str
-    memory_type: str  # "preference", "goal", "experience", etc.
-    importance: float = Field(default=1.0, ge=0.0, le=1.0)
-    created_at: datetime = Field(default_factory=datetime.now)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
-
-
 class CourseRecommendation(BaseModel):
     """Course recommendation with reasoning."""
     course: Course

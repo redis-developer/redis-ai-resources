@@ -110,7 +110,8 @@ def demo_package_info():
     print("\n🔧 Available Components:")
     components = [
         ("Models", "Data structures for courses, students, and memory"),
-        ("MemoryManager", "Handles short-term and long-term memory"),
+        ("MemoryManager", "Handles long-term memory (cross-session knowledge)"),
+        ("WorkingMemory", "Handles working memory (task-focused context)"),
         ("CourseManager", "Course storage and recommendation engine"),
         ("ClassAgent", "LangGraph-based conversational agent"),
         ("RedisConfig", "Redis connection and index management")
@@ -182,7 +183,7 @@ def main():
         
         print("\n🎉 Demo completed successfully!")
         print("\nNext steps:")
-        print("1. Install Redis Stack: docker run -d --name redis-stack -p 6379:6379 redis/redis-stack:latest")
+        print("1. Install Redis 8: docker run -d --name redis -p 6379:6379 redis:8-alpine")
         print("2. Set OPENAI_API_KEY environment variable")
         print("3. Try the interactive agent: redis-class-agent --student-id demo")
         

@@ -4,7 +4,7 @@ A complete reference implementation of a context-aware AI agent for university c
 
 ## Features
 
-- 🧠 **Dual Memory System**: Short-term (conversation) and long-term (persistent) memory
+- 🧠 **Dual Memory System**: Working memory (task-focused) and long-term memory (cross-session knowledge)
 - 🔍 **Semantic Search**: Vector-based course discovery and recommendations
 - 🛠️ **Tool Integration**: Extensible tool system for course search and memory management
 - 💬 **Context Awareness**: Maintains student preferences, goals, and conversation history
@@ -40,30 +40,54 @@ export OPENAI_API_KEY="your-openai-api-key"
 export REDIS_URL="redis://localhost:6379"
 ```
 
-### 2. Start Redis
+### 2. Start Redis 8
 
 For local development:
 ```bash
 # Using Docker
-docker run -d --name redis-stack -p 6379:6379 redis/redis-stack:latest
+docker run -d --name redis -p 6379:6379 redis:8-alpine
 
-# Or install Redis Stack locally
-# See: https://redis.io/docs/stack/get-started/install/
+# Or install Redis 8 locally
+# See: https://redis.io/docs/latest/operate/oss_and_stack/install/
 ```
 
-### 3. Generate Sample Data
+### 3. Start Redis Agent Memory Server
+
+The agent uses [Redis Agent Memory Server](https://github.com/redis/agent-memory-server) for memory management:
+
+```bash
+# Install Agent Memory Server
+pip install agent-memory-server
+
+# Start the server (in a separate terminal)
+uv run agent-memory api --no-worker
+
+# Or with Docker
+docker run -d --name agent-memory \
+  -p 8000:8000 \
+  -e REDIS_URL=redis://host.docker.internal:6379 \
+  -e OPENAI_API_KEY=your-key \
+  redis/agent-memory-server
+```
+
+Set the Agent Memory Server URL (optional, defaults to localhost:8000):
+```bash
+export AGENT_MEMORY_URL="http://localhost:8000"
+```
+
+### 4. Generate Sample Data
 
 ```bash
 generate-courses --courses-per-major 15 --output course_catalog.json
 ```
 
-### 4. Ingest Data into Redis
+### 5. Ingest Data into Redis
 
 ```bash
 ingest-courses --catalog course_catalog.json --clear
 ```
 
-### 5. Start the Agent
+### 6. Start the Agent
 
 ```bash
 redis-class-agent --student-id your_student_id
@@ -73,10 +97,10 @@ redis-class-agent --student-id your_student_id
 
 ```python
 import asyncio
-from redis_context_course import ClassAgent, MemoryManager, CourseManager
+from redis_context_course import ClassAgent, MemoryClient, CourseManager
 
 async def main():
-    # Initialize the agent
+    # Initialize the agent (uses Agent Memory Server)
     agent = ClassAgent("student_123")
 
     # Chat with the agent
@@ -99,9 +123,11 @@ if __name__ == "__main__":
 ### Core Components
 
 - **Agent**: LangGraph-based workflow orchestration
-- **Memory Manager**: Handles both short-term and long-term memory
+- **Memory Client**: Interface to Redis Agent Memory Server
+  - Working memory: Session-scoped, task-focused context
+  - Long-term memory: Cross-session, persistent knowledge
 - **Course Manager**: Course storage and recommendation engine
-- **Models**: Data structures for courses, students, and memory
+- **Models**: Data structures for courses and students
 - **Redis Config**: Redis connections and index management
 
 ### Command Line Tools
@@ -114,18 +140,28 @@ After installation, you have access to these command-line tools:
 
 ### Memory System
 
-The agent uses a dual-memory architecture:
+The agent uses [Redis Agent Memory Server](https://github.com/redis/agent-memory-server) for a production-ready dual-memory architecture:
 
-1. **Short-term Memory**: Managed by LangGraph's Redis checkpointer
-   - Conversation history
-   - Current session state
-   - Temporary context
+1. **Working Memory**: Session-scoped, task-focused context
+   - Conversation messages
+   - Current task state
+   - Task-related data
+   - TTL-based (default: 1 hour)
+   - Automatic extraction to long-term storage
 
-2. **Long-term Memory**: Stored in Redis with vector embeddings
+2. **Long-term Memory**: Cross-session, persistent knowledge
    - Student preferences and goals
-   - Conversation summaries
-   - Important experiences
-   - Semantic search capabilities
+   - Important facts learned over time
+   - Vector-indexed for semantic search
+   - Automatic deduplication
+   - Three memory types: semantic, episodic, message
+
+**Key Features:**
+- Automatic memory extraction from conversations
+- Semantic vector search with OpenAI embeddings
+- Hash-based and semantic deduplication
+- Rich metadata (topics, entities, timestamps)
+- MCP server support for Claude Desktop
 
 ### Tool System
 
@@ -211,15 +247,47 @@ isort src/ scripts/
 mypy src/
 ```
 
+## Project Structure
+
+```
+reference-agent/
+├── redis_context_course/       # Main package
+│   ├── agent.py               # LangGraph agent implementation
+│   ├── memory.py              # Long-term memory manager
+│   ├── working_memory.py      # Working memory implementation
+│   ├── working_memory_tools.py # Memory management tools
+│   ├── course_manager.py      # Course search and recommendations
+│   ├── models.py              # Data models
+│   ├── redis_config.py        # Redis configuration
+│   ├── cli.py                 # Command-line interface
+│   └── scripts/               # Data generation and ingestion
+├── tests/                      # Test suite
+├── examples/                   # Usage examples
+│   └── basic_usage.py         # Basic package usage demo
+├── data/                       # Generated course data
+├── README.md                   # This file
+├── requirements.txt            # Dependencies
+└── setup.py                    # Package setup
+
+```
+
 ## Educational Use
 
 This reference implementation is designed for educational purposes to demonstrate:
 
 - Context engineering principles
-- Memory management in AI agents
+- Memory management in AI agents (working memory vs. long-term memory)
 - Tool integration patterns
 - Vector search and semantic retrieval
 - LangGraph workflow design
 - Redis as an AI infrastructure component
 
 See the accompanying notebooks in the `../notebooks/` directory for detailed explanations and tutorials.
+
+### Learning Path
+
+1. **Start with the notebooks**: `../notebooks/` contains step-by-step tutorials
+2. **Explore the examples**: `examples/basic_usage.py` shows basic package usage
+3. **Read the source code**: Well-documented code in `redis_context_course/`
+4. **Run the agent**: Try the interactive CLI to see it in action
+5. **Extend and experiment**: Modify the code to learn by doing

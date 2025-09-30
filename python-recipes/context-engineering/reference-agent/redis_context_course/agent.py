@@ -2,7 +2,16 @@
 LangGraph agent implementation for the Redis University Class Agent.
 
 This module implements the main agent logic using LangGraph for workflow orchestration,
-with Redis for memory management and state persistence.
+with Redis Agent Memory Server for memory management.
+
+Memory Architecture:
+- LangGraph Checkpointer (Redis): Low-level graph state persistence for resuming execution
+- Working Memory (Agent Memory Server): Session-scoped conversation and task context
+  * Automatically extracts important facts to long-term storage
+  * Loaded at start of conversation turn, saved at end
+- Long-term Memory (Agent Memory Server): Cross-session knowledge (preferences, facts)
+  * Searchable via semantic vector search
+  * Accessible via tools
 """
 
 import json
@@ -18,10 +27,8 @@ from langgraph.prebuilt import ToolNode
 from pydantic import BaseModel
 
 from .models import StudentProfile, CourseRecommendation, AgentResponse
-from .memory import MemoryManager
+from .memory_client import MemoryClient
 from .course_manager import CourseManager
-from .working_memory import WorkingMemory, MessageCountStrategy
-from .working_memory_tools import WorkingMemoryToolProvider
 from .redis_config import redis_config
 
 
@@ -37,57 +44,51 @@ class AgentState(BaseModel):
 
 
 class ClassAgent:
-    """Redis University Class Agent using LangGraph."""
+    """Redis University Class Agent using LangGraph and Agent Memory Server."""
 
-    def __init__(self, student_id: str, extraction_strategy: str = "message_count"):
+    def __init__(self, student_id: str, session_id: Optional[str] = None):
         self.student_id = student_id
-        self.memory_manager = MemoryManager(student_id)
+        self.session_id = session_id or f"session_{student_id}"
+        self.memory_client = MemoryClient(user_id=student_id)
         self.course_manager = CourseManager()
-
-        # Initialize working memory with extraction strategy
-        if extraction_strategy == "message_count":
-            strategy = MessageCountStrategy(message_threshold=10, min_importance=0.6)
-        else:
-            strategy = MessageCountStrategy()  # Default fallback
-
-        self.working_memory = WorkingMemory(student_id, strategy)
-        self.working_memory_tools = WorkingMemoryToolProvider(self.working_memory, self.memory_manager)
-
         self.llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
 
         # Build the agent graph
         self.graph = self._build_graph()
     
     def _build_graph(self) -> StateGraph:
-        """Build the LangGraph workflow."""
-        # Define base tools
-        base_tools = [
+        """
+        Build the LangGraph workflow.
+
+        The graph uses:
+        1. Redis checkpointer for low-level graph state persistence (resuming nodes)
+        2. Agent Memory Server for high-level memory management (working + long-term)
+        """
+        # Define tools
+        tools = [
             self._search_courses_tool,
             self._get_recommendations_tool,
-            self._store_preference_tool,
-            self._store_goal_tool,
-            self._get_student_context_tool
+            self._store_memory_tool,
+            self._search_memories_tool
         ]
 
-        # Add working memory tools with extraction strategy awareness
-        working_memory_tools = self.working_memory_tools.get_memory_tool_schemas()
-        tools = base_tools + working_memory_tools
-        
         # Create tool node
         tool_node = ToolNode(tools)
-        
+
         # Define the graph
         workflow = StateGraph(AgentState)
-        
+
         # Add nodes
+        workflow.add_node("load_working_memory", self._load_working_memory)
         workflow.add_node("retrieve_context", self._retrieve_context)
         workflow.add_node("agent", self._agent_node)
         workflow.add_node("tools", tool_node)
         workflow.add_node("respond", self._respond_node)
-        workflow.add_node("store_memory", self._store_memory_node)
-        
+        workflow.add_node("save_working_memory", self._save_working_memory)
+
         # Define edges
-        workflow.set_entry_point("retrieve_context")
+        workflow.set_entry_point("load_working_memory")
+        workflow.add_edge("load_working_memory", "retrieve_context")
         workflow.add_edge("retrieve_context", "agent")
         workflow.add_conditional_edges(
             "agent",
@@ -98,49 +99,86 @@ class ClassAgent:
             }
         )
         workflow.add_edge("tools", "agent")
-        workflow.add_edge("respond", "store_memory")
-        workflow.add_edge("store_memory", END)
-        
+        workflow.add_edge("respond", "save_working_memory")
+        workflow.add_edge("save_working_memory", END)
+
+        # Compile with Redis checkpointer for graph state persistence
+        # Note: This is separate from Agent Memory Server's working memory
         return workflow.compile(checkpointer=redis_config.checkpointer)
     
+    async def _load_working_memory(self, state: AgentState) -> AgentState:
+        """
+        Load working memory from Agent Memory Server.
+
+        Working memory contains:
+        - Conversation messages from this session
+        - Structured memories awaiting promotion to long-term storage
+        - Session-specific data
+
+        This is the first node in the graph, loading context for the current turn.
+        """
+        # Get working memory for this session
+        working_memory = await self.memory_client.get_working_memory(
+            session_id=self.session_id,
+            model_name="gpt-4o"
+        )
+
+        # If we have working memory, add previous messages to state
+        if working_memory and working_memory.messages:
+            # Convert MemoryMessage objects to LangChain messages
+            for msg in working_memory.messages:
+                if msg.role == "user":
+                    state.messages.append(HumanMessage(content=msg.content))
+                elif msg.role == "assistant":
+                    state.messages.append(AIMessage(content=msg.content))
+
+        return state
+
     async def _retrieve_context(self, state: AgentState) -> AgentState:
         """Retrieve relevant context for the current conversation."""
         # Get the latest human message
         human_messages = [msg for msg in state.messages if isinstance(msg, HumanMessage)]
         if human_messages:
             state.current_query = human_messages[-1].content
-        
-        # Retrieve student context
-        context = await self.memory_manager.get_student_context(state.current_query)
-        state.context = context
-        
+
+        # Search long-term memories for relevant context
+        if state.current_query:
+            memories = await self.memory_client.search_memories(
+                query=state.current_query,
+                limit=5
+            )
+
+            # Build context from memories
+            context = {
+                "preferences": [],
+                "goals": [],
+                "recent_facts": []
+            }
+
+            for memory in memories:
+                if memory.memory_type == "semantic":
+                    if "preference" in memory.topics:
+                        context["preferences"].append(memory.text)
+                    elif "goal" in memory.topics:
+                        context["goals"].append(memory.text)
+                    else:
+                        context["recent_facts"].append(memory.text)
+
+            state.context = context
+
         return state
     
     async def _agent_node(self, state: AgentState) -> AgentState:
         """Main agent reasoning node."""
-        # Add new messages to working memory
-        for message in state.messages:
-            if message not in getattr(self, '_processed_messages', set()):
-                self.working_memory.add_message(message)
-                getattr(self, '_processed_messages', set()).add(message)
-
-        # Initialize processed messages set if it doesn't exist
-        if not hasattr(self, '_processed_messages'):
-            self._processed_messages = set(state.messages)
-
         # Build system message with context
         system_prompt = self._build_system_prompt(state.context)
 
         # Prepare messages for the LLM
         messages = [SystemMessage(content=system_prompt)] + state.messages
 
-        # Get LLM response
-        response = await self.llm.ainvoke(messages)
+        # Get LLM response with tools
+        response = await self.llm.bind_tools(self._get_tools()).ainvoke(messages)
         state.messages.append(response)
-
-        # Add AI response to working memory
-        self.working_memory.add_message(response)
-        self._processed_messages.add(response)
 
         return state
     
@@ -155,59 +193,80 @@ class ClassAgent:
         """Generate final response."""
         # The response is already in the last message
         return state
-    
-    async def _store_memory_node(self, state: AgentState) -> AgentState:
-        """Store important information from the conversation."""
-        # Check if working memory should extract to long-term storage
-        if self.working_memory.should_extract_to_long_term():
-            extracted_memories = self.working_memory.extract_to_long_term()
 
-            # Store extracted memories in long-term storage
-            for memory in extracted_memories:
-                try:
-                    await self.memory_manager.store_memory(
-                        content=memory.content,
-                        memory_type=memory.memory_type,
-                        importance=memory.importance,
-                        metadata=memory.metadata
-                    )
-                except Exception as e:
-                    # Log error but continue
-                    print(f"Error storing extracted memory: {e}")
+    async def _save_working_memory(self, state: AgentState) -> AgentState:
+        """
+        Save working memory to Agent Memory Server.
 
-        # Fallback: Store conversation summary if conversation is getting very long
-        elif len(state.messages) > 30:
-            await self.memory_manager.store_conversation_summary(state.messages)
+        This is the final node in the graph. It saves the conversation to working memory,
+        and the Agent Memory Server automatically:
+        1. Stores the conversation messages
+        2. Extracts important facts to long-term storage
+        3. Manages memory deduplication and compaction
+
+        This demonstrates the key concept of working memory: it's persistent storage
+        for task-focused context that automatically promotes important information
+        to long-term memory.
+        """
+        # Convert LangChain messages to simple dict format
+        messages = []
+        for msg in state.messages:
+            if isinstance(msg, HumanMessage):
+                messages.append({"role": "user", "content": msg.content})
+            elif isinstance(msg, AIMessage):
+                messages.append({"role": "assistant", "content": msg.content})
+
+        # Save to working memory
+        # The Agent Memory Server will automatically extract important memories
+        # to long-term storage based on its configured extraction strategy
+        await self.memory_client.save_working_memory(
+            session_id=self.session_id,
+            messages=messages
+        )
 
         return state
     
     def _build_system_prompt(self, context: Dict[str, Any]) -> str:
         """Build system prompt with current context."""
-        prompt = """You are a helpful Redis University Class Agent. Your role is to help students find courses, 
-        plan their academic journey, and provide personalized recommendations based on their interests and goals.
+        prompt = """You are a helpful Redis University Class Agent powered by Redis Agent Memory Server.
+        Your role is to help students find courses, plan their academic journey, and provide personalized
+        recommendations based on their interests and goals.
+
+        Memory Architecture:
+
+        1. LangGraph Checkpointer (Redis):
+           - Low-level graph state persistence for resuming execution
+           - You don't interact with this directly
+
+        2. Working Memory (Agent Memory Server):
+           - Session-scoped, task-focused context
+           - Contains conversation messages and task-related data
+           - Automatically loaded at the start of each turn
+           - Automatically saved at the end of each turn
+           - Agent Memory Server automatically extracts important facts to long-term storage
+
+        3. Long-term Memory (Agent Memory Server):
+           - Cross-session, persistent knowledge (preferences, goals, facts)
+           - Searchable via semantic vector search
+           - You can store memories directly using the store_memory tool
+           - You can search memories using the search_memories tool
 
         You have access to tools to:
-        - Search for courses in the catalog
-        - Get personalized course recommendations
-        - Store student preferences and goals
-        - Retrieve student context and history
-        - Manage working memory with intelligent extraction strategies
-        - Add memories to working memory or create memories directly
+        - search_courses: Search for courses in the catalog
+        - get_recommendations: Get personalized course recommendations
+        - store_memory: Store important facts in long-term memory (preferences, goals, etc.)
+        - search_memories: Search existing long-term memories
 
-        Current student context:"""
-        
+        Current student context (from long-term memory):"""
+
         if context.get("preferences"):
-            prompt += f"\nStudent preferences: {', '.join(context['preferences'])}"
-        
-        if context.get("goals"):
-            prompt += f"\nStudent goals: {', '.join(context['goals'])}"
-        
-        if context.get("recent_conversations"):
-            prompt += f"\nRecent conversation context: {', '.join(context['recent_conversations'])}"
+            prompt += f"\n\nPreferences:\n" + "\n".join(f"- {p}" for p in context['preferences'])
 
-        # Add working memory context
-        working_memory_context = self.working_memory_tools.get_strategy_context_for_system_prompt()
-        prompt += f"\n\n{working_memory_context}"
+        if context.get("goals"):
+            prompt += f"\n\nGoals:\n" + "\n".join(f"- {g}" for g in context['goals'])
+
+        if context.get("recent_facts"):
+            prompt += f"\n\nRecent Facts:\n" + "\n".join(f"- {f}" for f in context['recent_facts'])
 
         prompt += """
 
@@ -215,12 +274,12 @@ class ClassAgent:
         - Be helpful, friendly, and encouraging
         - Ask clarifying questions when needed
         - Provide specific course recommendations when appropriate
-        - Use memory tools intelligently based on the working memory extraction strategy
-        - Remember and reference previous conversations
-        - Store important preferences and goals for future reference
+        - When you learn important preferences or goals, use store_memory to save them
+        - Reference previous context from long-term memory when relevant
         - Explain course prerequisites and requirements clearly
+        - The conversation is automatically saved to working memory
         """
-        
+
         return prompt
 
     @tool
@@ -267,31 +326,65 @@ class ClassAgent:
         return result
 
     @tool
-    async def _store_preference_tool(self, preference: str, context: str = "") -> str:
-        """Store a student preference for future reference."""
-        memory_id = await self.memory_manager.store_preference(preference, context)
-        return f"Stored preference: {preference}"
+    async def _store_memory_tool(
+        self,
+        text: str,
+        memory_type: str = "semantic",
+        topics: Optional[List[str]] = None
+    ) -> str:
+        """
+        Store important information in long-term memory.
+
+        Args:
+            text: The information to store (e.g., "Student prefers online courses")
+            memory_type: Type of memory - "semantic" for facts/preferences, "episodic" for events
+            topics: Related topics for filtering (e.g., ["preferences", "courses"])
+        """
+        await self.memory_client.create_memory(
+            text=text,
+            memory_type=memory_type,
+            topics=topics or []
+        )
+        return f"Stored in long-term memory: {text}"
 
     @tool
-    async def _store_goal_tool(self, goal: str, context: str = "") -> str:
-        """Store a student goal or objective."""
-        memory_id = await self.memory_manager.store_goal(goal, context)
-        return f"Stored goal: {goal}"
+    async def _search_memories_tool(
+        self,
+        query: str,
+        limit: int = 5
+    ) -> str:
+        """
+        Search long-term memories using semantic search.
 
-    @tool
-    async def _get_student_context_tool(self, query: str = "") -> str:
-        """Retrieve student context and history."""
-        context = await self.memory_manager.get_student_context(query)
+        Args:
+            query: Search query (e.g., "student preferences")
+            limit: Maximum number of results to return
+        """
+        memories = await self.memory_client.search_memories(
+            query=query,
+            limit=limit
+        )
 
-        result = "Student Context:\n"
-        if context.get("preferences"):
-            result += f"Preferences: {', '.join(context['preferences'])}\n"
-        if context.get("goals"):
-            result += f"Goals: {', '.join(context['goals'])}\n"
-        if context.get("recent_conversations"):
-            result += f"Recent conversations: {', '.join(context['recent_conversations'])}\n"
+        if not memories:
+            return "No relevant memories found."
 
-        return result if len(result) > 20 else "No significant context found."
+        result = f"Found {len(memories)} relevant memories:\n\n"
+        for i, memory in enumerate(memories, 1):
+            result += f"{i}. {memory.text}\n"
+            if memory.topics:
+                result += f"   Topics: {', '.join(memory.topics)}\n"
+            result += "\n"
+
+        return result
+
+    def _get_tools(self):
+        """Get list of tools for the agent."""
+        return [
+            self._search_courses_tool,
+            self._get_recommendations_tool,
+            self._store_memory_tool,
+            self._search_memories_tool
+        ]
 
     async def chat(self, message: str, thread_id: str = "default") -> str:
         """Main chat interface for the agent."""

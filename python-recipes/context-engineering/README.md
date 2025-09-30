@@ -7,7 +7,7 @@ This section contains comprehensive recipes and tutorials for **Context Engineer
 Context Engineering is the discipline of building systems that help AI agents understand, maintain, and utilize context effectively. This includes:
 
 - **System Context**: What the AI should know about its role, capabilities, and environment
-- **Memory Management**: How to store, retrieve, and manage both short-term and long-term memory
+- **Memory Management**: How to store, retrieve, and manage working memory (task-focused) and long-term memory (cross-session knowledge)
 - **Tool Integration**: How to define and manage available tools and their usage
 - **Context Optimization**: Techniques for managing context window limits and improving relevance
 
@@ -24,7 +24,8 @@ context-engineering/
 ├── notebooks/                   # Educational notebooks organized by section
 │   ├── section-1-introduction/  # What is Context Engineering?
 │   ├── section-2-system-context/# Setting up system context and tools
-│   └── section-3-memory/        # Memory management concepts
+│   ├── section-3-memory/        # Memory management concepts
+│   └── section-4-optimizations/ # Advanced optimization techniques
 └── resources/                   # Shared resources, diagrams, and assets
 ```
 
@@ -43,9 +44,17 @@ This repository supports a comprehensive web course on Context Engineering with 
 
 ### Section 3: Memory
 - **Memory Overview** - Concepts and architecture
-- **Short-term/Working Memory** - Managing conversation context
-- **Summarizing Short-term Memory** - Context window optimization
-- **Long-term Memory** - Persistent knowledge storage and retrieval
+- **Working Memory** - Managing task-focused context (conversation, task data)
+- **Long-term Memory** - Cross-session knowledge storage and retrieval
+- **Memory Integration** - Combining working and long-term memory
+- **Memory Tools** - Giving the LLM control over memory operations
+
+### Section 4: Optimizations
+- **Context Window Management** - Handling token limits and summarization
+- **Retrieval Strategies** - RAG, summaries, and hybrid approaches
+- **Grounding with Memory** - Using memory to resolve references
+- **Tool Optimization** - Selective tool exposure and filtering
+- **Crafting Data for LLMs** - Creating structured views and dashboards
 
 ## Reference Agent: Redis University Class Agent
 
@@ -65,6 +74,16 @@ The reference implementation is a complete **Redis University Class Agent** that
 - **RedisVL**: Vector storage for course catalog and semantic search
 - **OpenAI GPT**: Language model for natural conversation
 
+### Code Organization
+
+The reference agent includes reusable modules that implement patterns from the notebooks:
+
+- **`tools.py`** - Tool definitions used throughout the course (Section 2)
+- **`optimization_helpers.py`** - Production-ready optimization patterns (Section 4)
+- **`examples/advanced_agent_example.py`** - Complete example combining all techniques
+
+These modules are designed to be imported in notebooks and used as building blocks for your own agents.
+
 ## Getting Started
 
 1. **Set up the environment**: Install required dependencies
@@ -75,7 +94,7 @@ The reference implementation is a complete **Redis University Class Agent** that
 ## Prerequisites
 
 - Python 3.8+
-- Redis Stack (local or cloud)
+- Redis 8 (local or cloud)
 - OpenAI API key
 - Basic understanding of AI agents and vector databases
 
