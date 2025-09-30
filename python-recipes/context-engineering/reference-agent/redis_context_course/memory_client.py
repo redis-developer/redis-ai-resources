@@ -7,6 +7,7 @@ which handles both working memory (task-focused context) and long-term memory
 """
 
 import os
+import uuid
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 
@@ -208,13 +209,13 @@ class MemoryClient:
             List of created MemoryRecord objects
         """
         memory = MemoryRecord(
+            id=str(uuid.uuid4()),
             text=text,
             user_id=self.user_id,
             namespace=self.namespace,
             memory_type=memory_type,
             topics=topics or [],
             entities=entities or [],
-            metadata=metadata or {},
             event_date=event_date
         )
         
