@@ -10,7 +10,7 @@ import os
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 
-from agent_memory_client import MemoryAPIClient
+from agent_memory_client import MemoryAPIClient, MemoryClientConfig
 from agent_memory_client.models import (
     MemoryRecord,
     MemoryMessage,
@@ -43,12 +43,14 @@ class MemoryClient:
         """
         self.user_id = user_id
         self.namespace = namespace
-        
+
         # Get base URL from environment or use default
         if base_url is None:
             base_url = os.getenv("AGENT_MEMORY_URL", "http://localhost:8000")
-        
-        self.client = MemoryAPIClient(base_url=base_url)
+
+        # Create config and client
+        config = MemoryClientConfig(base_url=base_url, default_namespace=namespace)
+        self.client = MemoryAPIClient(config=config)
     
     # ==================== Working Memory ====================
     
