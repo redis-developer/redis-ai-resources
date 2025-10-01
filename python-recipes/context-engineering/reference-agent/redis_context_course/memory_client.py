@@ -247,8 +247,14 @@ class MemoryClient:
             entities=entities or [],
             event_date=event_date
         )
-        
-        return await self.client.create_long_term_memories([memory])
+
+        # The client may return a tuple (memories, metadata) or just memories
+        result = await self.client.create_long_term_memories([memory])
+        # If it's a tuple, unpack it; otherwise return as-is
+        if isinstance(result, tuple):
+            memories, _ = result
+            return memories
+        return result
     
     async def search_memories(
         self,
