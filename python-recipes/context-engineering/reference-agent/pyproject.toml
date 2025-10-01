@@ -59,7 +59,7 @@ dependencies = [
     "numpy>=1.24.0",
     "tiktoken>=0.5.0",
     "python-ulid>=3.0.0",
-    "agent-memory-client>=0.1.0",
+    "agent-memory-client>=0.12.3",
 ]
 
 [project.optional-dependencies]
