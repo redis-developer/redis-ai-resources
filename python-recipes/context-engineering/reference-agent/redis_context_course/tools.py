@@ -213,11 +213,17 @@ def create_memory_tools(memory_client: MemoryAPIClient):
         - text="Student completed CS101 with grade A", memory_type="episodic", topics=["courses", "grades"]
         """
         try:
-            await memory_client.create_memory(
+            from agent_memory_client import ClientMemoryRecord
+
+            # Note: user_id should be passed from the calling context
+            # For now, we'll let the client use its default namespace
+            memory = ClientMemoryRecord(
                 text=text,
                 memory_type=memory_type,
                 topics=topics if topics else ["general"]
             )
+
+            await memory_client.create_long_term_memory([memory])
             return f"✅ Stored memory: {text}"
         except Exception as e:
             return f"❌ Failed to store memory: {str(e)}"
@@ -241,16 +247,16 @@ def create_memory_tools(memory_client: MemoryAPIClient):
         - query="goals" → finds student's stated goals
         """
         try:
-            memories = await memory_client.search_memories(
-                query=query,
+            results = await memory_client.search_long_term_memory(
+                text=query,
                 limit=limit
             )
-            
-            if not memories:
+
+            if not results.memories:
                 return "No relevant memories found."
-            
-            result = f"Found {len(memories)} relevant memories:\n\n"
-            for i, memory in enumerate(memories, 1):
+
+            result = f"Found {len(results.memories)} relevant memories:\n\n"
+            for i, memory in enumerate(results.memories, 1):
                 result += f"{i}. {memory.text}\n"
                 result += f"   Type: {memory.memory_type} | Topics: {', '.join(memory.topics)}\n\n"
             
