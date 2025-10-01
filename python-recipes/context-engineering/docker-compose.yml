@@ -25,7 +25,7 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - LOG_LEVEL=info
+      - LOG_LEVEL=INFO
     depends_on:
       redis:
         condition: service_healthy

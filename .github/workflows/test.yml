@@ -123,7 +123,7 @@ jobs:
             --network host \
             -e REDIS_URL=redis://localhost:6379 \
             -e OPENAI_API_KEY=$OPENAI_API_KEY \
-            -e LOG_LEVEL=info \
+            -e LOG_LEVEL=INFO \
             ghcr.io/redis/agent-memory-server:latest
 
           # Wait for memory server to be ready
