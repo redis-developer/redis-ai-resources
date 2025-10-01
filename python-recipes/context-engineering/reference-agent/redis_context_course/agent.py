@@ -226,7 +226,7 @@ class ClassAgent:
         # Save to working memory
         # The Agent Memory Server will automatically extract important memories
         # to long-term storage based on its configured extraction strategy
-        from agent_memory_client import WorkingMemory, MemoryMessage
+        from agent_memory_client.models import WorkingMemory, MemoryMessage
 
         # Convert messages to MemoryMessage format
         memory_messages = [MemoryMessage(**msg) for msg in messages]
@@ -363,7 +363,7 @@ class ClassAgent:
             memory_type: Type of memory - "semantic" for facts/preferences, "episodic" for events
             topics: Related topics for filtering (e.g., ["preferences", "courses"])
         """
-        from agent_memory_client import ClientMemoryRecord
+        from agent_memory_client.models import ClientMemoryRecord
 
         memory = ClientMemoryRecord(
             text=text,
@@ -388,7 +388,7 @@ class ClassAgent:
             query: Search query (e.g., "student preferences")
             limit: Maximum number of results to return
         """
-        from agent_memory_client import UserId
+        from agent_memory_client.models import UserId
 
         results = await self.memory_client.search_long_term_memory(
             text=query,

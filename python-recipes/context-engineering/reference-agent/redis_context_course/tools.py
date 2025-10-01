@@ -213,7 +213,7 @@ def create_memory_tools(memory_client: MemoryAPIClient):
         - text="Student completed CS101 with grade A", memory_type="episodic", topics=["courses", "grades"]
         """
         try:
-            from agent_memory_client import ClientMemoryRecord
+            from agent_memory_client.models import ClientMemoryRecord
 
             # Note: user_id should be passed from the calling context
             # For now, we'll let the client use its default namespace
