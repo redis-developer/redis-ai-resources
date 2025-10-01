@@ -112,16 +112,21 @@ class CourseManager:
         """Retrieve a course by course code."""
         query = FilterQuery(
             filter_expression=Tag("course_code") == course_code,
-            return_fields=["id", "course_code", "title", "description", "department", "major", 
+            return_fields=["id", "course_code", "title", "description", "department", "major",
                           "difficulty_level", "format", "semester", "year", "credits", "tags",
                           "instructor", "max_enrollment", "current_enrollment", "learning_objectives",
                           "prerequisites", "schedule", "created_at", "updated_at"]
         )
         results = self.vector_index.query(query)
-        
+
         if results.docs:
             return self._dict_to_course(results.docs[0].__dict__)
         return None
+
+    async def get_all_courses(self) -> List[Course]:
+        """Retrieve all courses from the catalog."""
+        # Use search with empty query to get all courses
+        return await self.search_courses(query="", limit=1000, similarity_threshold=0.0)
     
     async def search_courses(
         self,
