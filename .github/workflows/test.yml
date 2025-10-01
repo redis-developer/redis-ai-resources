@@ -109,14 +109,6 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          # Verify OpenAI API key is available
-          if [ -z "$OPENAI_API_KEY" ]; then
-            echo "⚠️  WARNING: OPENAI_API_KEY is not set!"
-            echo "Memory server will not be able to make OpenAI API calls"
-          else
-            echo "✅ OpenAI API key is available (length: ${#OPENAI_API_KEY})"
-          fi
-
           # Start the Agent Memory Server
           docker run -d \
             --name agent-memory-server \
