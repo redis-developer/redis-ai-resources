@@ -11,7 +11,7 @@ from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 
 from .course_manager import CourseManager
-from .memory_client import MemoryClient
+from agent_memory_client import MemoryAPIClient
 
 
 # Tool Input Schemas
@@ -184,10 +184,10 @@ Missing:
 
 
 # Memory Tools
-def create_memory_tools(memory_client: MemoryClient):
+def create_memory_tools(memory_client: MemoryAPIClient):
     """
     Create memory-related tools.
-    
+
     These tools are demonstrated in Section 3, notebook 04_memory_tools.ipynb.
     They give the LLM explicit control over memory operations.
     """

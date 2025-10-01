@@ -33,12 +33,13 @@ def test_model_imports():
 def test_manager_imports():
     """Test that manager imports work correctly."""
     try:
-        from redis_context_course.memory_client import MemoryClient
+        from redis_context_course import MemoryClient, MemoryClientConfig
         from redis_context_course.course_manager import CourseManager
         from redis_context_course.redis_config import RedisConfig
 
         # Test that classes can be instantiated (without Redis connection)
         assert MemoryClient is not None
+        assert MemoryClientConfig is not None
         assert CourseManager is not None
         assert RedisConfig is not None
 

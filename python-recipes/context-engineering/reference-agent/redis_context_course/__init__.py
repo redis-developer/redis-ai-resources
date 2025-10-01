@@ -48,8 +48,9 @@ from .models import (
 # Import agent components
 from .agent import ClassAgent, AgentState
 
-# Import memory client
-from .memory_client import MemoryClient
+# Import memory client directly from agent_memory_client
+from agent_memory_client import MemoryAPIClient as MemoryClient
+from agent_memory_client import MemoryClientConfig
 from .course_manager import CourseManager
 from .redis_config import RedisConfig, redis_config
 
@@ -84,6 +85,7 @@ __all__ = [
     "ClassAgent",
     "AgentState",
     "MemoryClient",
+    "MemoryClientConfig",
     "CourseManager",
     "RedisConfig",
     "redis_config",

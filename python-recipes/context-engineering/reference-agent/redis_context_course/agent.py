@@ -27,7 +27,7 @@ from langgraph.prebuilt import ToolNode
 from pydantic import BaseModel
 
 from .models import StudentProfile, CourseRecommendation, AgentResponse
-from .memory_client import MemoryClient
+from agent_memory_client import MemoryAPIClient, MemoryClientConfig
 from .course_manager import CourseManager
 from .redis_config import redis_config
 
@@ -49,7 +49,13 @@ class ClassAgent:
     def __init__(self, student_id: str, session_id: Optional[str] = None):
         self.student_id = student_id
         self.session_id = session_id or f"session_{student_id}"
-        self.memory_client = MemoryClient(user_id=student_id)
+
+        # Initialize memory client with proper config
+        config = MemoryClientConfig(
+            base_url=os.getenv("AGENT_MEMORY_URL", "http://localhost:8000"),
+            default_namespace="redis_university"
+        )
+        self.memory_client = MemoryAPIClient(config=config)
         self.course_manager = CourseManager()
         self.llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
 
