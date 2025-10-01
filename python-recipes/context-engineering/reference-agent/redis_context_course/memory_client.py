@@ -62,16 +62,16 @@ class MemoryClient:
     ) -> Optional[WorkingMemory]:
         """
         Get working memory for a session.
-        
+
         Working memory contains:
         - Conversation messages
         - Structured memories awaiting promotion
         - Session-specific data
-        
+
         Args:
             session_id: Session identifier
             model_name: Model name for context window management
-            
+
         Returns:
             WorkingMemory object or None if not found
         """
@@ -80,7 +80,32 @@ class MemoryClient:
             namespace=self.namespace,
             model_name=model_name
         )
-    
+
+    async def get_or_create_working_memory(
+        self,
+        session_id: str,
+        model_name: str = "gpt-4o"
+    ) -> WorkingMemory:
+        """
+        Get or create working memory for a session.
+
+        This method will create a new working memory if one doesn't exist,
+        making it safe to use at the start of a session.
+
+        Args:
+            session_id: Session identifier
+            model_name: Model name for context window management
+
+        Returns:
+            WorkingMemory object (existing or newly created)
+        """
+        return await self.client.get_or_create_working_memory(
+            session_id=session_id,
+            user_id=self.user_id,
+            namespace=self.namespace,
+            model_name=model_name
+        )
+
     async def save_working_memory(
         self,
         session_id: str,
