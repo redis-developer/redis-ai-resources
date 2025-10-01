@@ -123,9 +123,10 @@ class ClassAgent:
 
         This is the first node in the graph, loading context for the current turn.
         """
-        # Get working memory for this session
-        working_memory = await self.memory_client.get_working_memory(
+        # Get or create working memory for this session
+        _, working_memory = await self.memory_client.get_or_create_working_memory(
             session_id=self.session_id,
+            user_id=self.student_id,
             model_name="gpt-4o"
         )
 
@@ -225,9 +226,25 @@ class ClassAgent:
         # Save to working memory
         # The Agent Memory Server will automatically extract important memories
         # to long-term storage based on its configured extraction strategy
-        await self.memory_client.save_working_memory(
+        from agent_memory_client import WorkingMemory, MemoryMessage
+
+        # Convert messages to MemoryMessage format
+        memory_messages = [MemoryMessage(**msg) for msg in messages]
+
+        # Create WorkingMemory object
+        working_memory = WorkingMemory(
             session_id=self.session_id,
-            messages=messages
+            user_id=self.student_id,
+            messages=memory_messages,
+            memories=[],
+            data={}
+        )
+
+        await self.memory_client.put_working_memory(
+            session_id=self.session_id,
+            memory=working_memory,
+            user_id=self.student_id,
+            model_name="gpt-4o"
         )
 
         return state
@@ -346,11 +363,16 @@ class ClassAgent:
             memory_type: Type of memory - "semantic" for facts/preferences, "episodic" for events
             topics: Related topics for filtering (e.g., ["preferences", "courses"])
         """
-        await self.memory_client.create_memory(
+        from agent_memory_client import ClientMemoryRecord
+
+        memory = ClientMemoryRecord(
             text=text,
+            user_id=self.student_id,
             memory_type=memory_type,
             topics=topics or []
         )
+
+        await self.memory_client.create_long_term_memory([memory])
         return f"Stored in long-term memory: {text}"
 
     @tool
@@ -366,16 +388,19 @@ class ClassAgent:
             query: Search query (e.g., "student preferences")
             limit: Maximum number of results to return
         """
-        memories = await self.memory_client.search_memories(
-            query=query,
+        from agent_memory_client import UserId
+
+        results = await self.memory_client.search_long_term_memory(
+            text=query,
+            user_id=UserId(eq=self.student_id),
             limit=limit
         )
 
-        if not memories:
+        if not results.memories:
             return "No relevant memories found."
 
-        result = f"Found {len(memories)} relevant memories:\n\n"
-        for i, memory in enumerate(memories, 1):
+        result = f"Found {len(results.memories)} relevant memories:\n\n"
+        for i, memory in enumerate(results.memories, 1):
             result += f"{i}. {memory.text}\n"
             if memory.topics:
                 result += f"   Topics: {', '.join(memory.topics)}\n"
