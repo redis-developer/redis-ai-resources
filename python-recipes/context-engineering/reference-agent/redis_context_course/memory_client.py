@@ -99,12 +99,14 @@ class MemoryClient:
         Returns:
             WorkingMemory object (existing or newly created)
         """
-        return await self.client.get_or_create_working_memory(
+        # The client returns a tuple (WorkingMemory, bool) where bool indicates if it was created
+        working_memory, _ = await self.client.get_or_create_working_memory(
             session_id=session_id,
             user_id=self.user_id,
             namespace=self.namespace,
             model_name=model_name
         )
+        return working_memory
 
     async def save_working_memory(
         self,
