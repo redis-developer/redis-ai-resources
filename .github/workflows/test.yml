@@ -87,7 +87,7 @@ jobs:
 
     services:
       redis:
-        image: redis/redis-stack:latest
+        image: redis/redis-stack:8.2-v0
         ports:
           - 6379:6379
         options: >-
