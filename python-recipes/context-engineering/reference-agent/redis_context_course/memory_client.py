@@ -119,13 +119,15 @@ class MemoryClient:
             for mem in memories:
                 memory_records.append(
                     MemoryRecord(
+                        id=str(uuid.uuid4()),
                         text=mem.get("text", ""),
+                        session_id=session_id,
                         user_id=self.user_id,
                         namespace=self.namespace,
                         memory_type=mem.get("memory_type", "semantic"),
                         topics=mem.get("topics", []),
                         entities=mem.get("entities", []),
-                        metadata=mem.get("metadata", {})
+                        event_date=mem.get("event_date")
                     )
                 )
         
