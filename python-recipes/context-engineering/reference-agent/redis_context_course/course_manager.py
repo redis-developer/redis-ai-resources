@@ -152,10 +152,12 @@ class CourseManager:
         
         # Execute search
         results = self.vector_index.query(vector_query)
-        
+
         # Convert results to Course objects
         courses = []
-        for result in results.docs:
+        # Handle both list and object with .docs attribute
+        result_list = results if isinstance(results, list) else results.docs
+        for result in result_list:
             if result.vector_score >= similarity_threshold:
                 course = self._dict_to_course(result.__dict__)
                 if course:
