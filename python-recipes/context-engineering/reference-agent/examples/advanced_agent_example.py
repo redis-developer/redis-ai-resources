@@ -41,25 +41,31 @@ class AdvancedClassAgent:
     def __init__(
         self,
         student_id: str,
+        session_id: str = "default_session",
         model: str = "gpt-4o",
         enable_tool_filtering: bool = True,
         enable_memory_tools: bool = False
     ):
         self.student_id = student_id
+        self.session_id = session_id
         self.llm = ChatOpenAI(model=model, temperature=0.7)
         self.course_manager = CourseManager()
         self.memory_client = MemoryClient(
             user_id=student_id,
             namespace="redis_university"
         )
-        
+
         # Configuration
         self.enable_tool_filtering = enable_tool_filtering
         self.enable_memory_tools = enable_memory_tools
-        
+
         # Create tools
         self.course_tools = create_course_tools(self.course_manager)
-        self.memory_tools = create_memory_tools(self.memory_client) if enable_memory_tools else []
+        self.memory_tools = create_memory_tools(
+            self.memory_client,
+            session_id=self.session_id,
+            user_id=self.student_id
+        ) if enable_memory_tools else []
         
         # Organize tools by category (for filtering)
         self.tool_groups = {

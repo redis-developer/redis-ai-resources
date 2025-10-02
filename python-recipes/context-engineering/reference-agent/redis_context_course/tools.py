@@ -46,25 +46,6 @@ class CheckPrerequisitesInput(BaseModel):
     )
 
 
-class StoreMemoryInput(BaseModel):
-    """Input schema for storing memories."""
-    text: str = Field(description="The information to remember")
-    memory_type: str = Field(
-        default="semantic",
-        description="Type of memory: 'semantic' for facts, 'episodic' for events"
-    )
-    topics: List[str] = Field(
-        default=[],
-        description="Topics/tags for this memory (e.g., ['preferences', 'courses'])"
-    )
-
-
-class SearchMemoriesInput(BaseModel):
-    """Input schema for searching memories."""
-    query: str = Field(description="What to search for in memories")
-    limit: int = Field(default=5, description="Maximum number of memories to retrieve")
-
-
 # Course Tools
 def create_course_tools(course_manager: CourseManager):
     """
@@ -184,87 +165,28 @@ Missing:
 
 
 # Memory Tools
-def create_memory_tools(memory_client: MemoryAPIClient):
+def create_memory_tools(memory_client: MemoryAPIClient, session_id: str, user_id: str):
     """
-    Create memory-related tools.
+    Create memory-related tools using the memory client's built-in LangChain integration.
 
     These tools are demonstrated in Section 3, notebook 04_memory_tools.ipynb.
     They give the LLM explicit control over memory operations.
+
+    Args:
+        memory_client: The memory client instance
+        session_id: Session ID for the conversation
+        user_id: User ID for the student
+
+    Returns:
+        List of LangChain StructuredTool objects for memory operations
     """
-    
-    @tool(args_schema=StoreMemoryInput)
-    async def store_memory(text: str, memory_type: str = "semantic", topics: List[str] = []) -> str:
-        """
-        Store important information in long-term memory.
-        
-        Use this tool when:
-        - Student shares preferences (e.g., "I prefer online courses")
-        - Student states goals (e.g., "I want to graduate in 2026")
-        - Student provides important facts (e.g., "My major is Computer Science")
-        - You learn something that should be remembered for future sessions
-        
-        Do NOT use for:
-        - Temporary conversation context (working memory handles this)
-        - Trivial details
-        - Information that changes frequently
-        
-        Examples:
-        - text="Student prefers morning classes", memory_type="semantic", topics=["preferences", "schedule"]
-        - text="Student completed CS101 with grade A", memory_type="episodic", topics=["courses", "grades"]
-        """
-        try:
-            from agent_memory_client.models import ClientMemoryRecord
+    from agent_memory_client.integrations.langchain import get_memory_tools
 
-            # Note: user_id should be passed from the calling context
-            # For now, we'll let the client use its default namespace
-            memory = ClientMemoryRecord(
-                text=text,
-                memory_type=memory_type,
-                topics=topics if topics else ["general"]
-            )
-
-            await memory_client.create_long_term_memory([memory])
-            return f"✅ Stored memory: {text}"
-        except Exception as e:
-            return f"❌ Failed to store memory: {str(e)}"
-    
-    @tool(args_schema=SearchMemoriesInput)
-    async def search_memories(query: str, limit: int = 5) -> str:
-        """
-        Search for relevant memories using semantic search.
-        
-        Use this tool when:
-        - You need to recall information about the student
-        - Student asks "What do you know about me?"
-        - You need context from previous sessions
-        - Making personalized recommendations
-        
-        The search uses semantic matching, so natural language queries work well.
-        
-        Examples:
-        - query="student preferences" → finds preference-related memories
-        - query="completed courses" → finds course completion records
-        - query="goals" → finds student's stated goals
-        """
-        try:
-            results = await memory_client.search_long_term_memory(
-                text=query,
-                limit=limit
-            )
-
-            if not results.memories:
-                return "No relevant memories found."
-
-            result = f"Found {len(results.memories)} relevant memories:\n\n"
-            for i, memory in enumerate(results.memories, 1):
-                result += f"{i}. {memory.text}\n"
-                result += f"   Type: {memory.memory_type} | Topics: {', '.join(memory.topics)}\n\n"
-            
-            return result
-        except Exception as e:
-            return f"❌ Failed to search memories: {str(e)}"
-    
-    return [store_memory, search_memories]
+    return get_memory_tools(
+        memory_client=memory_client,
+        session_id=session_id,
+        user_id=user_id
+    )
 
 
 # Tool Selection Helpers (from Section 4, notebook 04_tool_optimization.ipynb)
