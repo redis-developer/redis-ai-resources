@@ -1,0 +1,7 @@
+# Core dependencies for Context Engineering notebooks
+jupyter>=1.0.0
+python-dotenv>=1.0.0
+
+# The reference agent package should be installed separately with:
+# pip install -e reference-agent/
+
