@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   redis:
     image: redis/redis-stack:latest
@@ -18,8 +16,9 @@ services:
       retries: 5
 
   agent-memory-server:
-    image: ghcr.io/redis/agent-memory-server:latest
+    image: ghcr.io/redis/agent-memory-server:0.12.3
     container_name: agent-memory-server
+    command: ["agent-memory", "api", "--host", "0.0.0.0", "--port", "8000", "--no-worker"]
     ports:
       - "8000:8000"
     environment:
@@ -30,7 +29,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/health"]
       interval: 10s
       timeout: 5s
       retries: 5

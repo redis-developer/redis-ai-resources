@@ -1,8 +1,8 @@
 """
 Redis configuration and connection management for the Class Agent.
 
-This module handles all Redis connections, including vector storage,
-memory management, and checkpointing.
+This module handles all Redis connections, including vector storage
+and checkpointing.
 """
 
 import os
@@ -21,18 +21,15 @@ class RedisConfig:
         self,
         redis_url: Optional[str] = None,
         vector_index_name: str = "course_catalog",
-        memory_index_name: str = "agent_memory",
         checkpoint_namespace: str = "class_agent"
     ):
         self.redis_url = redis_url or os.getenv("REDIS_URL", "redis://localhost:6379")
         self.vector_index_name = vector_index_name
-        self.memory_index_name = memory_index_name
         self.checkpoint_namespace = checkpoint_namespace
         
         # Initialize connections
         self._redis_client = None
         self._vector_index = None
-        self._memory_index = None
         self._checkpointer = None
         self._embeddings = None
     
@@ -135,66 +132,6 @@ class RedisConfig:
         return self._vector_index
     
     @property
-    def memory_index(self) -> SearchIndex:
-        """Get or create vector search index for agent memory."""
-        if self._memory_index is None:
-            schema = IndexSchema.from_dict({
-                "index": {
-                    "name": self.memory_index_name,
-                    "prefix": f"{self.memory_index_name}:",
-                    "storage_type": "hash"
-                },
-                "fields": [
-                    {
-                        "name": "id",
-                        "type": "tag"
-                    },
-                    {
-                        "name": "student_id",
-                        "type": "tag"
-                    },
-                    {
-                        "name": "content",
-                        "type": "text"
-                    },
-                    {
-                        "name": "memory_type",
-                        "type": "tag"
-                    },
-                    {
-                        "name": "importance",
-                        "type": "numeric"
-                    },
-                    {
-                        "name": "created_at",
-                        "type": "numeric"
-                    },
-                    {
-                        "name": "content_vector",
-                        "type": "vector",
-                        "attrs": {
-                            "dims": 1536,
-                            "distance_metric": "cosine",
-                            "algorithm": "hnsw",
-                            "datatype": "float32"
-                        }
-                    }
-                ]
-            })
-            
-            self._memory_index = SearchIndex(schema)
-            self._memory_index.connect(redis_url=self.redis_url)
-            
-            # Create index if it doesn't exist
-            try:
-                self._memory_index.create(overwrite=False)
-            except Exception:
-                # Index likely already exists
-                pass
-                
-        return self._memory_index
-    
-    @property
     def checkpointer(self) -> RedisSaver:
         """Get Redis checkpointer for LangGraph state management."""
         if self._checkpointer is None:
@@ -218,8 +155,6 @@ class RedisConfig:
             self._redis_client.close()
         if self._vector_index:
             self._vector_index.disconnect()
-        if self._memory_index:
-            self._memory_index.disconnect()
 
 
 # Global configuration instance
