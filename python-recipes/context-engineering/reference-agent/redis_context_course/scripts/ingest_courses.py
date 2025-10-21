@@ -10,6 +10,7 @@ import json
 import asyncio
 import sys
 import os
+from datetime import datetime
 from typing import List, Dict, Any
 import click
 from rich.console import Console
@@ -136,7 +137,16 @@ class CourseIngestionPipeline:
                     major = self._dict_to_major(major_data)
                     # Store major data in Redis (simple hash storage)
                     key = f"major:{major.id}"
-                    self.redis_client.hset(key, mapping=major.dict())
+                    # Convert any non-scalar fields to JSON strings for Redis hash storage
+                    major_map = {}
+                    for k, v in major.dict().items():
+                        if isinstance(v, (list, dict)):
+                            major_map[k] = json.dumps(v)
+                        elif isinstance(v, datetime):
+                            major_map[k] = v.isoformat()
+                        else:
+                            major_map[k] = v
+                    self.redis_client.hset(key, mapping=major_map)
                     ingested_count += 1
                     progress.update(task, advance=1)
                 except Exception as e:

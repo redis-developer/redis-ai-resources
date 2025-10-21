@@ -64,15 +64,15 @@ uv run agent-memory api --no-worker
 
 # Or with Docker
 docker run -d --name agent-memory \
-  -p 8000:8000 \
+  -p 8088:8000 \
   -e REDIS_URL=redis://host.docker.internal:6379 \
   -e OPENAI_API_KEY=your-key \
   redis/agent-memory-server
 ```
 
-Set the Agent Memory Server URL (optional, defaults to localhost:8000):
+Set the Agent Memory Server URL (optional, defaults to localhost:8088):
 ```bash
-export AGENT_MEMORY_URL="http://localhost:8000"
+export AGENT_MEMORY_URL="http://localhost:8088"
 ```
 
 ### 4. Generate Sample Data

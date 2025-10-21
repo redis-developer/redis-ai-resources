@@ -129,7 +129,7 @@ def setup_notebook(require_openai_key=True, require_memory_server=False):
     print(f"✅ REDIS_URL: {redis_url}")
     
     # Check AGENT_MEMORY_URL
-    memory_url = os.getenv("AGENT_MEMORY_URL", "http://localhost:8000")
+    memory_url = os.getenv("AGENT_MEMORY_URL", "http://localhost:8088")
     print(f"✅ AGENT_MEMORY_URL: {memory_url}")
     
     # Step 4: Check Agent Memory Server if required

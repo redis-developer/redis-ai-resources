@@ -116,7 +116,7 @@ docker-compose up -d
 docker-compose ps
 
 # Check Agent Memory Server health
-curl http://localhost:8000/health
+curl http://localhost:8088/health
 ```
 
 #### 2. Set Up the Reference Agent

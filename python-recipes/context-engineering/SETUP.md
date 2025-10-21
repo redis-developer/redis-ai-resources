@@ -29,7 +29,7 @@ Your `.env` file should look like this:
 ```bash
 OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxxxxxxxxx
 REDIS_URL=redis://localhost:6379
-AGENT_MEMORY_URL=http://localhost:8000
+AGENT_MEMORY_URL=http://localhost:8088
 ```
 
 **Important:** The `.env` file is already in `.gitignore` so your API key won't be committed to git.
@@ -46,12 +46,12 @@ docker-compose up -d
 docker-compose ps
 
 # Check that the Agent Memory Server is healthy
-curl http://localhost:8000/health
+curl http://localhost:8088/health
 ```
 
 You should see:
-- `redis-context-engineering` running on ports 6379 (Redis) and 8001 (RedisInsight)
-- `agent-memory-server` running on port 8000
+- `redis-context-engineering` running on port 6379 (Redis 8)
+- `agent-memory-server` running on port 8088
 
 ### Step 3: Install Python Dependencies
 
@@ -92,11 +92,11 @@ docker exec redis-context-engineering redis-cli ping
 ### Check Agent Memory Server
 ```bash
 # Test health endpoint
-curl http://localhost:8000/health
+curl http://localhost:8088/health
 # Should return: {"status":"healthy"}
 
 # Test that it can connect to Redis and has your API key
-curl http://localhost:8000/api/v1/namespaces
+curl http://localhost:8088/api/v1/namespaces
 # Should return a list of namespaces (may be empty initially)
 ```
 
@@ -151,7 +151,7 @@ docker exec redis-context-engineering redis-cli ping
 
 ### Port Already in Use
 
-If you get errors about ports already in use (6379, 8000, or 8001), you can either:
+If you get errors about ports already in use (6379 or 8088), you can either:
 
 1. Stop the conflicting service
 2. Change the ports in `docker-compose.yml`:
@@ -159,7 +159,7 @@ If you get errors about ports already in use (6379, 8000, or 8001), you can eith
    ports:
      - "6380:6379"  # Use 6380 instead of 6379
    ```
-   Then update `REDIS_URL` in your `.env` file accordingly.
+   Then update `REDIS_URL` or `AGENT_MEMORY_URL` in your `.env` file accordingly.
 
 ## Stopping Services
 

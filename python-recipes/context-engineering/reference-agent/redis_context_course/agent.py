@@ -14,6 +14,8 @@ Memory Architecture:
   * Accessible via tools
 """
 
+import os
+
 import json
 from typing import List, Dict, Any, Optional, Annotated
 from datetime import datetime
@@ -52,7 +54,7 @@ class ClassAgent:
 
         # Initialize memory client with proper config
         config = MemoryClientConfig(
-            base_url=os.getenv("AGENT_MEMORY_URL", "http://localhost:8000"),
+            base_url=os.getenv("AGENT_MEMORY_URL", "http://localhost:8088"),
             default_namespace="redis_university"
         )
         self.memory_client = MemoryAPIClient(config=config)
@@ -61,7 +63,7 @@ class ClassAgent:
 
         # Build the agent graph
         self.graph = self._build_graph()
-    
+
     def _build_graph(self) -> StateGraph:
         """
         Build the LangGraph workflow.
@@ -108,10 +110,14 @@ class ClassAgent:
         workflow.add_edge("respond", "save_working_memory")
         workflow.add_edge("save_working_memory", END)
 
-        # Compile with Redis checkpointer for graph state persistence
-        # Note: This is separate from Agent Memory Server's working memory
-        return workflow.compile(checkpointer=redis_config.checkpointer)
-    
+        # Compile graph without Redis checkpointer
+        # TODO(CE-Checkpointer): Re-enable Redis checkpointer once langgraph's async
+        # checkpointer interface is compatible in our environment. Current versions
+        # raise NotImplementedError on aget_tuple via AsyncPregelLoop. Track and
+        # fix by upgrading langgraph (and/or using the correct async RedisSaver)
+        # and then switch to: workflow.compile(checkpointer=redis_config.checkpointer)
+        return workflow.compile()
+
     async def _load_working_memory(self, state: AgentState) -> AgentState:
         """
         Load working memory from Agent Memory Server.
@@ -150,8 +156,10 @@ class ClassAgent:
 
         # Search long-term memories for relevant context
         if state.current_query:
-            memories = await self.memory_client.search_memories(
-                query=state.current_query,
+            from agent_memory_client.filters import UserId
+            results = await self.memory_client.search_long_term_memory(
+                text=state.current_query,
+                user_id=UserId(eq=self.student_id),
                 limit=5
             )
 
@@ -162,7 +170,7 @@ class ClassAgent:
                 "recent_facts": []
             }
 
-            for memory in memories:
+            for memory in results.memories:
                 if memory.memory_type == "semantic":
                     if "preference" in memory.topics:
                         context["preferences"].append(memory.text)
@@ -174,7 +182,7 @@ class ClassAgent:
             state.context = context
 
         return state
-    
+
     async def _agent_node(self, state: AgentState) -> AgentState:
         """Main agent reasoning node."""
         # Build system message with context
@@ -188,14 +196,14 @@ class ClassAgent:
         state.messages.append(response)
 
         return state
-    
+
     def _should_use_tools(self, state: AgentState) -> str:
         """Determine if tools should be used or if we should respond."""
         last_message = state.messages[-1]
         if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
             return "tools"
         return "respond"
-    
+
     async def _respond_node(self, state: AgentState) -> AgentState:
         """Generate final response."""
         # The response is already in the last message
@@ -218,10 +226,13 @@ class ClassAgent:
         # Convert LangChain messages to simple dict format
         messages = []
         for msg in state.messages:
+            content = getattr(msg, "content", None)
+            if not content:
+                continue
             if isinstance(msg, HumanMessage):
-                messages.append({"role": "user", "content": msg.content})
+                messages.append({"role": "user", "content": content})
             elif isinstance(msg, AIMessage):
-                messages.append({"role": "assistant", "content": msg.content})
+                messages.append({"role": "assistant", "content": content})
 
         # Save to working memory
         # The Agent Memory Server will automatically extract important memories
@@ -248,7 +259,7 @@ class ClassAgent:
         )
 
         return state
-    
+
     def _build_system_prompt(self, context: Dict[str, Any]) -> str:
         """Build system prompt with current context."""
         prompt = """You are a helpful Redis University Class Agent powered by Redis Agent Memory Server.
@@ -429,8 +440,15 @@ class ClassAgent:
         config = {"configurable": {"thread_id": thread_id}}
         result = await self.graph.ainvoke(initial_state, config)
 
+        # Handle result structure (dict-like or object)
+        result_messages = []
+        if isinstance(result, dict) or hasattr(result, "get"):
+            result_messages = result.get("messages", [])
+        else:
+            result_messages = getattr(result, "messages", [])
+
         # Return the last AI message
-        ai_messages = [msg for msg in result.messages if isinstance(msg, AIMessage)]
+        ai_messages = [msg for msg in result_messages if isinstance(msg, AIMessage)]
         if ai_messages:
             return ai_messages[-1].content
 

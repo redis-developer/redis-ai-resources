@@ -85,8 +85,9 @@ class CourseManager:
             "max_enrollment": course.max_enrollment,
             "current_enrollment": course.current_enrollment,
             "learning_objectives": json.dumps(course.learning_objectives),
-            "prerequisites": json.dumps([p.dict() for p in course.prerequisites]),
-            "schedule": json.dumps(course.schedule.dict()) if course.schedule else "",
+            "prerequisites": json.dumps([p.model_dump() for p in course.prerequisites]),
+            # Use default=str to handle datetime.time serialization
+            "schedule": json.dumps(course.schedule.model_dump(), default=str) if course.schedule else "",
             "created_at": course.created_at.timestamp(),
             "updated_at": course.updated_at.timestamp(),
             "content_vector": np.array(embedding, dtype=np.float32).tobytes()

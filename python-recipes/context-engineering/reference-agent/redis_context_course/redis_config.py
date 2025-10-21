@@ -118,10 +118,10 @@ class RedisConfig:
                     }
                 ]
             })
-            
-            self._vector_index = SearchIndex(schema)
-            self._vector_index.connect(redis_url=self.redis_url)
-            
+
+            # Initialize index with connection params (avoid deprecated .connect())
+            self._vector_index = SearchIndex(schema, redis_url=self.redis_url)
+
             # Create index if it doesn't exist
             try:
                 self._vector_index.create(overwrite=False)
@@ -136,8 +136,7 @@ class RedisConfig:
         """Get Redis checkpointer for LangGraph state management."""
         if self._checkpointer is None:
             self._checkpointer = RedisSaver(
-                redis_client=self.redis_client,
-                namespace=self.checkpoint_namespace
+                redis_client=self.redis_client
             )
             self._checkpointer.setup()
         return self._checkpointer
