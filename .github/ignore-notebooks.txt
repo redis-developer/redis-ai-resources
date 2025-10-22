@@ -8,3 +8,5 @@
 spring_ai_redis_rag.ipynb
 00_litellm_proxy_redis.ipynb
 04_redisvl_benchmarking_basics.ipynb
+06_hnsw_to_svs_vamana_migration.ipynb
+07_flat_to_svs_vamana_migration.ipynb
