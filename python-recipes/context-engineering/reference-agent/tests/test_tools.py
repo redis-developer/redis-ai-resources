@@ -1,7 +1,9 @@
 import asyncio
 import pytest
+from unittest.mock import AsyncMock, MagicMock
 
 from redis_context_course import tools as tools_mod
+from redis_context_course.agent import ClassAgent
 
 
 class FakeCourse:
@@ -59,4 +61,88 @@ def test_select_tools_by_keywords():
     assert res1 == ["S1"]
     assert res2 == ["M1"]
     assert res3 == ["S1"]  # defaults to search
+
+
+@pytest.mark.asyncio
+async def test_summarize_user_knowledge_tool():
+    """Test that the user knowledge summary tool is properly integrated."""
+    # Test that the tool exists in the agent's tool list
+    with pytest.MonkeyPatch().context() as m:
+        # Mock the environment variable
+        m.setenv("OPENAI_API_KEY", "test-key")
+
+        # Create agent
+        agent = ClassAgent("test_user", "test_session")
+
+        # Get the tools
+        tools = agent._get_tools()
+
+        # Verify the summarize user knowledge tool is in the list
+        tool_names = [tool.name for tool in tools]
+        assert "summarize_user_knowledge_tool" in tool_names
+
+        # Find the specific tool
+        summary_tool = None
+        for tool in tools:
+            if tool.name == "summarize_user_knowledge_tool":
+                summary_tool = tool
+                break
+
+        assert summary_tool is not None
+        assert "summarize what the agent knows about the user" in summary_tool.description.lower()
+
+        # Test that the tool has the expected properties
+        assert hasattr(summary_tool, 'ainvoke')
+        assert summary_tool.name == "summarize_user_knowledge_tool"
+
+
+@pytest.mark.asyncio
+async def test_summarize_user_knowledge_tool_in_system_prompt():
+    """Test that the user knowledge summary tool is mentioned in the system prompt."""
+    with pytest.MonkeyPatch().context() as m:
+        # Mock the environment variable
+        m.setenv("OPENAI_API_KEY", "test-key")
+
+        # Create agent
+        agent = ClassAgent("test_user", "test_session")
+
+        # Build system prompt
+        context = {"preferences": [], "goals": [], "recent_facts": []}
+        system_prompt = agent._build_system_prompt(context)
+
+        # Verify the tool is mentioned in the system prompt
+        assert "summarize_user_knowledge" in system_prompt
+        assert "comprehensive summary of what you know about the user" in system_prompt
+
+
+@pytest.mark.asyncio
+async def test_clear_user_memories_tool():
+    """Test that the clear user memories tool is properly integrated."""
+    with pytest.MonkeyPatch().context() as m:
+        # Mock the environment variable
+        m.setenv("OPENAI_API_KEY", "test-key")
+
+        # Create agent
+        agent = ClassAgent("test_user", "test_session")
+
+        # Get the tools
+        tools = agent._get_tools()
+
+        # Verify the clear user memories tool is in the list
+        tool_names = [tool.name for tool in tools]
+        assert "clear_user_memories_tool" in tool_names
+
+        # Find the specific tool
+        clear_tool = None
+        for tool in tools:
+            if tool.name == "clear_user_memories_tool":
+                clear_tool = tool
+                break
+
+        assert clear_tool is not None
+        assert "clear or reset stored user information" in clear_tool.description.lower()
+
+        # Test that the tool has the expected properties
+        assert hasattr(clear_tool, 'ainvoke')
+        assert clear_tool.name == "clear_user_memories_tool"
 

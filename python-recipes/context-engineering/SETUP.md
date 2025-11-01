@@ -46,7 +46,7 @@ docker-compose up -d
 docker-compose ps
 
 # Check that the Agent Memory Server is healthy
-curl http://localhost:8088/health
+curl http://localhost:8088/v1/health
 ```
 
 You should see:
@@ -92,8 +92,8 @@ docker exec redis-context-engineering redis-cli ping
 ### Check Agent Memory Server
 ```bash
 # Test health endpoint
-curl http://localhost:8088/health
-# Should return: {"status":"healthy"}
+curl http://localhost:8088/v1/health
+# Should return: {"now":<timestamp>}
 
 # Test that it can connect to Redis and has your API key
 curl http://localhost:8088/api/v1/namespaces
