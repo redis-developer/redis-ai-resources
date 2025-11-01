@@ -47,6 +47,8 @@ from .models import (
 
 # Import agent components
 from .agent import ClassAgent, AgentState
+from .augmented_agent import AugmentedClassAgent
+
 
 # Import memory client directly from agent_memory_client
 from agent_memory_client import MemoryAPIClient as MemoryClient
@@ -83,6 +85,7 @@ __description__ = "Context Engineering with Redis - University Class Agent Refer
 __all__ = [
     # Core classes
     "ClassAgent",
+    "AugmentedClassAgent",
     "AgentState",
     "MemoryClient",
     "MemoryClientConfig",

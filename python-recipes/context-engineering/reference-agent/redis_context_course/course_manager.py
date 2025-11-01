@@ -164,10 +164,21 @@ class CourseManager:
         # Handle both list and object with .docs attribute
         result_list = results if isinstance(results, list) else results.docs
         for result in result_list:
-            if result.vector_score >= similarity_threshold:
-                course = self._dict_to_course(result.__dict__)
-                if course:
-                    courses.append(course)
+            # Handle different result formats
+            if isinstance(result, dict):
+                # Direct dictionary result
+                vector_score = result.get('vector_score', 1.0)
+                if vector_score >= similarity_threshold:
+                    course = self._dict_to_course(result)
+                    if course:
+                        courses.append(course)
+            else:
+                # Object with attributes
+                vector_score = getattr(result, 'vector_score', 1.0)
+                if vector_score >= similarity_threshold:
+                    course = self._dict_to_course(result.__dict__)
+                    if course:
+                        courses.append(course)
         
         return courses
     

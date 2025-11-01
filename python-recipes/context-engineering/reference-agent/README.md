@@ -87,7 +87,21 @@ generate-courses --courses-per-major 15 --output course_catalog.json
 ingest-courses --catalog course_catalog.json --clear
 ```
 
-### 6. Start the Agent
+### 6. Verify Setup
+
+Run the health check to ensure everything is working:
+
+```bash
+python simple_health_check.py
+```
+
+This will verify:
+- Redis connection
+- Environment variables
+- Course data ingestion
+- Agent functionality
+
+### 7. Start the Agent
 
 ```bash
 redis-class-agent --student-id your_student_id
@@ -207,6 +221,44 @@ Agent: I'll remember that you're interested in machine learning. This will help 
 You: What courses should I take?
 Agent: Based on your interest in machine learning and preference for online courses, here are my recommendations...
 ```
+
+## Troubleshooting
+
+### Health Check
+
+Use the built-in health check to diagnose issues:
+
+```bash
+python simple_health_check.py
+```
+
+The health check will verify:
+- ✅ Environment variables are set correctly
+- ✅ Redis connection is working
+- ✅ Course and major data is present
+- ✅ Course search functionality works
+- ✅ Agent can respond to queries
+
+If any checks fail, the script will provide specific fix commands.
+
+### Common Issues
+
+**"No courses found"**
+```bash
+# Re-run data ingestion
+ingest-courses --catalog course_catalog.json --clear
+```
+
+**"Redis connection failed"**
+```bash
+# Start Redis with Docker
+docker run -d --name redis -p 6379:6379 redis:8-alpine
+```
+
+**"Agent query failed"**
+- Check that your OpenAI API key is valid
+- Ensure course data has been ingested with embeddings
+- Verify Agent Memory Server is running
 
 ## Configuration
 

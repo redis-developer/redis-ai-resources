@@ -109,14 +109,14 @@ cp .env.example .env
 # Edit .env and add your OpenAI API key
 # OPENAI_API_KEY=your-key-here
 
-# Start Redis and Agent Memory Server
+# Start Redis and
 docker-compose up -d
 
 # Verify services are running
 docker-compose ps
 
 # Check Agent Memory Server health
-curl http://localhost:8088/health
+curl http://localhost:8088/v1/health
 ```
 
 #### 2. Set Up the Reference Agent
