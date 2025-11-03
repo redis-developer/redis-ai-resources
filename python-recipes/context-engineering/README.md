@@ -188,7 +188,7 @@ context-engineering/
 ├── docker-compose.yml                  # Redis + Agent Memory Server setup
 ├── requirements.txt                    # Python dependencies
 │
-├── notebooks_v2/                       # 👈 Course notebooks (main content)
+├── notebooks/                       # 👈 Course notebooks (main content)
 │   ├── README.md                       # Notebook-specific documentation
 │   ├── SETUP_GUIDE.md                  # Detailed setup instructions
 │   ├── REFERENCE_AGENT_USAGE_ANALYSIS.md  # Component usage analysis
@@ -256,7 +256,7 @@ cd ..
 ### **Step 5: Start Learning!**
 ```bash
 # Start Jupyter
-jupyter notebook notebooks_v2/
+jupyter notebook notebooks/
 
 # Open: section-1-fundamentals/01_context_engineering_overview.ipynb
 ```
@@ -285,7 +285,7 @@ python -c "import redis_context_course; print('✅ Reference agent installed')"
 
 ## 🛠️ Detailed Setup Instructions
 
-For complete setup instructions including troubleshooting, see **[SETUP.md](SETUP.md)** and **[notebooks_v2/SETUP_GUIDE.md](notebooks_v2/SETUP_GUIDE.md)**.
+For complete setup instructions including troubleshooting, see **[SETUP.md](SETUP.md)** and **[notebooks/SETUP_GUIDE.md](notebooks/SETUP_GUIDE.md)**.
 
 ### System Requirements
 
@@ -557,7 +557,7 @@ The course demonstrates **building agents from scratch** using these components 
 - ✅ Shows both educational and production-ready code
 - ✅ Enables adaptation to different use cases
 
-For detailed component usage analysis, see [notebooks_v2/REFERENCE_AGENT_USAGE_ANALYSIS.md](notebooks_v2/REFERENCE_AGENT_USAGE_ANALYSIS.md).
+For detailed component usage analysis, see [notebooks/REFERENCE_AGENT_USAGE_ANALYSIS.md](notebooks/REFERENCE_AGENT_USAGE_ANALYSIS.md).
 
 ---
 
@@ -606,9 +606,9 @@ The patterns and techniques learned apply directly to:
 ### Documentation
 - **[COURSE_SUMMARY.md](COURSE_SUMMARY.md)** - Complete course syllabus and learning outcomes
 - **[SETUP.md](SETUP.md)** - Detailed setup instructions
-- **[notebooks_v2/README.md](notebooks_v2/README.md)** - Notebook-specific documentation
-- **[notebooks_v2/SETUP_GUIDE.md](notebooks_v2/SETUP_GUIDE.md)** - Comprehensive setup guide
-- **[notebooks_v2/REFERENCE_AGENT_USAGE_ANALYSIS.md](notebooks_v2/REFERENCE_AGENT_USAGE_ANALYSIS.md)** - Component usage analysis
+- **[notebooks/README.md](notebooks/README.md)** - Notebook-specific documentation
+- **[notebooks/SETUP_GUIDE.md](notebooks/SETUP_GUIDE.md)** - Comprehensive setup guide
+- **[notebooks/REFERENCE_AGENT_USAGE_ANALYSIS.md](notebooks/REFERENCE_AGENT_USAGE_ANALYSIS.md)** - Component usage analysis
 - **[reference-agent/README.md](reference-agent/README.md)** - Reference agent documentation
 
 ### External Resources

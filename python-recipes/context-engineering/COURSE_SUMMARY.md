@@ -771,8 +771,8 @@ After completing this course, you can:
 ### Documentation
 - **[Main README](README.md)** - Course overview and quick start
 - **[SETUP.md](SETUP.md)** - Detailed setup instructions
-- **[notebooks_v2/README.md](notebooks_v2/README.md)** - Notebook-specific documentation
-- **[notebooks_v2/SETUP_GUIDE.md](notebooks_v2/SETUP_GUIDE.md)** - Comprehensive setup guide
+- **[notebooks/README.md](notebooks/README.md)** - Notebook-specific documentation
+- **[notebooks/SETUP_GUIDE.md](notebooks/SETUP_GUIDE.md)** - Comprehensive setup guide
 - **[reference-agent/README.md](reference-agent/README.md)** - Reference agent documentation
 
 ### External Resources

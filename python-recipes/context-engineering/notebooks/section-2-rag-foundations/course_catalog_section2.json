@@ -1,0 +1,2224 @@
+{
+  "majors": [
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYKZ",
+      "name": "Computer Science",
+      "code": "CS",
+      "department": "Computer Science",
+      "description": "Study of computational systems, algorithms, and software design",
+      "required_credits": 120,
+      "core_courses": [],
+      "elective_courses": [],
+      "career_paths": [
+        "Software Engineer",
+        "Data Scientist",
+        "Systems Architect",
+        "AI Researcher"
+      ],
+      "created_at": "2025-10-31 00:31:01.972222"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM0",
+      "name": "Data Science",
+      "code": "DS",
+      "department": "Data Science",
+      "description": "Interdisciplinary field using statistics, programming, and domain expertise",
+      "required_credits": 120,
+      "core_courses": [],
+      "elective_courses": [],
+      "career_paths": [
+        "Data Analyst",
+        "Machine Learning Engineer",
+        "Business Intelligence Analyst"
+      ],
+      "created_at": "2025-10-31 00:31:01.972240"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM1",
+      "name": "Mathematics",
+      "code": "MATH",
+      "department": "Mathematics",
+      "description": "Study of numbers, structures, patterns, and logical reasoning",
+      "required_credits": 120,
+      "core_courses": [],
+      "elective_courses": [],
+      "career_paths": [
+        "Mathematician",
+        "Statistician",
+        "Actuary",
+        "Research Scientist"
+      ],
+      "created_at": "2025-10-31 00:31:01.972248"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM2",
+      "name": "Business Administration",
+      "code": "BUS",
+      "department": "Business",
+      "description": "Management, finance, marketing, and organizational behavior",
+      "required_credits": 120,
+      "core_courses": [],
+      "elective_courses": [],
+      "career_paths": [
+        "Business Analyst",
+        "Project Manager",
+        "Consultant",
+        "Entrepreneur"
+      ],
+      "created_at": "2025-10-31 00:31:01.972255"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM3",
+      "name": "Psychology",
+      "code": "PSY",
+      "department": "Psychology",
+      "description": "Scientific study of mind, behavior, and mental processes",
+      "required_credits": 120,
+      "core_courses": [],
+      "elective_courses": [],
+      "career_paths": [
+        "Clinical Psychologist",
+        "Counselor",
+        "Research Psychologist",
+        "HR Specialist"
+      ],
+      "created_at": "2025-10-31 00:31:01.972261"
+    }
+  ],
+  "courses": [
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM4",
+      "course_code": "CS001",
+      "title": "Introduction to Programming",
+      "description": "Fundamental programming concepts using Python. Variables, control structures, functions, and basic data structures.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "hybrid",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "12:00:00",
+        "end_time": "12:50:00",
+        "location": "Engineering Building 328"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Andrew Reynolds",
+      "max_enrollment": 89,
+      "current_enrollment": 11,
+      "tags": [
+        "programming",
+        "python",
+        "fundamentals"
+      ],
+      "learning_objectives": [
+        "Write basic Python programs",
+        "Understand variables and data types",
+        "Use control structures effectively",
+        "Create and use functions"
+      ],
+      "created_at": "2025-10-31 00:31:01.972487",
+      "updated_at": "2025-10-31 00:31:01.972487"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM5",
+      "course_code": "CS002",
+      "title": "Web Development",
+      "description": "Full-stack web development using modern frameworks. HTML, CSS, JavaScript, React, and backend APIs.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "08:00:00",
+        "end_time": "10:30:00",
+        "location": "Engineering Building 195"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Timothy Evans",
+      "max_enrollment": 91,
+      "current_enrollment": 25,
+      "tags": [
+        "web development",
+        "javascript",
+        "react",
+        "apis"
+      ],
+      "learning_objectives": [
+        "Build responsive web interfaces",
+        "Develop REST APIs",
+        "Use modern JavaScript frameworks",
+        "Deploy web applications"
+      ],
+      "created_at": "2025-10-31 00:31:01.972561",
+      "updated_at": "2025-10-31 00:31:01.972561"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM6",
+      "course_code": "CS003",
+      "title": "Web Development",
+      "description": "Full-stack web development using modern frameworks. HTML, CSS, JavaScript, React, and backend APIs.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "11:30:00",
+        "end_time": "14:00:00",
+        "location": "Liberal Arts Center 703"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Michelle Flores",
+      "max_enrollment": 74,
+      "current_enrollment": 43,
+      "tags": [
+        "web development",
+        "javascript",
+        "react",
+        "apis"
+      ],
+      "learning_objectives": [
+        "Build responsive web interfaces",
+        "Develop REST APIs",
+        "Use modern JavaScript frameworks",
+        "Deploy web applications"
+      ],
+      "created_at": "2025-10-31 00:31:01.972628",
+      "updated_at": "2025-10-31 00:31:01.972628"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM7",
+      "course_code": "CS004",
+      "title": "Database Systems",
+      "description": "Design and implementation of database systems. SQL, normalization, transactions, and database administration.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "online",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday",
+          "thursday"
+        ],
+        "start_time": "11:30:00",
+        "end_time": "12:45:00",
+        "location": "Science Hall 204"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "James Phillips",
+      "max_enrollment": 97,
+      "current_enrollment": 33,
+      "tags": [
+        "databases",
+        "sql",
+        "data management"
+      ],
+      "learning_objectives": [
+        "Design relational databases",
+        "Write complex SQL queries",
+        "Understand database normalization",
+        "Implement database transactions"
+      ],
+      "created_at": "2025-10-31 00:31:01.972688",
+      "updated_at": "2025-10-31 00:31:01.972688"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM8",
+      "course_code": "CS005",
+      "title": "Introduction to Programming",
+      "description": "Fundamental programming concepts using Python. Variables, control structures, functions, and basic data structures.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "hybrid",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "16:00:00",
+        "end_time": "18:30:00",
+        "location": "Science Hall 487"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Sarah Moore",
+      "max_enrollment": 93,
+      "current_enrollment": 24,
+      "tags": [
+        "programming",
+        "python",
+        "fundamentals"
+      ],
+      "learning_objectives": [
+        "Write basic Python programs",
+        "Understand variables and data types",
+        "Use control structures effectively",
+        "Create and use functions"
+      ],
+      "created_at": "2025-10-31 00:31:01.972746",
+      "updated_at": "2025-10-31 00:31:01.972746"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYM9",
+      "course_code": "CS006",
+      "title": "Introduction to Programming",
+      "description": "Fundamental programming concepts using Python. Variables, control structures, functions, and basic data structures.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "in_person",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "18:00:00",
+        "end_time": "18:50:00",
+        "location": "Liberal Arts Center 891"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Alex Thompson",
+      "max_enrollment": 68,
+      "current_enrollment": 35,
+      "tags": [
+        "programming",
+        "python",
+        "fundamentals"
+      ],
+      "learning_objectives": [
+        "Write basic Python programs",
+        "Understand variables and data types",
+        "Use control structures effectively",
+        "Create and use functions"
+      ],
+      "created_at": "2025-10-31 00:31:01.972804",
+      "updated_at": "2025-10-31 00:31:01.972804"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYMA",
+      "course_code": "CS007",
+      "title": "Machine Learning",
+      "description": "Introduction to machine learning algorithms and applications. Supervised and unsupervised learning, neural networks.",
+      "credits": 4,
+      "difficulty_level": "advanced",
+      "format": "hybrid",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "10:30:00",
+        "end_time": "11:45:00",
+        "location": "Engineering Building 463"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Eric Smith",
+      "max_enrollment": 97,
+      "current_enrollment": 21,
+      "tags": [
+        "machine learning",
+        "ai",
+        "statistics"
+      ],
+      "learning_objectives": [
+        "Understand ML algorithms",
+        "Implement classification and regression models",
+        "Evaluate model performance",
+        "Apply ML to real-world problems"
+      ],
+      "created_at": "2025-10-31 00:31:01.972861",
+      "updated_at": "2025-10-31 00:31:01.972862"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYMB",
+      "course_code": "CS008",
+      "title": "Web Development",
+      "description": "Full-stack web development using modern frameworks. HTML, CSS, JavaScript, React, and backend APIs.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday",
+          "thursday"
+        ],
+        "start_time": "10:30:00",
+        "end_time": "11:45:00",
+        "location": "Liberal Arts Center 488"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Tracie Mueller",
+      "max_enrollment": 61,
+      "current_enrollment": 7,
+      "tags": [
+        "web development",
+        "javascript",
+        "react",
+        "apis"
+      ],
+      "learning_objectives": [
+        "Build responsive web interfaces",
+        "Develop REST APIs",
+        "Use modern JavaScript frameworks",
+        "Deploy web applications"
+      ],
+      "created_at": "2025-10-31 00:31:01.972918",
+      "updated_at": "2025-10-31 00:31:01.972918"
+    },
+    {
+      "id": "01K8W8H0TMBNPV81NPDH6PWYMC",
+      "course_code": "CS009",
+      "title": "Data Structures and Algorithms",
+      "description": "Study of fundamental data structures and algorithms. Arrays, linked lists, trees, graphs, sorting, and searching.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [
+        {
+          "course_code": "CS001",
+          "course_title": "Prerequisite Course 1",
+          "minimum_grade": "B-",
+          "can_be_concurrent": false
+        },
+        {
+          "course_code": "CS001",
+          "course_title": "Prerequisite Course 1",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "13:30:00",
+        "end_time": "14:20:00",
+        "location": "Science Hall 374"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Catherine Jones",
+      "max_enrollment": 94,
+      "current_enrollment": 54,
+      "tags": [
+        "algorithms",
+        "data structures",
+        "problem solving"
+      ],
+      "learning_objectives": [
+        "Implement common data structures",
+        "Analyze algorithm complexity",
+        "Solve problems using appropriate data structures",
+        "Understand time and space complexity"
+      ],
+      "created_at": "2025-10-31 00:31:01.972981",
+      "updated_at": "2025-10-31 00:31:01.972982"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59WX",
+      "course_code": "CS010",
+      "title": "Web Development",
+      "description": "Full-stack web development using modern frameworks. HTML, CSS, JavaScript, React, and backend APIs.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Computer Science",
+      "major": "Computer Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "13:00:00",
+        "end_time": "15:30:00",
+        "location": "Technology Center 241"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Kevin Wilson",
+      "max_enrollment": 39,
+      "current_enrollment": 80,
+      "tags": [
+        "web development",
+        "javascript",
+        "react",
+        "apis"
+      ],
+      "learning_objectives": [
+        "Build responsive web interfaces",
+        "Develop REST APIs",
+        "Use modern JavaScript frameworks",
+        "Deploy web applications"
+      ],
+      "created_at": "2025-10-31 00:31:01.973043",
+      "updated_at": "2025-10-31 00:31:01.973044"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59WY",
+      "course_code": "DS011",
+      "title": "Statistics for Data Science",
+      "description": "Statistical methods and probability theory for data analysis. Hypothesis testing, regression, and statistical inference.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "17:00:00",
+        "end_time": "19:30:00",
+        "location": "Business Complex 494"
+      },
+      "semester": "winter",
+      "year": 2024,
+      "instructor": "Heidi Bailey",
+      "max_enrollment": 87,
+      "current_enrollment": 32,
+      "tags": [
+        "statistics",
+        "probability",
+        "data analysis"
+      ],
+      "learning_objectives": [
+        "Apply statistical methods to data",
+        "Perform hypothesis testing",
+        "Understand probability distributions",
+        "Conduct statistical inference"
+      ],
+      "created_at": "2025-10-31 00:31:01.973102",
+      "updated_at": "2025-10-31 00:31:01.973103"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59WZ",
+      "course_code": "DS012",
+      "title": "Statistics for Data Science",
+      "description": "Statistical methods and probability theory for data analysis. Hypothesis testing, regression, and statistical inference.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "18:30:00",
+        "end_time": "19:20:00",
+        "location": "Liberal Arts Center 887"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Emily Jimenez",
+      "max_enrollment": 75,
+      "current_enrollment": 20,
+      "tags": [
+        "statistics",
+        "probability",
+        "data analysis"
+      ],
+      "learning_objectives": [
+        "Apply statistical methods to data",
+        "Perform hypothesis testing",
+        "Understand probability distributions",
+        "Conduct statistical inference"
+      ],
+      "created_at": "2025-10-31 00:31:01.973162",
+      "updated_at": "2025-10-31 00:31:01.973162"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X0",
+      "course_code": "DS013",
+      "title": "Data Visualization",
+      "description": "Creating effective visualizations for data communication. Tools include Python matplotlib, seaborn, and Tableau.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "hybrid",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "12:00:00",
+        "end_time": "12:50:00",
+        "location": "Science Hall 619"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Christian Russell",
+      "max_enrollment": 84,
+      "current_enrollment": 77,
+      "tags": [
+        "visualization",
+        "python",
+        "tableau",
+        "communication"
+      ],
+      "learning_objectives": [
+        "Create effective data visualizations",
+        "Choose appropriate chart types",
+        "Use visualization tools",
+        "Communicate insights through visuals"
+      ],
+      "created_at": "2025-10-31 00:31:01.973217",
+      "updated_at": "2025-10-31 00:31:01.973218"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X1",
+      "course_code": "DS014",
+      "title": "Statistics for Data Science",
+      "description": "Statistical methods and probability theory for data analysis. Hypothesis testing, regression, and statistical inference.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday",
+          "thursday"
+        ],
+        "start_time": "13:00:00",
+        "end_time": "14:15:00",
+        "location": "Technology Center 652"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Joseph Nielsen",
+      "max_enrollment": 82,
+      "current_enrollment": 2,
+      "tags": [
+        "statistics",
+        "probability",
+        "data analysis"
+      ],
+      "learning_objectives": [
+        "Apply statistical methods to data",
+        "Perform hypothesis testing",
+        "Understand probability distributions",
+        "Conduct statistical inference"
+      ],
+      "created_at": "2025-10-31 00:31:01.973274",
+      "updated_at": "2025-10-31 00:31:01.973274"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X2",
+      "course_code": "DS015",
+      "title": "Statistics for Data Science",
+      "description": "Statistical methods and probability theory for data analysis. Hypothesis testing, regression, and statistical inference.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "12:00:00",
+        "end_time": "13:15:00",
+        "location": "Engineering Building 159"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Tina Rojas",
+      "max_enrollment": 82,
+      "current_enrollment": 8,
+      "tags": [
+        "statistics",
+        "probability",
+        "data analysis"
+      ],
+      "learning_objectives": [
+        "Apply statistical methods to data",
+        "Perform hypothesis testing",
+        "Understand probability distributions",
+        "Conduct statistical inference"
+      ],
+      "created_at": "2025-10-31 00:31:01.973330",
+      "updated_at": "2025-10-31 00:31:01.973331"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X3",
+      "course_code": "DS016",
+      "title": "Statistics for Data Science",
+      "description": "Statistical methods and probability theory for data analysis. Hypothesis testing, regression, and statistical inference.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "online",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [
+        {
+          "course_code": "DS002",
+          "course_title": "Prerequisite Course 2",
+          "minimum_grade": "B-",
+          "can_be_concurrent": false
+        },
+        {
+          "course_code": "DS006",
+          "course_title": "Prerequisite Course 6",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "tuesday",
+          "thursday"
+        ],
+        "start_time": "18:30:00",
+        "end_time": "19:45:00",
+        "location": "Engineering Building 662"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Lynn Wade",
+      "max_enrollment": 76,
+      "current_enrollment": 66,
+      "tags": [
+        "statistics",
+        "probability",
+        "data analysis"
+      ],
+      "learning_objectives": [
+        "Apply statistical methods to data",
+        "Perform hypothesis testing",
+        "Understand probability distributions",
+        "Conduct statistical inference"
+      ],
+      "created_at": "2025-10-31 00:31:01.973396",
+      "updated_at": "2025-10-31 00:31:01.973397"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X4",
+      "course_code": "DS017",
+      "title": "Data Visualization",
+      "description": "Creating effective visualizations for data communication. Tools include Python matplotlib, seaborn, and Tableau.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "hybrid",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [
+        {
+          "course_code": "DS004",
+          "course_title": "Prerequisite Course 4",
+          "minimum_grade": "C",
+          "can_be_concurrent": true
+        }
+      ],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "11:00:00",
+        "end_time": "11:50:00",
+        "location": "Liberal Arts Center 165"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Sue Ray",
+      "max_enrollment": 49,
+      "current_enrollment": 8,
+      "tags": [
+        "visualization",
+        "python",
+        "tableau",
+        "communication"
+      ],
+      "learning_objectives": [
+        "Create effective data visualizations",
+        "Choose appropriate chart types",
+        "Use visualization tools",
+        "Communicate insights through visuals"
+      ],
+      "created_at": "2025-10-31 00:31:01.973455",
+      "updated_at": "2025-10-31 00:31:01.973456"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X5",
+      "course_code": "DS018",
+      "title": "Statistics for Data Science",
+      "description": "Statistical methods and probability theory for data analysis. Hypothesis testing, regression, and statistical inference.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "online",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [
+        {
+          "course_code": "DS008",
+          "course_title": "Prerequisite Course 8",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "09:00:00",
+        "end_time": "10:15:00",
+        "location": "Business Complex 385"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Emily Reyes",
+      "max_enrollment": 32,
+      "current_enrollment": 12,
+      "tags": [
+        "statistics",
+        "probability",
+        "data analysis"
+      ],
+      "learning_objectives": [
+        "Apply statistical methods to data",
+        "Perform hypothesis testing",
+        "Understand probability distributions",
+        "Conduct statistical inference"
+      ],
+      "created_at": "2025-10-31 00:31:01.973514",
+      "updated_at": "2025-10-31 00:31:01.973514"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X6",
+      "course_code": "DS019",
+      "title": "Data Visualization",
+      "description": "Creating effective visualizations for data communication. Tools include Python matplotlib, seaborn, and Tableau.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "hybrid",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "14:30:00",
+        "end_time": "15:45:00",
+        "location": "Science Hall 578"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Mary Singleton",
+      "max_enrollment": 27,
+      "current_enrollment": 51,
+      "tags": [
+        "visualization",
+        "python",
+        "tableau",
+        "communication"
+      ],
+      "learning_objectives": [
+        "Create effective data visualizations",
+        "Choose appropriate chart types",
+        "Use visualization tools",
+        "Communicate insights through visuals"
+      ],
+      "created_at": "2025-10-31 00:31:01.973569",
+      "updated_at": "2025-10-31 00:31:01.973569"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X7",
+      "course_code": "DS020",
+      "title": "Data Visualization",
+      "description": "Creating effective visualizations for data communication. Tools include Python matplotlib, seaborn, and Tableau.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "online",
+      "department": "Data Science",
+      "major": "Data Science",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "11:00:00",
+        "end_time": "11:50:00",
+        "location": "Technology Center 294"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Devin Bell",
+      "max_enrollment": 55,
+      "current_enrollment": 59,
+      "tags": [
+        "visualization",
+        "python",
+        "tableau",
+        "communication"
+      ],
+      "learning_objectives": [
+        "Create effective data visualizations",
+        "Choose appropriate chart types",
+        "Use visualization tools",
+        "Communicate insights through visuals"
+      ],
+      "created_at": "2025-10-31 00:31:01.973623",
+      "updated_at": "2025-10-31 00:31:01.973623"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X8",
+      "course_code": "MATH021",
+      "title": "Calculus I",
+      "description": "Differential calculus including limits, derivatives, and applications. Foundation for advanced mathematics.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "15:00:00",
+        "end_time": "15:50:00",
+        "location": "Technology Center 151"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Monica Simpson",
+      "max_enrollment": 50,
+      "current_enrollment": 21,
+      "tags": [
+        "calculus",
+        "derivatives",
+        "limits"
+      ],
+      "learning_objectives": [
+        "Understand limits and continuity",
+        "Calculate derivatives",
+        "Apply calculus to real problems",
+        "Understand fundamental theorem"
+      ],
+      "created_at": "2025-10-31 00:31:01.973680",
+      "updated_at": "2025-10-31 00:31:01.973681"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59X9",
+      "course_code": "MATH022",
+      "title": "Linear Algebra",
+      "description": "Vector spaces, matrices, eigenvalues, and linear transformations. Essential for data science and engineering.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "15:00:00",
+        "end_time": "17:30:00",
+        "location": "Business Complex 985"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Eric Thompson",
+      "max_enrollment": 68,
+      "current_enrollment": 0,
+      "tags": [
+        "linear algebra",
+        "matrices",
+        "vectors"
+      ],
+      "learning_objectives": [
+        "Perform matrix operations",
+        "Understand vector spaces",
+        "Calculate eigenvalues and eigenvectors",
+        "Apply linear algebra to problems"
+      ],
+      "created_at": "2025-10-31 00:31:01.973735",
+      "updated_at": "2025-10-31 00:31:01.973735"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59XA",
+      "course_code": "MATH023",
+      "title": "Linear Algebra",
+      "description": "Vector spaces, matrices, eigenvalues, and linear transformations. Essential for data science and engineering.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "15:30:00",
+        "end_time": "16:45:00",
+        "location": "Technology Center 533"
+      },
+      "semester": "winter",
+      "year": 2024,
+      "instructor": "Megan Lewis",
+      "max_enrollment": 39,
+      "current_enrollment": 24,
+      "tags": [
+        "linear algebra",
+        "matrices",
+        "vectors"
+      ],
+      "learning_objectives": [
+        "Perform matrix operations",
+        "Understand vector spaces",
+        "Calculate eigenvalues and eigenvectors",
+        "Apply linear algebra to problems"
+      ],
+      "created_at": "2025-10-31 00:31:01.973790",
+      "updated_at": "2025-10-31 00:31:01.973790"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59XB",
+      "course_code": "MATH024",
+      "title": "Linear Algebra",
+      "description": "Vector spaces, matrices, eigenvalues, and linear transformations. Essential for data science and engineering.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [
+        {
+          "course_code": "MATH009",
+          "course_title": "Prerequisite Course 9",
+          "minimum_grade": "B-",
+          "can_be_concurrent": true
+        },
+        {
+          "course_code": "MATH009",
+          "course_title": "Prerequisite Course 9",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "tuesday",
+          "thursday"
+        ],
+        "start_time": "08:00:00",
+        "end_time": "09:15:00",
+        "location": "Liberal Arts Center 865"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Lindsey Hogan",
+      "max_enrollment": 50,
+      "current_enrollment": 51,
+      "tags": [
+        "linear algebra",
+        "matrices",
+        "vectors"
+      ],
+      "learning_objectives": [
+        "Perform matrix operations",
+        "Understand vector spaces",
+        "Calculate eigenvalues and eigenvectors",
+        "Apply linear algebra to problems"
+      ],
+      "created_at": "2025-10-31 00:31:01.973848",
+      "updated_at": "2025-10-31 00:31:01.973849"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59XC",
+      "course_code": "MATH025",
+      "title": "Calculus I",
+      "description": "Differential calculus including limits, derivatives, and applications. Foundation for advanced mathematics.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "thursday"
+        ],
+        "start_time": "11:00:00",
+        "end_time": "13:30:00",
+        "location": "Science Hall 734"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Richard Webster",
+      "max_enrollment": 53,
+      "current_enrollment": 26,
+      "tags": [
+        "calculus",
+        "derivatives",
+        "limits"
+      ],
+      "learning_objectives": [
+        "Understand limits and continuity",
+        "Calculate derivatives",
+        "Apply calculus to real problems",
+        "Understand fundamental theorem"
+      ],
+      "created_at": "2025-10-31 00:31:01.973902",
+      "updated_at": "2025-10-31 00:31:01.973903"
+    },
+    {
+      "id": "01K8W8H0TN30HVW7N0G2SZ59XD",
+      "course_code": "MATH026",
+      "title": "Linear Algebra",
+      "description": "Vector spaces, matrices, eigenvalues, and linear transformations. Essential for data science and engineering.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday",
+          "thursday"
+        ],
+        "start_time": "12:30:00",
+        "end_time": "13:45:00",
+        "location": "Liberal Arts Center 234"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Margaret Dunn",
+      "max_enrollment": 78,
+      "current_enrollment": 79,
+      "tags": [
+        "linear algebra",
+        "matrices",
+        "vectors"
+      ],
+      "learning_objectives": [
+        "Perform matrix operations",
+        "Understand vector spaces",
+        "Calculate eigenvalues and eigenvectors",
+        "Apply linear algebra to problems"
+      ],
+      "created_at": "2025-10-31 00:31:01.973957",
+      "updated_at": "2025-10-31 00:31:01.973957"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYSZ",
+      "course_code": "MATH027",
+      "title": "Calculus I",
+      "description": "Differential calculus including limits, derivatives, and applications. Foundation for advanced mathematics.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [
+        {
+          "course_code": "MATH003",
+          "course_title": "Prerequisite Course 3",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        },
+        {
+          "course_code": "MATH006",
+          "course_title": "Prerequisite Course 6",
+          "minimum_grade": "C+",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "16:00:00",
+        "end_time": "16:50:00",
+        "location": "Liberal Arts Center 618"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Mrs. Sarah Davis",
+      "max_enrollment": 98,
+      "current_enrollment": 67,
+      "tags": [
+        "calculus",
+        "derivatives",
+        "limits"
+      ],
+      "learning_objectives": [
+        "Understand limits and continuity",
+        "Calculate derivatives",
+        "Apply calculus to real problems",
+        "Understand fundamental theorem"
+      ],
+      "created_at": "2025-10-31 00:31:01.974025",
+      "updated_at": "2025-10-31 00:31:01.974026"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT0",
+      "course_code": "MATH028",
+      "title": "Calculus I",
+      "description": "Differential calculus including limits, derivatives, and applications. Foundation for advanced mathematics.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [
+        {
+          "course_code": "MATH018",
+          "course_title": "Prerequisite Course 18",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "thursday"
+        ],
+        "start_time": "12:00:00",
+        "end_time": "14:30:00",
+        "location": "Engineering Building 999"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Brandon Roman",
+      "max_enrollment": 63,
+      "current_enrollment": 26,
+      "tags": [
+        "calculus",
+        "derivatives",
+        "limits"
+      ],
+      "learning_objectives": [
+        "Understand limits and continuity",
+        "Calculate derivatives",
+        "Apply calculus to real problems",
+        "Understand fundamental theorem"
+      ],
+      "created_at": "2025-10-31 00:31:01.974086",
+      "updated_at": "2025-10-31 00:31:01.974086"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT1",
+      "course_code": "MATH029",
+      "title": "Linear Algebra",
+      "description": "Vector spaces, matrices, eigenvalues, and linear transformations. Essential for data science and engineering.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [
+        {
+          "course_code": "MATH009",
+          "course_title": "Prerequisite Course 9",
+          "minimum_grade": "C",
+          "can_be_concurrent": true
+        },
+        {
+          "course_code": "MATH005",
+          "course_title": "Prerequisite Course 5",
+          "minimum_grade": "B-",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "thursday"
+        ],
+        "start_time": "15:30:00",
+        "end_time": "18:00:00",
+        "location": "Science Hall 966"
+      },
+      "semester": "winter",
+      "year": 2024,
+      "instructor": "Robin Black",
+      "max_enrollment": 90,
+      "current_enrollment": 54,
+      "tags": [
+        "linear algebra",
+        "matrices",
+        "vectors"
+      ],
+      "learning_objectives": [
+        "Perform matrix operations",
+        "Understand vector spaces",
+        "Calculate eigenvalues and eigenvectors",
+        "Apply linear algebra to problems"
+      ],
+      "created_at": "2025-10-31 00:31:01.974145",
+      "updated_at": "2025-10-31 00:31:01.974145"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT2",
+      "course_code": "MATH030",
+      "title": "Calculus I",
+      "description": "Differential calculus including limits, derivatives, and applications. Foundation for advanced mathematics.",
+      "credits": 4,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Mathematics",
+      "major": "Mathematics",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "09:00:00",
+        "end_time": "09:50:00",
+        "location": "Science Hall 658"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Stephanie Norris",
+      "max_enrollment": 75,
+      "current_enrollment": 16,
+      "tags": [
+        "calculus",
+        "derivatives",
+        "limits"
+      ],
+      "learning_objectives": [
+        "Understand limits and continuity",
+        "Calculate derivatives",
+        "Apply calculus to real problems",
+        "Understand fundamental theorem"
+      ],
+      "created_at": "2025-10-31 00:31:01.974201",
+      "updated_at": "2025-10-31 00:31:01.974201"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT3",
+      "course_code": "BUS031",
+      "title": "Principles of Management",
+      "description": "Fundamental management concepts including planning, organizing, leading, and controlling organizational resources.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "hybrid",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "13:00:00",
+        "end_time": "14:15:00",
+        "location": "Engineering Building 466"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Earl Turner",
+      "max_enrollment": 33,
+      "current_enrollment": 45,
+      "tags": [
+        "management",
+        "leadership",
+        "organization"
+      ],
+      "learning_objectives": [
+        "Understand management principles",
+        "Apply leadership concepts",
+        "Organize teams effectively",
+        "Control organizational resources"
+      ],
+      "created_at": "2025-10-31 00:31:01.974257",
+      "updated_at": "2025-10-31 00:31:01.974257"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT4",
+      "course_code": "BUS032",
+      "title": "Marketing Strategy",
+      "description": "Strategic marketing planning, market analysis, consumer behavior, and digital marketing techniques.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "thursday"
+        ],
+        "start_time": "10:00:00",
+        "end_time": "12:30:00",
+        "location": "Engineering Building 985"
+      },
+      "semester": "winter",
+      "year": 2024,
+      "instructor": "Mark Brooks",
+      "max_enrollment": 23,
+      "current_enrollment": 22,
+      "tags": [
+        "marketing",
+        "strategy",
+        "consumer behavior"
+      ],
+      "learning_objectives": [
+        "Develop marketing strategies",
+        "Analyze market opportunities",
+        "Understand consumer behavior",
+        "Implement digital marketing"
+      ],
+      "created_at": "2025-10-31 00:31:01.974314",
+      "updated_at": "2025-10-31 00:31:01.974314"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT5",
+      "course_code": "BUS033",
+      "title": "Marketing Strategy",
+      "description": "Strategic marketing planning, market analysis, consumer behavior, and digital marketing techniques.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "18:00:00",
+        "end_time": "20:30:00",
+        "location": "Engineering Building 373"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Tara Glenn MD",
+      "max_enrollment": 68,
+      "current_enrollment": 4,
+      "tags": [
+        "marketing",
+        "strategy",
+        "consumer behavior"
+      ],
+      "learning_objectives": [
+        "Develop marketing strategies",
+        "Analyze market opportunities",
+        "Understand consumer behavior",
+        "Implement digital marketing"
+      ],
+      "created_at": "2025-10-31 00:31:01.974437",
+      "updated_at": "2025-10-31 00:31:01.974438"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT6",
+      "course_code": "BUS034",
+      "title": "Marketing Strategy",
+      "description": "Strategic marketing planning, market analysis, consumer behavior, and digital marketing techniques.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday",
+          "thursday"
+        ],
+        "start_time": "11:30:00",
+        "end_time": "12:45:00",
+        "location": "Liberal Arts Center 458"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Marcus James",
+      "max_enrollment": 23,
+      "current_enrollment": 24,
+      "tags": [
+        "marketing",
+        "strategy",
+        "consumer behavior"
+      ],
+      "learning_objectives": [
+        "Develop marketing strategies",
+        "Analyze market opportunities",
+        "Understand consumer behavior",
+        "Implement digital marketing"
+      ],
+      "created_at": "2025-10-31 00:31:01.974492",
+      "updated_at": "2025-10-31 00:31:01.974492"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT7",
+      "course_code": "BUS035",
+      "title": "Marketing Strategy",
+      "description": "Strategic marketing planning, market analysis, consumer behavior, and digital marketing techniques.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "12:00:00",
+        "end_time": "13:15:00",
+        "location": "Liberal Arts Center 891"
+      },
+      "semester": "winter",
+      "year": 2024,
+      "instructor": "Daniel Tate",
+      "max_enrollment": 88,
+      "current_enrollment": 42,
+      "tags": [
+        "marketing",
+        "strategy",
+        "consumer behavior"
+      ],
+      "learning_objectives": [
+        "Develop marketing strategies",
+        "Analyze market opportunities",
+        "Understand consumer behavior",
+        "Implement digital marketing"
+      ],
+      "created_at": "2025-10-31 00:31:01.974545",
+      "updated_at": "2025-10-31 00:31:01.974546"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT8",
+      "course_code": "BUS036",
+      "title": "Principles of Management",
+      "description": "Fundamental management concepts including planning, organizing, leading, and controlling organizational resources.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "in_person",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [
+        {
+          "course_code": "BUS012",
+          "course_title": "Prerequisite Course 12",
+          "minimum_grade": "B-",
+          "can_be_concurrent": false
+        },
+        {
+          "course_code": "BUS014",
+          "course_title": "Prerequisite Course 14",
+          "minimum_grade": "B-",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "12:00:00",
+        "end_time": "12:50:00",
+        "location": "Liberal Arts Center 694"
+      },
+      "semester": "winter",
+      "year": 2024,
+      "instructor": "Robert Wright",
+      "max_enrollment": 93,
+      "current_enrollment": 24,
+      "tags": [
+        "management",
+        "leadership",
+        "organization"
+      ],
+      "learning_objectives": [
+        "Understand management principles",
+        "Apply leadership concepts",
+        "Organize teams effectively",
+        "Control organizational resources"
+      ],
+      "created_at": "2025-10-31 00:31:01.974605",
+      "updated_at": "2025-10-31 00:31:01.974605"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYT9",
+      "course_code": "BUS037",
+      "title": "Marketing Strategy",
+      "description": "Strategic marketing planning, market analysis, consumer behavior, and digital marketing techniques.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "14:00:00",
+        "end_time": "14:50:00",
+        "location": "Technology Center 632"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Amy Blackwell",
+      "max_enrollment": 66,
+      "current_enrollment": 55,
+      "tags": [
+        "marketing",
+        "strategy",
+        "consumer behavior"
+      ],
+      "learning_objectives": [
+        "Develop marketing strategies",
+        "Analyze market opportunities",
+        "Understand consumer behavior",
+        "Implement digital marketing"
+      ],
+      "created_at": "2025-10-31 00:31:01.974659",
+      "updated_at": "2025-10-31 00:31:01.974660"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYTA",
+      "course_code": "BUS038",
+      "title": "Principles of Management",
+      "description": "Fundamental management concepts including planning, organizing, leading, and controlling organizational resources.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "online",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "17:30:00",
+        "end_time": "18:45:00",
+        "location": "Science Hall 779"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Andrea Thompson",
+      "max_enrollment": 72,
+      "current_enrollment": 41,
+      "tags": [
+        "management",
+        "leadership",
+        "organization"
+      ],
+      "learning_objectives": [
+        "Understand management principles",
+        "Apply leadership concepts",
+        "Organize teams effectively",
+        "Control organizational resources"
+      ],
+      "created_at": "2025-10-31 00:31:01.974714",
+      "updated_at": "2025-10-31 00:31:01.974714"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYTB",
+      "course_code": "BUS039",
+      "title": "Marketing Strategy",
+      "description": "Strategic marketing planning, market analysis, consumer behavior, and digital marketing techniques.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "online",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "16:00:00",
+        "end_time": "17:15:00",
+        "location": "Business Complex 296"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Kevin Johnson",
+      "max_enrollment": 98,
+      "current_enrollment": 72,
+      "tags": [
+        "marketing",
+        "strategy",
+        "consumer behavior"
+      ],
+      "learning_objectives": [
+        "Develop marketing strategies",
+        "Analyze market opportunities",
+        "Understand consumer behavior",
+        "Implement digital marketing"
+      ],
+      "created_at": "2025-10-31 00:31:01.974767",
+      "updated_at": "2025-10-31 00:31:01.974768"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYTC",
+      "course_code": "BUS040",
+      "title": "Marketing Strategy",
+      "description": "Strategic marketing planning, market analysis, consumer behavior, and digital marketing techniques.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "hybrid",
+      "department": "Business",
+      "major": "Business Administration",
+      "prerequisites": [
+        {
+          "course_code": "BUS015",
+          "course_title": "Prerequisite Course 15",
+          "minimum_grade": "C+",
+          "can_be_concurrent": false
+        },
+        {
+          "course_code": "BUS007",
+          "course_title": "Prerequisite Course 7",
+          "minimum_grade": "B-",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "16:00:00",
+        "end_time": "18:30:00",
+        "location": "Liberal Arts Center 411"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Brandon Ramirez",
+      "max_enrollment": 30,
+      "current_enrollment": 36,
+      "tags": [
+        "marketing",
+        "strategy",
+        "consumer behavior"
+      ],
+      "learning_objectives": [
+        "Develop marketing strategies",
+        "Analyze market opportunities",
+        "Understand consumer behavior",
+        "Implement digital marketing"
+      ],
+      "created_at": "2025-10-31 00:31:01.974825",
+      "updated_at": "2025-10-31 00:31:01.974825"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYTD",
+      "course_code": "PSY041",
+      "title": "Cognitive Psychology",
+      "description": "Study of mental processes including perception, memory, thinking, and problem-solving.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "11:30:00",
+        "end_time": "12:20:00",
+        "location": "Engineering Building 330"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Tyrone Vasquez",
+      "max_enrollment": 25,
+      "current_enrollment": 31,
+      "tags": [
+        "cognitive psychology",
+        "memory",
+        "perception"
+      ],
+      "learning_objectives": [
+        "Understand cognitive processes",
+        "Study memory systems",
+        "Analyze problem-solving",
+        "Explore perception mechanisms"
+      ],
+      "created_at": "2025-10-31 00:31:01.974879",
+      "updated_at": "2025-10-31 00:31:01.974879"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYTE",
+      "course_code": "PSY042",
+      "title": "Cognitive Psychology",
+      "description": "Study of mental processes including perception, memory, thinking, and problem-solving.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "thursday"
+        ],
+        "start_time": "09:30:00",
+        "end_time": "12:00:00",
+        "location": "Technology Center 524"
+      },
+      "semester": "winter",
+      "year": 2024,
+      "instructor": "Craig Jackson",
+      "max_enrollment": 83,
+      "current_enrollment": 51,
+      "tags": [
+        "cognitive psychology",
+        "memory",
+        "perception"
+      ],
+      "learning_objectives": [
+        "Understand cognitive processes",
+        "Study memory systems",
+        "Analyze problem-solving",
+        "Explore perception mechanisms"
+      ],
+      "created_at": "2025-10-31 00:31:01.974933",
+      "updated_at": "2025-10-31 00:31:01.974933"
+    },
+    {
+      "id": "01K8W8H0TP3PHGJ9Y8QCCJFYTF",
+      "course_code": "PSY043",
+      "title": "Introduction to Psychology",
+      "description": "Overview of psychological principles, research methods, and major areas of study in psychology.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "online",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "tuesday",
+          "thursday"
+        ],
+        "start_time": "18:00:00",
+        "end_time": "19:15:00",
+        "location": "Science Hall 868"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Kathy Velez",
+      "max_enrollment": 42,
+      "current_enrollment": 66,
+      "tags": [
+        "psychology",
+        "research methods",
+        "behavior"
+      ],
+      "learning_objectives": [
+        "Understand psychological principles",
+        "Learn research methods",
+        "Explore areas of psychology",
+        "Apply psychological concepts"
+      ],
+      "created_at": "2025-10-31 00:31:01.974987",
+      "updated_at": "2025-10-31 00:31:01.974988"
+    },
+    {
+      "id": "01K8W8H0TQFK75Z9NA0D77XBVZ",
+      "course_code": "PSY044",
+      "title": "Cognitive Psychology",
+      "description": "Study of mental processes including perception, memory, thinking, and problem-solving.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "online",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "16:00:00",
+        "end_time": "16:50:00",
+        "location": "Science Hall 968"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Megan Wilson",
+      "max_enrollment": 76,
+      "current_enrollment": 78,
+      "tags": [
+        "cognitive psychology",
+        "memory",
+        "perception"
+      ],
+      "learning_objectives": [
+        "Understand cognitive processes",
+        "Study memory systems",
+        "Analyze problem-solving",
+        "Explore perception mechanisms"
+      ],
+      "created_at": "2025-10-31 00:31:01.975044",
+      "updated_at": "2025-10-31 00:31:01.975045"
+    },
+    {
+      "id": "01K8W8H0TQFK75Z9NA0D77XBW0",
+      "course_code": "PSY045",
+      "title": "Cognitive Psychology",
+      "description": "Study of mental processes including perception, memory, thinking, and problem-solving.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [],
+      "schedule": {
+        "days": [
+          "thursday"
+        ],
+        "start_time": "15:00:00",
+        "end_time": "17:30:00",
+        "location": "Business Complex 861"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Karen Nash",
+      "max_enrollment": 86,
+      "current_enrollment": 62,
+      "tags": [
+        "cognitive psychology",
+        "memory",
+        "perception"
+      ],
+      "learning_objectives": [
+        "Understand cognitive processes",
+        "Study memory systems",
+        "Analyze problem-solving",
+        "Explore perception mechanisms"
+      ],
+      "created_at": "2025-10-31 00:31:01.975104",
+      "updated_at": "2025-10-31 00:31:01.975105"
+    },
+    {
+      "id": "01K8W8H0TQFK75Z9NA0D77XBW1",
+      "course_code": "PSY046",
+      "title": "Introduction to Psychology",
+      "description": "Overview of psychological principles, research methods, and major areas of study in psychology.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "in_person",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [
+        {
+          "course_code": "PSY021",
+          "course_title": "Prerequisite Course 21",
+          "minimum_grade": "B-",
+          "can_be_concurrent": true
+        },
+        {
+          "course_code": "PSY010",
+          "course_title": "Prerequisite Course 10",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "15:00:00",
+        "end_time": "16:15:00",
+        "location": "Liberal Arts Center 830"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Richard Perez",
+      "max_enrollment": 28,
+      "current_enrollment": 53,
+      "tags": [
+        "psychology",
+        "research methods",
+        "behavior"
+      ],
+      "learning_objectives": [
+        "Understand psychological principles",
+        "Learn research methods",
+        "Explore areas of psychology",
+        "Apply psychological concepts"
+      ],
+      "created_at": "2025-10-31 00:31:01.975163",
+      "updated_at": "2025-10-31 00:31:01.975163"
+    },
+    {
+      "id": "01K8W8H0TQFK75Z9NA0D77XBW2",
+      "course_code": "PSY047",
+      "title": "Cognitive Psychology",
+      "description": "Study of mental processes including perception, memory, thinking, and problem-solving.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [
+        {
+          "course_code": "PSY025",
+          "course_title": "Prerequisite Course 25",
+          "minimum_grade": "B-",
+          "can_be_concurrent": false
+        },
+        {
+          "course_code": "PSY002",
+          "course_title": "Prerequisite Course 2",
+          "minimum_grade": "B-",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday"
+        ],
+        "start_time": "16:30:00",
+        "end_time": "17:45:00",
+        "location": "Science Hall 525"
+      },
+      "semester": "summer",
+      "year": 2024,
+      "instructor": "Samantha Sanders",
+      "max_enrollment": 58,
+      "current_enrollment": 49,
+      "tags": [
+        "cognitive psychology",
+        "memory",
+        "perception"
+      ],
+      "learning_objectives": [
+        "Understand cognitive processes",
+        "Study memory systems",
+        "Analyze problem-solving",
+        "Explore perception mechanisms"
+      ],
+      "created_at": "2025-10-31 00:31:01.975222",
+      "updated_at": "2025-10-31 00:31:01.975223"
+    },
+    {
+      "id": "01K8W8H0TQFK75Z9NA0D77XBW3",
+      "course_code": "PSY048",
+      "title": "Cognitive Psychology",
+      "description": "Study of mental processes including perception, memory, thinking, and problem-solving.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "online",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [
+        {
+          "course_code": "PSY002",
+          "course_title": "Prerequisite Course 2",
+          "minimum_grade": "C+",
+          "can_be_concurrent": false
+        },
+        {
+          "course_code": "PSY026",
+          "course_title": "Prerequisite Course 26",
+          "minimum_grade": "B-",
+          "can_be_concurrent": true
+        }
+      ],
+      "schedule": {
+        "days": [
+          "thursday"
+        ],
+        "start_time": "16:00:00",
+        "end_time": "18:30:00",
+        "location": "Engineering Building 599"
+      },
+      "semester": "spring",
+      "year": 2024,
+      "instructor": "Bradley Powers",
+      "max_enrollment": 99,
+      "current_enrollment": 68,
+      "tags": [
+        "cognitive psychology",
+        "memory",
+        "perception"
+      ],
+      "learning_objectives": [
+        "Understand cognitive processes",
+        "Study memory systems",
+        "Analyze problem-solving",
+        "Explore perception mechanisms"
+      ],
+      "created_at": "2025-10-31 00:31:01.975283",
+      "updated_at": "2025-10-31 00:31:01.975283"
+    },
+    {
+      "id": "01K8W8H0TQFK75Z9NA0D77XBW4",
+      "course_code": "PSY049",
+      "title": "Introduction to Psychology",
+      "description": "Overview of psychological principles, research methods, and major areas of study in psychology.",
+      "credits": 3,
+      "difficulty_level": "beginner",
+      "format": "online",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [
+        {
+          "course_code": "PSY012",
+          "course_title": "Prerequisite Course 12",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        },
+        {
+          "course_code": "PSY021",
+          "course_title": "Prerequisite Course 21",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "tuesday"
+        ],
+        "start_time": "17:00:00",
+        "end_time": "19:30:00",
+        "location": "Business Complex 185"
+      },
+      "semester": "winter",
+      "year": 2024,
+      "instructor": "Stacey Herrera",
+      "max_enrollment": 55,
+      "current_enrollment": 53,
+      "tags": [
+        "psychology",
+        "research methods",
+        "behavior"
+      ],
+      "learning_objectives": [
+        "Understand psychological principles",
+        "Learn research methods",
+        "Explore areas of psychology",
+        "Apply psychological concepts"
+      ],
+      "created_at": "2025-10-31 00:31:01.975346",
+      "updated_at": "2025-10-31 00:31:01.975346"
+    },
+    {
+      "id": "01K8W8H0TQFK75Z9NA0D77XBW5",
+      "course_code": "PSY050",
+      "title": "Cognitive Psychology",
+      "description": "Study of mental processes including perception, memory, thinking, and problem-solving.",
+      "credits": 3,
+      "difficulty_level": "intermediate",
+      "format": "in_person",
+      "department": "Psychology",
+      "major": "Psychology",
+      "prerequisites": [
+        {
+          "course_code": "PSY015",
+          "course_title": "Prerequisite Course 15",
+          "minimum_grade": "B-",
+          "can_be_concurrent": true
+        },
+        {
+          "course_code": "PSY003",
+          "course_title": "Prerequisite Course 3",
+          "minimum_grade": "C",
+          "can_be_concurrent": false
+        }
+      ],
+      "schedule": {
+        "days": [
+          "monday",
+          "wednesday",
+          "friday"
+        ],
+        "start_time": "15:00:00",
+        "end_time": "15:50:00",
+        "location": "Technology Center 867"
+      },
+      "semester": "fall",
+      "year": 2024,
+      "instructor": "Michael Ramsey",
+      "max_enrollment": 99,
+      "current_enrollment": 19,
+      "tags": [
+        "cognitive psychology",
+        "memory",
+        "perception"
+      ],
+      "learning_objectives": [
+        "Understand cognitive processes",
+        "Study memory systems",
+        "Analyze problem-solving",
+        "Explore perception mechanisms"
+      ],
+      "created_at": "2025-10-31 00:31:01.975408",
+      "updated_at": "2025-10-31 00:31:01.975409"
+    }
+  ]
+}
