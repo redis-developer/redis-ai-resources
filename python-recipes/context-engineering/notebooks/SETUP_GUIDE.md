@@ -165,7 +165,7 @@ Once setup is complete:
 - ✅ Redis (for vector storage)
 - ✅ OpenAI API key
 
-### Section 1: Context Fundamentals
+### Section 1: Context Foundations
 - ✅ OpenAI API key only
 
 ---

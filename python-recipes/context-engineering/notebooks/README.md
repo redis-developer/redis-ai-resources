@@ -29,7 +29,7 @@ This directory contains the hands-on Jupyter notebooks for the Context Engineeri
 cd python-recipes/context-engineering
 jupyter notebook notebooks_v2/
 
-# Open: section-1-fundamentals/01_context_engineering_overview.ipynb
+# Open: section-1-context-engineering-foundations/01_what_is_context_engineering.ipynb
 ```
 
 **Need to set up?** Follow the [5-minute quick start](../README.md#-quick-start-5-minutes) in the main README.
@@ -43,7 +43,7 @@ jupyter notebook notebooks_v2/
 ### Learning Journey
 
 ```
-Section 1: Fundamentals → Section 2: RAG → Section 3: Memory → Section 4: Tools → Section 5: Production
+Section 1: Foundations → Section 2: RAG → Section 3: Memory → Section 4: Tools → Section 5: Production
      ↓                        ↓                 ↓                  ↓                  ↓
 Basic Concepts        → RAG Agent      → Memory Agent    → Multi-Tool Agent → Production Agent
 (2-3 hrs)              (3-4 hrs)        (4-5 hrs)         (5-6 hrs)          (4-5 hrs)
@@ -81,7 +81,7 @@ Basic Concepts        → RAG Agent      → Memory Agent    → Multi-Tool Agen
 
 ## 📚 Complete Course Syllabus
 
-### 🎯 **Section 1: Fundamentals**
+### 🎯 **Section 1: Foundations**
 **Goal**: Master context engineering basics and the four context types
 **Duration**: ~2-3 hours
 **Prerequisites**: Basic Python knowledge, familiarity with LLMs
@@ -97,8 +97,8 @@ Basic Concepts        → RAG Agent      → Memory Agent    → Multi-Tool Agen
 - Foundation for building sophisticated AI systems
 
 **Notebooks**:
-1. `01_introduction_context_engineering.ipynb` - Core concepts and why context engineering matters
-2. `02_context_types_deep_dive.ipynb` - Hands-on exploration of each context type
+1. `01_what_is_context_engineering.ipynb` - Core concepts and why context engineering matters
+2. `02_context_assembly_strategies.ipynb` - Hands-on exploration of each context type
 
 **Reference Agent Components Used**: None (conceptual foundation)
 
@@ -305,7 +305,7 @@ class OptimizedProductionAgent:
 
 ## 🎓 Learning Outcomes by Section
 
-### **After Section 1: Fundamentals**
+### **After Section 1: Foundations**
 Students can:
 - ✅ Explain the four context types and when to use each
 - ✅ Understand context engineering principles and best practices
@@ -523,10 +523,9 @@ enhanced-integration/
 ├── setup.sh                            # Alternative shell setup script
 ├── .env.example                        # Environment configuration template
 │
-├── section-1-fundamentals/             # Foundation concepts
-│   ├── 01_context_engineering_overview.ipynb
-│   ├── 02_core_concepts.ipynb
-│   ├── 03_context_types_deep_dive.ipynb
+├── section-1-context-engineering-foundations/  # Foundation concepts
+│   ├── 01_what_is_context_engineering.ipynb
+│   ├── 02_context_assembly_strategies.ipynb
 │   └── README.md
 │
 ├── section-2-rag-foundations/          # Complete RAG system

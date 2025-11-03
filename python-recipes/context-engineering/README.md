@@ -61,13 +61,13 @@ A complete **Redis University Course Advisor Agent** that:
 
 ## 📖 Course Structure
 
-### **Section 1: Context Engineering Fundamentals** (2-3 hours)
+### **Section 1: Context Engineering Foundations** (2-3 hours)
 **2 notebooks** | **Prerequisites**: None
 
 Learn the foundational concepts of context engineering and the four context types.
 
 **Notebooks**:
-1. **Context Engineering Overview** - Four context types, principles, and architecture
+1. **What is Context Engineering?** - Four context types, principles, and architecture
 2. **Context Assembly Strategies** - How to combine contexts effectively
 
 **Learning Outcomes**:
@@ -192,7 +192,7 @@ context-engineering/
 │   ├── README.md                       # Notebook-specific documentation
 │   ├── SETUP_GUIDE.md                  # Detailed setup instructions
 │   ├── REFERENCE_AGENT_USAGE_ANALYSIS.md  # Component usage analysis
-│   ├── section-1-fundamentals/         # Section 1 notebooks
+│   ├── section-1-context-engineering-foundations/  # Section 1 notebooks
 │   ├── section-2-rag-foundations/      # Section 2 notebooks
 │   ├── section-3-memory-architecture/  # Section 3 notebooks
 │   ├── section-4-tool-selection/       # Section 4 notebooks
@@ -258,7 +258,7 @@ cd ..
 # Start Jupyter
 jupyter notebook notebooks/
 
-# Open: section-1-fundamentals/01_context_engineering_overview.ipynb
+# Open: section-1-context-engineering-foundations/01_what_is_context_engineering.ipynb
 ```
 
 ### **Verification**
@@ -454,7 +454,7 @@ docker-compose down -v
 ### For Beginners
 **Timeline**: 3-4 weeks (6-8 hours/week)
 
-1. **Week 1**: Complete Section 1 (Fundamentals) and Section 2 (RAG)
+1. **Week 1**: Complete Section 1 (Foundations) and Section 2 (RAG)
 2. **Week 2**: Work through Section 3 (Memory Architecture)
 3. **Week 3**: Build agents in Section 4 (Tool Selection & LangGraph)
 4. **Week 4**: Optimize in Section 5 (Production)
@@ -486,7 +486,7 @@ docker-compose down -v
 
 ### By Section
 
-**Section 1: Fundamentals**
+**Section 1: Foundations**
 - Understand the four context types (system, user, retrieved, conversation)
 - Learn context assembly strategies
 - Grasp the importance of context engineering

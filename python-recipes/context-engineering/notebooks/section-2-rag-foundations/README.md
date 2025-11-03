@@ -14,7 +14,7 @@ By completing this section, you will:
 
 ## Prerequisites
 
-- Completion of Section 1: Fundamentals
+- Completion of Section 1: Foundations
 - Basic understanding of Python and object-oriented programming
 - Familiarity with the concepts of context engineering
 
@@ -147,7 +147,7 @@ After completing this section:
 ## Cross-References
 
 This section builds upon:
-- **Section 1 Fundamentals**: Context types and assembly patterns
+- **Section 1 Foundations**: Context types and assembly patterns
 - **Reference-agent models**: Professional data structures and validation
 
 This section prepares you for:

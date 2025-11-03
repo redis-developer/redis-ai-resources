@@ -35,12 +35,12 @@ A complete **Redis University Course Advisor Agent** that:
 
 ## 📖 Course Structure
 
-### **Section 1: Context Engineering Fundamentals** (2-3 hours)
+### **Section 1: Context Engineering Foundations** (2-3 hours)
 
 **Notebooks**: 2 | **Prerequisites**: None
 
 #### Notebooks
-1. **Context Engineering Overview** - Four context types, principles, and architecture
+1. **What is Context Engineering?** - Four context types, principles, and architecture
 2. **Context Assembly Strategies** - How to combine contexts effectively
 
 #### Learning Outcomes
@@ -648,7 +648,7 @@ from redis_context_course import (
 ### Recommended Learning Path
 
 #### For Beginners (3-4 weeks, 6-8 hours/week)
-1. **Week 1**: Complete Section 1 (Fundamentals) and Section 2 (RAG)
+1. **Week 1**: Complete Section 1 (Foundations) and Section 2 (RAG)
 2. **Week 2**: Work through Section 3 (Memory Architecture)
 3. **Week 3**: Build agents in Section 4 (Tool Selection & LangGraph)
 4. **Week 4**: Optimize in Section 5 (Production)

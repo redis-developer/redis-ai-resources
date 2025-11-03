@@ -16,7 +16,7 @@ By the end of this section, you will:
 
 ## Prerequisites
 
-- ✅ Completed Section 1 (Context Engineering Fundamentals)
+- ✅ Completed Section 1 (Context Engineering Foundations)
 - ✅ Completed Section 2 (RAG Foundations)
 - ✅ Redis instance running
 - ✅ Agent Memory Server running (see reference-agent/README.md)
