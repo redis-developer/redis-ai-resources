@@ -163,17 +163,16 @@ python examples/basic_usage.py
 ## 📖 Next Steps
 
 1. **Read the full README**: `README.md`
-2. **Check examples**: `examples/` directory  
-3. **Follow setup plan**: `SETUP_PLAN.md`
-4. **Troubleshoot issues**: `INVESTIGATION_GUIDE.md`
-5. **Customize the agent**: Modify `redis_context_course/agent.py`
+2. **Check examples**: `examples/` directory
+3. **Customize the agent**: Modify `redis_context_course/agent.py`
+4. **Explore the notebooks**: See `../notebooks/` for educational content
 
 ## 🆘 Need Help?
 
 1. **Run health check**: `python simple_health_check.py`
-2. **Check investigation guide**: `INVESTIGATION_GUIDE.md`
-3. **Review logs**: Look for error messages in terminal
-4. **Reset everything**: Follow rollback plan in `SETUP_PLAN.md`
+2. **Review logs**: Look for error messages in terminal
+3. **Check Redis**: Ensure Redis is running on port 6379
+4. **Check Agent Memory Server**: Ensure it's running on port 8088
 
 ## 🎉 Success!
 
