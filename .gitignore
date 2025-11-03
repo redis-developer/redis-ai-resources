@@ -233,3 +233,9 @@ litellm_redis.yml
 # Development directories
 nk_scripts/
 python-recipes/context-engineering/notebooks_archive/
+
+# Personal development files (keep locally, not in git)
+python-recipes/agents/02_full_featured_agent-Copy1.ipynb
+python-recipes/vector-search/01_redisvl-nk.ipynb
+python-recipes/vector-search/08_vector_algorithm_benchmark.ipynb
+python-recipes/vector_search.py
