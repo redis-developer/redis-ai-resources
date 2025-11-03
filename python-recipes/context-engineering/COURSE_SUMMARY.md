@@ -60,12 +60,12 @@ None (pure theory and conceptual foundation)
 
 ---
 
-### **Section 2: RAG Foundations** (3-4 hours)
+### **Section 2: Retrieved Context Engineering** (3-4 hours)
 
 **Notebooks**: 1 | **Prerequisites**: Section 1
 
 #### Notebooks
-1. **Building RAG with Redis** - Vector embeddings, semantic search, course recommendations
+1. **Engineering Retrieved Context with RAG** - Vector embeddings, semantic search, course recommendations
 
 #### Learning Outcomes
 - ✅ Implement vector embeddings with OpenAI

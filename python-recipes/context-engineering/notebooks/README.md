@@ -102,7 +102,7 @@ Basic Concepts        → RAG Agent      → Memory Agent    → Multi-Tool Agen
 
 **Reference Agent Components Used**: None (conceptual foundation)
 
-### 🤖 **Section 2: RAG Foundations**
+### 🤖 **Section 2: Retrieved Context Engineering**
 **Goal**: Build a complete RAG system with vector search and retrieval
 **Duration**: ~3-4 hours
 **Prerequisites**: Section 1 completed, Redis running, OpenAI API key
@@ -312,7 +312,7 @@ Students can:
 - ✅ Design context strategies for AI applications
 - ✅ Identify context engineering patterns in production systems
 
-### **After Section 2: RAG Foundations**
+### **After Section 2: Retrieved Context Engineering**
 Students can:
 - ✅ Build complete RAG systems with Redis and RedisVL
 - ✅ Implement vector similarity search for intelligent retrieval
@@ -528,7 +528,7 @@ enhanced-integration/
 │   ├── 02_context_assembly_strategies.ipynb
 │   └── README.md
 │
-├── section-2-rag-foundations/          # Complete RAG system
+├── section-2-retrieved-context-engineering/  # Complete RAG system
 │   ├── 01_building_your_rag_agent.ipynb
 │   └── README.md
 │

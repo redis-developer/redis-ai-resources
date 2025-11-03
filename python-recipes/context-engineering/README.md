@@ -79,13 +79,13 @@ Learn the foundational concepts of context engineering and the four context type
 
 ---
 
-### **Section 2: RAG Foundations** (3-4 hours)
+### **Section 2: Retrieved Context Engineering** (3-4 hours)
 **1 notebook** | **Prerequisites**: Section 1
 
 Build a RAG system using Redis and RedisVL for semantic course search.
 
 **Notebooks**:
-1. **Building RAG with Redis** - Vector embeddings, semantic search, course recommendations
+1. **Engineering Retrieved Context with RAG** - Vector embeddings, semantic search, course recommendations
 
 **Learning Outcomes**:
 - Implement vector embeddings with OpenAI
@@ -193,7 +193,7 @@ context-engineering/
 │   ├── SETUP_GUIDE.md                  # Detailed setup instructions
 │   ├── REFERENCE_AGENT_USAGE_ANALYSIS.md  # Component usage analysis
 │   ├── section-1-context-engineering-foundations/  # Section 1 notebooks
-│   ├── section-2-rag-foundations/      # Section 2 notebooks
+│   ├── section-2-retrieved-context-engineering/  # Section 2 notebooks
 │   ├── section-3-memory-architecture/  # Section 3 notebooks
 │   ├── section-4-tool-selection/       # Section 4 notebooks
 │   └── section-5-optimization-production/  # Section 5 notebooks
@@ -491,7 +491,7 @@ docker-compose down -v
 - Learn context assembly strategies
 - Grasp the importance of context engineering
 
-**Section 2: RAG Foundations**
+**Section 2: Retrieved Context Engineering**
 - Implement vector embeddings and semantic search
 - Build RAG systems with Redis and RedisVL
 - Create course recommendation engines

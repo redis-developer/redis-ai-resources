@@ -2,7 +2,7 @@
 
 ## Overview
 
-This section teaches **memory-enhanced context engineering** by building on Section 2's RAG system. You'll learn how to add **working memory** (conversation history) and **long-term memory** (persistent knowledge) to create stateful, personalized conversations.
+This section teaches **memory-enhanced context engineering** by building on Section 2's retrieved context system. You'll learn how to add **working memory** (conversation history) and **long-term memory** (persistent knowledge) to create stateful, personalized conversations.
 
 ## Learning Objectives
 
@@ -11,13 +11,13 @@ By the end of this section, you will:
 1. **Understand** why memory is essential for context engineering (the grounding problem)
 2. **Implement** working memory for conversation continuity
 3. **Use** long-term memory for persistent user knowledge
-4. **Integrate** memory with Section 2's RAG system
+4. **Integrate** memory with Section 2's retrieved context system
 5. **Build** a complete memory-enhanced course advisor
 
 ## Prerequisites
 
 - ✅ Completed Section 1 (Context Engineering Foundations)
-- ✅ Completed Section 2 (RAG Foundations)
+- ✅ Completed Section 2 (Retrieved Context Engineering)
 - ✅ Redis instance running
 - ✅ Agent Memory Server running (see reference-agent/README.md)
 - ✅ OpenAI API key configured
@@ -81,7 +81,7 @@ User Query
 1. **System Context** (Static) - ✅ Section 2
 2. **User Context** (Dynamic, User-Specific) - ✅ Section 2 + Long-term Memory
 3. **Conversation Context** (Dynamic, Session-Specific) - ✨ **Working Memory**
-4. **Retrieved Context** (Dynamic, Query-Specific) - ✅ Section 2 RAG
+4. **Retrieved Context** (Dynamic, Query-Specific) - ✅ Section 2
 
 ## Technology Stack
 
@@ -93,7 +93,7 @@ User Query
 
 ## Key Differences from Section 2
 
-| Feature | Section 2 (Stateless RAG) | Section 3 (Memory-Enhanced RAG) |
+| Feature | Section 2 (Retrieved Context) | Section 3 (Memory-Enhanced) |
 |---------|---------------------------|----------------------------------|
 | Conversation History | ❌ None | ✅ Working Memory |
 | Multi-turn Conversations | ❌ Each query independent | ✅ Context carries forward |
