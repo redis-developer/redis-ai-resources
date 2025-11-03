@@ -1,15 +1,27 @@
-# Redis Context Course
+# Redis Context Course - Reference Agent
 
-A complete reference implementation of a context-aware AI agent for university course recommendations and academic planning. This package demonstrates key context engineering concepts using Redis, LangGraph, and OpenAI.
+A complete reference implementation of a context-aware AI agent for university course recommendations and academic planning. This package demonstrates production-ready context engineering patterns using Redis, LangGraph, Agent Memory Server, and OpenAI.
+
+**🎓 Part of the [Context Engineering Course](../notebooks_v2/README.md)** - This reference agent provides reusable components used throughout the course notebooks.
+
+## Overview
+
+This package serves two purposes:
+
+1. **Educational Resource**: Provides production-ready components used in the [Context Engineering Course](../notebooks_v2/README.md)
+2. **Reference Implementation**: Demonstrates best practices for building context-aware AI agents
+
+The course notebooks use this package as a foundation, importing components like `CourseManager`, `redis_config`, and data models while demonstrating how to build custom agents from scratch.
 
 ## Features
 
-- 🧠 **Dual Memory System**: Working memory (task-focused) and long-term memory (cross-session knowledge)
-- 🔍 **Semantic Search**: Vector-based course discovery and recommendations
+- 🧠 **Dual Memory System**: Working memory (task-focused) and long-term memory (cross-session knowledge) via Agent Memory Server
+- 🔍 **Semantic Search**: Vector-based course discovery and recommendations using Redis and RedisVL
 - 🛠️ **Tool Integration**: Extensible tool system for course search and memory management
 - 💬 **Context Awareness**: Maintains student preferences, goals, and conversation history
 - 🎯 **Personalized Recommendations**: AI-powered course suggestions based on student profile
 - 📚 **Course Catalog Management**: Complete system for storing and retrieving course information
+- ⚡ **Production-Ready**: Optimization helpers, token counting, and performance utilities
 
 ## Installation
 
@@ -132,17 +144,83 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## Package Exports
+
+The package exports the following components for use in your applications:
+
+### Core Classes
+```python
+from redis_context_course import (
+    ClassAgent,              # LangGraph-based agent implementation
+    AugmentedClassAgent,     # Enhanced agent with additional features
+    AgentState,              # Agent state management
+    MemoryClient,            # Memory API client (from agent-memory-client)
+    MemoryClientConfig,      # Memory configuration
+    CourseManager,           # Course storage and recommendation engine
+    RedisConfig,             # Redis configuration
+    redis_config,            # Redis config instance
+)
+```
+
+### Data Models
+```python
+from redis_context_course import (
+    Course,                  # Course data model
+    Major,                   # Major/program model
+    StudentProfile,          # Student information model
+    CourseRecommendation,    # Recommendation model
+    AgentResponse,           # Agent response model
+    Prerequisite,            # Course prerequisite model
+    CourseSchedule,          # Schedule information model
+)
+```
+
+### Enums
+```python
+from redis_context_course import (
+    DifficultyLevel,         # Course difficulty levels
+    CourseFormat,            # Course format types (online, in-person, hybrid)
+    Semester,                # Semester enumeration
+    DayOfWeek,               # Day of week enumeration
+)
+```
+
+### Tools (for notebooks and custom agents)
+```python
+from redis_context_course import (
+    create_course_tools,     # Create course-related tools
+    create_memory_tools,     # Create memory management tools
+    select_tools_by_keywords,# Keyword-based tool selection
+)
+```
+
+### Optimization Helpers
+```python
+from redis_context_course import (
+    count_tokens,            # Token counting utility
+    estimate_token_budget,   # Budget estimation
+    hybrid_retrieval,        # Hybrid search strategy
+    create_summary_view,     # Summary generation
+    create_user_profile_view,# User profile formatting
+    filter_tools_by_intent,  # Intent-based tool filtering
+    classify_intent_with_llm,# LLM-based intent classification
+    extract_references,      # Reference extraction
+    format_context_for_llm,  # Context formatting
+)
+```
+
 ## Architecture
 
 ### Core Components
 
-- **Agent**: LangGraph-based workflow orchestration
+- **Agent**: LangGraph-based workflow orchestration (`ClassAgent`, `AugmentedClassAgent`)
 - **Memory Client**: Interface to Redis Agent Memory Server
   - Working memory: Session-scoped, task-focused context
   - Long-term memory: Cross-session, persistent knowledge
-- **Course Manager**: Course storage and recommendation engine
-- **Models**: Data structures for courses and students
-- **Redis Config**: Redis connections and index management
+- **Course Manager**: Course storage and recommendation engine using Redis and RedisVL
+- **Models**: Type-safe Pydantic data structures for courses and students
+- **Redis Config**: Redis connections and vector index management
+- **Optimization Helpers**: Production utilities for token counting, cost management, and performance
 
 ### Command Line Tools
 
@@ -323,23 +401,86 @@ reference-agent/
 
 ```
 
-## Educational Use
+## Educational Use & Course Integration
 
-This reference implementation is designed for educational purposes to demonstrate:
+This reference implementation is designed for educational purposes and is integrated with the **[Context Engineering Course](../notebooks_v2/README.md)**.
 
-- Context engineering principles
-- Memory management in AI agents (working memory vs. long-term memory)
-- Tool integration patterns
-- Vector search and semantic retrieval
-- LangGraph workflow design
-- Redis as an AI infrastructure component
+### How the Course Uses This Package
 
-See the accompanying notebooks in the `../notebooks/` directory for detailed explanations and tutorials.
+The course notebooks demonstrate **building agents from scratch** using this package's components as building blocks:
+
+**Components Used in Notebooks**:
+- ✅ `CourseManager` - Course search and recommendations (Sections 2, 3, 4)
+- ✅ `redis_config` - Redis configuration (Sections 2, 3)
+- ✅ Data models: `Course`, `StudentProfile`, `DifficultyLevel`, `CourseFormat`, `Semester` (Sections 3, 4)
+- ✅ Scripts: `CourseGenerator`, `CourseIngestionPipeline` (Section 2)
+
+**Components for Production Use** (not directly used in notebooks):
+- `ClassAgent`, `AugmentedClassAgent` - Complete agent implementations
+- `create_course_tools`, `create_memory_tools` - Tool creation helpers
+- Optimization helpers: `count_tokens`, `estimate_token_budget`, `hybrid_retrieval`, etc.
+
+**Why This Approach?**
+- Students learn to build custom agents rather than using pre-built ones
+- Demonstrates how production agents are constructed from components
+- Provides flexibility to adapt patterns to different use cases
+- Shows both educational and production-ready patterns
+
+For detailed analysis of component usage, see [notebooks_v2/REFERENCE_AGENT_USAGE_ANALYSIS.md](../notebooks_v2/REFERENCE_AGENT_USAGE_ANALYSIS.md).
 
 ### Learning Path
 
-1. **Start with the notebooks**: `../notebooks/` contains step-by-step tutorials
-2. **Explore the examples**: `examples/basic_usage.py` shows basic package usage
-3. **Read the source code**: Well-documented code in `redis_context_course/`
-4. **Run the agent**: Try the interactive CLI to see it in action
-5. **Extend and experiment**: Modify the code to learn by doing
+**For Course Students**:
+1. **Complete the course**: Follow the [Context Engineering Course](../notebooks_v2/README.md)
+2. **Use this package**: Import components as shown in notebooks
+3. **Explore the source**: See production implementations in `redis_context_course/`
+4. **Extend for your use case**: Adapt patterns to your domain
+
+**For Independent Learners**:
+1. **Explore the examples**: `examples/basic_usage.py` shows basic package usage
+2. **Read the source code**: Well-documented code in `redis_context_course/`
+3. **Run the agent**: Try the interactive CLI to see it in action
+4. **Check the notebooks**: See step-by-step tutorials in `../notebooks_v2/`
+
+### Key Concepts Demonstrated
+
+- **Context Engineering**: Four context types and assembly strategies
+- **Memory Management**: Working memory vs. long-term memory with Agent Memory Server
+- **Tool Integration**: Creating and orchestrating multiple tools
+- **Vector Search**: Semantic retrieval with Redis and RedisVL
+- **LangGraph Workflows**: Stateful agent design patterns
+- **Production Optimization**: Token counting, cost management, performance tuning
+
+---
+
+## Related Resources
+
+### Course Materials
+- **[Context Engineering Course](../notebooks_v2/README.md)** - Complete learning path using this package
+- **[Reference Agent Usage Analysis](../notebooks_v2/REFERENCE_AGENT_USAGE_ANALYSIS.md)** - How notebooks use this package
+- **[Setup Guide](../notebooks_v2/SETUP_GUIDE.md)** - Detailed setup instructions
+
+### Documentation
+- **[Main Course README](../README.md)** - Top-level context engineering documentation
+- **[Agent Memory Server](https://github.com/redis/agent-memory-server)** - Memory management system
+- **[Redis Documentation](https://redis.io/docs/)** - Redis official documentation
+- **[LangGraph Documentation](https://langchain-ai.github.io/langgraph/)** - LangGraph stateful agents
+
+### Community
+- **[Redis Discord](https://discord.gg/redis)** - Join the Redis community
+- **[GitHub Issues](https://github.com/redis-developer/redis-ai-resources/issues)** - Report issues or ask questions
+- **[Redis AI Resources](https://github.com/redis-developer/redis-ai-resources)** - More AI examples and recipes
+
+---
+
+## License
+
+MIT License - See LICENSE file for details
+
+## Contributing
+
+Contributions are welcome! Please see the main repository for contribution guidelines.
+
+---
+
+**Ready to learn context engineering?** Start with the [Context Engineering Course](../notebooks_v2/README.md) to see this reference agent in action!
