@@ -229,3 +229,7 @@ python-recipes/vector-search/datasets
 litellm_proxy.log
 litellm_redis.yml
 .vscode/
+
+# Development directories
+nk_scripts/
+python-recipes/context-engineering/notebooks_archive/
