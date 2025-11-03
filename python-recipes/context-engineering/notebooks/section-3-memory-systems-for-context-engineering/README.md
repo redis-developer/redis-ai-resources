@@ -1,4 +1,4 @@
-# 🧠 Section 3: Memory Architecture
+# 🧠 Section 3: Memory Systems for Context Engineering
 
 ## Overview
 
@@ -24,7 +24,7 @@ By the end of this section, you will:
 
 ## Notebooks
 
-### 01_memory_fundamentals_and_integration.ipynb
+### 01_working_and_longterm_memory.ipynb
 
 **⏱️ Estimated Time:** 45-60 minutes
 
@@ -181,5 +181,5 @@ If memories aren't persisting across sessions:
 
 ---
 
-**Ready to add memory to your RAG system? Start with `01_memory_fundamentals_and_integration.ipynb`!** 🚀
+**Ready to add memory to your RAG system? Start with `01_working_and_longterm_memory.ipynb`!** 🚀
 

@@ -139,7 +139,7 @@ By the end of this section, you'll have:
 ## Next Steps
 
 After completing this section:
-1. **Continue to Section 3: Memory Architecture** to add sophisticated Redis-based memory
+1. **Continue to Section 3: Memory Systems for Context Engineering** to add sophisticated Redis-based memory
 2. **Review your RAG agent** and identify areas for improvement
 3. **Experiment with different queries** to understand system behavior
 4. **Consider real-world applications** of RAG in your domain

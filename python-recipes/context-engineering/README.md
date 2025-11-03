@@ -100,7 +100,7 @@ Build a RAG system using Redis and RedisVL for semantic course search.
 
 ---
 
-### **Section 3: Memory Architecture** (4-5 hours)
+### **Section 3: Memory Systems for Context Engineering** (4-5 hours)
 **3 notebooks** | **Prerequisites**: Sections 1-2
 
 Master dual memory systems with Agent Memory Server, including extraction and compression strategies.
@@ -194,7 +194,7 @@ context-engineering/
 │   ├── REFERENCE_AGENT_USAGE_ANALYSIS.md  # Component usage analysis
 │   ├── section-1-context-engineering-foundations/  # Section 1 notebooks
 │   ├── section-2-retrieved-context-engineering/  # Section 2 notebooks
-│   ├── section-3-memory-architecture/  # Section 3 notebooks
+│   ├── section-3-memory-systems-for-context-engineering/  # Section 3 notebooks
 │   ├── section-4-tool-selection/       # Section 4 notebooks
 │   └── section-5-optimization-production/  # Section 5 notebooks
 │
@@ -455,7 +455,7 @@ docker-compose down -v
 **Timeline**: 3-4 weeks (6-8 hours/week)
 
 1. **Week 1**: Complete Section 1 (Foundations) and Section 2 (RAG)
-2. **Week 2**: Work through Section 3 (Memory Architecture)
+2. **Week 2**: Work through Section 3 (Memory Systems for Context Engineering)
 3. **Week 3**: Build agents in Section 4 (Tool Selection & LangGraph)
 4. **Week 4**: Optimize in Section 5 (Production)
 
@@ -496,7 +496,7 @@ docker-compose down -v
 - Build RAG systems with Redis and RedisVL
 - Create course recommendation engines
 
-**Section 3: Memory Architecture**
+**Section 3: Memory Systems for Context Engineering**
 - Master dual memory systems (working + long-term)
 - Implement memory extraction strategies
 - Apply working memory compression techniques

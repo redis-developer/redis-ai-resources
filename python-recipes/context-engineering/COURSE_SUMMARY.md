@@ -95,14 +95,14 @@ None (pure theory and conceptual foundation)
 
 ---
 
-### **Section 3: Memory Architecture** (4-5 hours)
+### **Section 3: Memory Systems for Context Engineering** (4-5 hours)
 
 **Notebooks**: 3 | **Prerequisites**: Sections 1-2
 
 #### Notebooks
-1. **Memory Fundamentals and Integration** - Working memory, long-term memory, Agent Memory Server
-2. **Memory-Enhanced RAG and Agents** - Combining memory with RAG, building stateful agents
-3. **Working Memory Compression** - Compression strategies for long conversations
+1. **Working and Long-Term Memory** - Working memory, long-term memory, Agent Memory Server
+2. **Combining Memory with Retrieved Context** - Combining memory with RAG, building stateful agents
+3. **Managing Long Conversations with Compression Strategies** - Compression strategies for long conversations
 
 #### Learning Outcomes
 - ✅ Implement working memory (session-scoped) and long-term memory (cross-session)
@@ -391,7 +391,7 @@ The `redis-context-course` package provides production-ready components used thr
 - **Redis Vector Search**: Using Redis for vector storage and retrieval
 - **Hybrid Search**: Combining keyword and semantic search
 
-### Memory Architecture
+### Memory Systems for Context Engineering
 - **Dual Memory System**: Working memory (session) + Long-term memory (cross-session)
 - **Memory Types**: Semantic (facts), Episodic (events), Message (conversations)
 - **Memory Extraction Strategies**: Discrete, Summary, Preferences, Custom
@@ -649,7 +649,7 @@ from redis_context_course import (
 
 #### For Beginners (3-4 weeks, 6-8 hours/week)
 1. **Week 1**: Complete Section 1 (Foundations) and Section 2 (RAG)
-2. **Week 2**: Work through Section 3 (Memory Architecture)
+2. **Week 2**: Work through Section 3 (Memory Systems for Context Engineering)
 3. **Week 3**: Build agents in Section 4 (Tool Selection & LangGraph)
 4. **Week 4**: Optimize in Section 5 (Production)
 

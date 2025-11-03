@@ -156,7 +156,7 @@ Once setup is complete:
 
 ## 🔗 Section-Specific Requirements
 
-### Section 3 & 4: Memory Architecture & Agents
+### Section 3 & 4: Memory Systems & Agents
 - ✅ Redis (for vector storage)
 - ✅ Agent Memory Server (for memory management)
 - ✅ OpenAI API key

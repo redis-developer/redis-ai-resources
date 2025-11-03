@@ -128,7 +128,7 @@ Basic Concepts        → RAG Agent      → Memory Agent    → Multi-Tool Agen
 - `CourseManager` - Course search and recommendations
 - `redis_config` - Redis configuration and connection
 
-### 🧠 **Section 3: Memory Architecture**
+### 🧠 **Section 3: Memory Systems for Context Engineering**
 **Goal**: Master memory management with Agent Memory Server
 **Duration**: ~4-5 hours
 **Prerequisites**: Section 2 completed, Agent Memory Server running
@@ -147,9 +147,9 @@ Basic Concepts        → RAG Agent      → Memory Agent    → Multi-Tool Agen
 - Session management and cross-session persistence
 
 **Notebooks**:
-1. `01_memory_fundamentals_and_integration.ipynb` - Memory basics and Agent Memory Server integration
-2. `02_memory_enhanced_rag_and_agents.ipynb` - Memory extraction strategies in practice
-3. `03_memory_management_long_conversations.ipynb` - Compression strategies for long conversations
+1. `01_working_and_longterm_memory.ipynb` - Memory basics and Agent Memory Server integration
+2. `02_combining_memory_with_retrieved_context.ipynb` - Memory extraction strategies in practice
+3. `03_manage_long_conversations_with_compression_strategies.ipynb` - Compression strategies for long conversations
 
 **Reference Agent Components Used**:
 - `redis_config` - Redis configuration
@@ -319,7 +319,7 @@ Students can:
 - ✅ Generate and ingest course data into Redis
 - ✅ Create course recommendation systems with semantic search
 
-### **After Section 3: Memory Architecture**
+### **After Section 3: Memory Systems for Context Engineering**
 Students can:
 - ✅ Integrate Agent Memory Server with AI agents
 - ✅ Implement dual memory systems (working + long-term)
