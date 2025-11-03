@@ -135,14 +135,14 @@ None (pure theory and conceptual foundation)
 
 ---
 
-### **Section 4: Tool Selection & LangGraph** (5-6 hours)
+### **Section 4: Integrating Tools and Agents** (5-6 hours)
 
 **Notebooks**: 3 | **Prerequisites**: Sections 1-3
 
 #### Notebooks
 1. **Tools and LangGraph Fundamentals** - Tool creation, LangGraph basics, state management
-2. **Redis University Course Advisor Agent** - Complete production agent with all features
-3. **Course Advisor with Compression** - Enhanced agent demonstrating compression strategies
+2. **Building a Course Advisor Agent** - Complete production agent with all features
+3. **Agent with Memory Compression** - Enhanced agent demonstrating compression strategies
 
 #### Learning Outcomes
 - ✅ Create and orchestrate multiple tools
@@ -650,7 +650,7 @@ from redis_context_course import (
 #### For Beginners (3-4 weeks, 6-8 hours/week)
 1. **Week 1**: Complete Section 1 (Foundations) and Section 2 (RAG)
 2. **Week 2**: Work through Section 3 (Memory Systems for Context Engineering)
-3. **Week 3**: Build agents in Section 4 (Tool Selection & LangGraph)
+3. **Week 3**: Build agents in Section 4 (Integrating Tools and Agents)
 4. **Week 4**: Optimize in Section 5 (Production)
 
 #### For Experienced Developers (1-2 weeks full-time)

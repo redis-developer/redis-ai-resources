@@ -1,4 +1,4 @@
-# Section 4: Agents and Tools
+# Section 4: Integrating Tools and Agents
 
 **⏱️ Estimated Time:** 2-2.5 hours total
 
@@ -24,8 +24,8 @@ This section teaches you how to build intelligent agents that combine RAG, memor
 - LangGraph state management
 - Tool-driven context construction
 
-### 2. Redis University Course Advisor Agent (60-75 minutes)
-**File:** `02_redis_university_course_advisor_agent.ipynb`
+### 2. Building a Course Advisor Agent (60-75 minutes)
+**File:** `02_building_course_advisor_agent.ipynb`
 
 **What You'll Build:**
 A complete course advisor agent with:
@@ -62,12 +62,12 @@ A complete course advisor agent with:
 - Course catalog retrieval
 - Single-step retrieval → generation
 
-### Section 3: Memory Architecture
+### Section 3: Memory Systems for Context Engineering
 - Working memory for conversation continuity
 - Long-term memory for persistent knowledge
 - Memory-enhanced RAG systems
 
-### Section 4: Agents and Tools (This Section)
+### Section 4: Integrating Tools and Agents (This Section)
 - **Combines everything:** RAG + Memory + Tools + Decision-Making
 - Agents can decide when to search, store, and recall
 - Multi-step reasoning and adaptive workflows

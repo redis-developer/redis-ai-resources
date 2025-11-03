@@ -123,7 +123,7 @@ Master dual memory systems with Agent Memory Server, including extraction and co
 
 ---
 
-### **Section 4: Tool Selection & LangGraph** (5-6 hours)
+### **Section 4: Integrating Tools and Agents** (5-6 hours)
 **3 notebooks** | **Prerequisites**: Sections 1-3
 
 Build production agents with LangGraph, semantic tool selection, and state management.
@@ -195,7 +195,7 @@ context-engineering/
 │   ├── section-1-context-engineering-foundations/  # Section 1 notebooks
 │   ├── section-2-retrieved-context-engineering/  # Section 2 notebooks
 │   ├── section-3-memory-systems-for-context-engineering/  # Section 3 notebooks
-│   ├── section-4-tool-selection/       # Section 4 notebooks
+│   ├── section-4-integrating-tools-and-agents/  # Section 4 notebooks
 │   └── section-5-optimization-production/  # Section 5 notebooks
 │
 └── reference-agent/                    # Production-ready reference implementation
@@ -456,7 +456,7 @@ docker-compose down -v
 
 1. **Week 1**: Complete Section 1 (Foundations) and Section 2 (RAG)
 2. **Week 2**: Work through Section 3 (Memory Systems for Context Engineering)
-3. **Week 3**: Build agents in Section 4 (Tool Selection & LangGraph)
+3. **Week 3**: Build agents in Section 4 (Integrating Tools and Agents)
 4. **Week 4**: Optimize in Section 5 (Production)
 
 ### For Experienced Developers
@@ -501,7 +501,7 @@ docker-compose down -v
 - Implement memory extraction strategies
 - Apply working memory compression techniques
 
-**Section 4: Tool Selection & LangGraph**
+**Section 4: Integrating Tools and Agents**
 - Build stateful agents with LangGraph
 - Implement semantic tool selection
 - Manage complex agent workflows

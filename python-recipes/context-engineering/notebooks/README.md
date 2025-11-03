@@ -159,7 +159,7 @@ Basic Concepts        → RAG Agent      → Memory Agent    → Multi-Tool Agen
 
 ---
 
-### 🔧 **Section 4: Tool Selection & LangGraph Agents**
+### 🔧 **Section 4: Integrating Tools and Agents**
 **Goal**: Build production agents with LangGraph and intelligent tool selection
 **Duration**: ~5-6 hours
 **Prerequisites**: Section 3 completed, understanding of LangGraph basics
@@ -179,8 +179,8 @@ Basic Concepts        → RAG Agent      → Memory Agent    → Multi-Tool Agen
 
 **Notebooks**:
 1. `01_tools_and_langgraph_fundamentals.ipynb` - LangGraph basics and tool integration
-2. `02_redis_university_course_advisor_agent.ipynb` - Complete course advisor agent
-3. `02_redis_university_course_advisor_agent_with_compression.ipynb` - Agent with memory compression
+2. `02_building_course_advisor_agent.ipynb` - Complete course advisor agent
+3. `03_agent_with_memory_compression.ipynb` - Agent with memory compression
 
 **Reference Agent Components Used**:
 - `CourseManager` - Course search and recommendations
@@ -327,7 +327,7 @@ Students can:
 - ✅ Implement memory compression for long conversations
 - ✅ Design cross-session conversation continuity
 
-### **After Section 4: Tool Selection & LangGraph**
+### **After Section 4: Integrating Tools and Agents**
 Students can:
 - ✅ Build stateful agents with LangGraph StateGraph
 - ✅ Create and integrate multiple tools in agents
