@@ -242,3 +242,13 @@ python-recipes/vector_search.py
 
 # Context engineering course - generated data files
 python-recipes/context-engineering/notebooks/section-2-retrieved-context-engineering/course_catalog_section2.json
+
+# Context engineering course - analysis and merge documentation (keep locally)
+python-recipes/context-engineering/notebooks/SECTION_2_MERGE_ANALYSIS.md
+python-recipes/context-engineering/overlap-analysis-summary.md
+python-recipes/context-engineering/section-2.5-analysis.md
+python-recipes/context-engineering/section-2.5-overlap-analysis.md
+python-recipes/context-engineering/section-2.5-philosophy-alignment.md
+python-recipes/context-engineering/section-2.5-revised-plan.md
+python-recipes/context-engineering/sections-1-4-notebooks.html
+python-recipes/context-engineering/pdfs/
