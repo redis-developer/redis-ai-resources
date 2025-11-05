@@ -1,0 +1,12 @@
+# Core dependencies for Context Engineering notebooks
+jupyter>=1.0.0
+python-dotenv>=1.0.0
+
+# LangChain dependencies for text splitting and embeddings (Section 2.5)
+langchain-experimental>=0.3.0
+langchain-huggingface>=0.3.0
+langchain-text-splitters>=0.3.0
+sentence-transformers>=2.0.0
+
+# The reference agent package should be installed separately with:
+# pip install -e reference-agent/
