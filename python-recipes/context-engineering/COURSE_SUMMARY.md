@@ -1,12 +1,12 @@
 # Context Engineering Course - Complete Syllabus
 
-**A comprehensive, hands-on course teaching production-ready context engineering for AI agents.**
+**A comprehensive, hands-on course teaching practical context engineering patterns for AI agents.**
 
 ---
 
 ## 📊 Course Overview
 
-**Duration**: 13-18 hours
+**Duration**: 14.5-20 hours
 **Format**: Self-paced, hands-on Jupyter notebooks
 **Level**: Intermediate to Advanced
 **Prerequisites**: Python, basic AI/ML understanding, familiarity with LLMs
@@ -18,7 +18,7 @@ A complete **Redis University Course Advisor Agent** that:
 - Remembers student preferences and goals across sessions using Agent Memory Server
 - Provides personalized recommendations based on student profile
 - Uses intelligent tool selection with LangGraph
-- Optimizes context for production deployment with cost management
+- Optimizes context assembly with cost management patterns
 
 ### Technologies Used
 
@@ -44,16 +44,16 @@ A complete **Redis University Course Advisor Agent** that:
 2. **Context Assembly Strategies** - How to combine contexts effectively
 
 #### Learning Outcomes
-- ✅ Understand the four context types (system, user, retrieved, conversation)
-- ✅ Learn context assembly strategies and patterns
-- ✅ Grasp the importance of context engineering in AI systems
-- ✅ Understand the role of context in LLM performance
+- Understand the four context types (system, user, retrieved, conversation)
+- Learn context assembly strategies and patterns
+- Grasp the importance of context engineering in AI systems
+- Understand the role of context in LLM performance
 
 #### Key Concepts
 - **Four Context Types**: System, User, Retrieved, Conversation
 - **Context Assembly**: How to combine different context sources
 - **Context Optimization**: Managing context window limits
-- **Production Considerations**: Scalability, cost, performance
+- **Real-World Considerations**: Scalability, cost, performance
 
 #### Reference Agent Components Used
 None (pure theory and conceptual foundation)
@@ -66,19 +66,19 @@ None (pure theory and conceptual foundation)
 
 #### Notebooks
 1. **RAG Fundamentals and Implementation** (45-50 min) - Vector embeddings, semantic search, building your first RAG system, context quality preview
-2. **Engineering Context for Production** (90-105 min) - Data engineering pipelines, chunking strategies with LangChain, production architectures, quality optimization
+2. **Crafting and Optimizing Context** (90-105 min) - Data engineering workflows, chunking strategies with LangChain, pipeline architectures, quality optimization
 
 #### Learning Outcomes
-- ✅ Implement vector embeddings with OpenAI
-- ✅ Build semantic search with Redis and RedisVL
-- ✅ Create a course recommendation system
-- ✅ Understand RAG architecture patterns
-- ✅ Ingest and query vector data
-- ✅ Engineer production-ready context from raw data
-- ✅ Apply chunking strategies (fixed-size, recursive, semantic, custom)
-- ✅ Build data engineering pipelines for context
-- ✅ Implement three engineering approaches (RAG, Structured Views, Hybrid)
-- ✅ Optimize context quality for production
+- Implement vector embeddings with OpenAI
+- Build semantic search with Redis and RedisVL
+- Create a course recommendation system
+- Understand RAG architecture patterns
+- Ingest and query vector data
+- Craft and optimize context from raw data
+- Apply chunking strategies (fixed-size, recursive, semantic, custom)
+- Understand data engineering workflows and pipeline architectures for context
+- Implement three engineering approaches (RAG, Structured Views, Hybrid)
+- Optimize context quality with systematic processes
 
 #### Key Concepts
 - **Vector Embeddings**: Converting text to numerical representations
@@ -118,12 +118,12 @@ None (pure theory and conceptual foundation)
 3. **Managing Long Conversations with Compression Strategies** - Compression strategies for long conversations
 
 #### Learning Outcomes
-- ✅ Implement working memory (session-scoped) and long-term memory (cross-session)
-- ✅ Use Agent Memory Server for automatic memory extraction
-- ✅ Apply memory extraction strategies (discrete, summary, preferences)
-- ✅ Implement working memory compression (truncation, priority-based, summarization)
-- ✅ Build memory-enhanced RAG systems
-- ✅ Create stateful agents with persistent memory
+- Implement working memory (session-scoped) and long-term memory (cross-session)
+- Use Agent Memory Server for automatic memory extraction
+- Apply memory extraction strategies (discrete, summary, preferences)
+- Implement working memory compression (truncation, priority-based, summarization)
+- Build memory-enhanced RAG systems
+- Create stateful agents with persistent memory
 
 #### Key Concepts
 - **Dual Memory System**: Working memory + Long-term memory
@@ -132,7 +132,7 @@ None (pure theory and conceptual foundation)
 - **Memory Extraction**: Automatic extraction of important facts
 - **Memory Extraction Strategies**: Discrete (facts), Summary (summaries), Preferences (user preferences)
 - **Working Memory Compression**: Truncation, Priority-Based, Summarization
-- **Agent Memory Server**: Production-ready memory management
+- **Agent Memory Server**: Automatic memory management
 
 #### Reference Agent Components Used
 - Data models: `Course`, `StudentProfile`, `DifficultyLevel`, `CourseFormat`, `Semester`
@@ -148,30 +148,35 @@ None (pure theory and conceptual foundation)
 
 ---
 
-### **Section 4: Integrating Tools and Agents** (5-6 hours)
+### **Section 4: Integrating Tools and Agents** (3.5-4.5 hours)
 
-**Notebooks**: 3 | **Prerequisites**: Sections 1-3
+**Notebooks**: 4 | **Prerequisites**: Sections 1-3
 
 #### Notebooks
 1. **Tools and LangGraph Fundamentals** - Tool creation, LangGraph basics, state management
-2. **Building a Course Advisor Agent** - Complete production agent with all features
+2. **Building a Course Advisor Agent** - Complete agent with all features
 3. **Agent with Memory Compression** - Enhanced agent demonstrating compression strategies
+4. **Semantic Tool Selection** - Intelligent tool routing for scalability
 
 #### Learning Outcomes
-- ✅ Create and orchestrate multiple tools
-- ✅ Build stateful agents with LangGraph
-- ✅ Implement semantic tool selection
-- ✅ Manage agent state and conversation flow
-- ✅ Apply compression in production agents
-- ✅ Build complete production-ready agents
+- Create and orchestrate multiple tools
+- Build stateful agents with LangGraph
+- Implement semantic tool selection with RedisVL
+- Manage agent state and conversation flow
+- Apply compression strategies in agents
+- Scale agents to 100+ tools without token explosion
+- Make informed decisions about tool selection strategies
+- Build complete context-aware agents
 
 #### Key Concepts
 - **Tool Creation**: Defining tools with schemas and descriptions
 - **LangGraph**: Stateful agent workflow framework
 - **State Management**: Managing agent state across turns
 - **Tool Orchestration**: Coordinating multiple tools
-- **Semantic Tool Selection**: Choosing tools based on context
-- **Production Agents**: Building scalable, production-ready agents
+- **Semantic Tool Selection**: Choosing tools based on context using embeddings
+- **Tool Selection Strategies**: Static, pre-filtered, and semantic approaches
+- **RedisVL Semantic Router**: Practical tool routing patterns
+- **Scalable Agents**: Building scalable, context-aware agents
 
 #### Reference Agent Components Used
 - All data models and enums
@@ -184,7 +189,7 @@ None (pure theory and conceptual foundation)
 - Tool binding and invocation
 - State persistence with checkpointers
 - Multi-turn conversations
-- Working memory compression in production
+- Working memory compression strategies
 
 ---
 
@@ -195,33 +200,32 @@ None (pure theory and conceptual foundation)
 By completing this course, you will be able to:
 
 ### Technical Skills
-- ✅ **Design context-aware AI agents** from scratch
-- ✅ **Implement production-ready memory systems** with Agent Memory Server
-- ✅ **Build RAG applications** using Redis and vector search
-- ✅ **Optimize context assembly** for cost and performance
-- ✅ **Create stateful agents** with LangGraph
-- ✅ **Deploy scalable AI systems** to production
-- ✅ **Apply context engineering patterns** to any domain
+- **Design context-aware AI agents** from scratch
+- **Implement memory systems** with Agent Memory Server
+- **Build RAG applications** using Redis and vector search
+- **Optimize context assembly** for cost and performance
+- **Create stateful agents** with LangGraph
+- **Apply scalable patterns** to real-world use cases
+- **Use context engineering patterns** in any domain
 
 ### Professional Skills
-- ✅ Production AI development experience
-- ✅ System optimization and performance tuning
-- ✅ Cost management and efficiency optimization
-- ✅ Enterprise-grade monitoring and analytics
-- ✅ Scalable architecture design
-- ✅ Production deployment best practices
+- Practical patterns and architecture design
+- System optimization and performance tuning
+- Cost management and efficiency optimization
+- Scalable architecture design
+- Real-world application of AI agent patterns
 
 ### Portfolio Project
-- ✅ Complete Redis University Course Advisor
-- ✅ Production-ready codebase with comprehensive features
-- ✅ Demonstrated scalability and optimization
-- ✅ Professional documentation and testing
+- Complete Redis University Course Advisor
+- Comprehensive codebase with practical features
+- Demonstrated scalability and optimization patterns
+- Professional documentation
 
 ---
 
 ## 📦 Reference Agent Package
 
-The `redis-context-course` package provides production-ready components used throughout the course.
+The `redis-context-course` package provides reusable components used throughout the course.
 
 ### Core Modules
 
@@ -284,7 +288,7 @@ The `redis-context-course` package provides production-ready components used thr
 - Tool filtering enabled
 - Token budget tracking
 - Memory integration
-- Production-ready structure
+- Practical, reusable structure
 
 ---
 
@@ -294,7 +298,7 @@ The `redis-context-course` package provides production-ready components used thr
 - **Four Context Types**: System, User, Retrieved, Conversation
 - **Context Assembly**: Combining different context sources effectively
 - **Context Optimization**: Managing context window limits
-- **Production Considerations**: Scalability, cost, performance
+- **Real-World Considerations**: Scalability, cost, performance
 
 ### RAG (Retrieval Augmented Generation)
 - **Vector Embeddings**: Converting text to numerical representations
@@ -307,7 +311,7 @@ The `redis-context-course` package provides production-ready components used thr
 - **Memory Types**: Semantic (facts), Episodic (events), Message (conversations)
 - **Memory Extraction Strategies**: Discrete, Summary, Preferences, Custom
 - **Working Memory Compression**: Truncation, Priority-Based, Summarization
-- **Agent Memory Server**: Production-ready automatic memory management
+- **Agent Memory Server**: Automatic memory management
 
 ### Tool Selection & LangGraph
 - **Tool Schemas**: Name, description, parameters with clear documentation
@@ -316,17 +320,17 @@ The `redis-context-course` package provides production-ready components used thr
 - **Tool Orchestration**: Coordinating multiple tools effectively
 - **Semantic Tool Selection**: Choosing tools based on context and intent
 
-### Optimization & Production
+### Optimization Patterns
 - **Token Budgets**: Allocating context window space efficiently
 - **Retrieval Strategies**: Full context (bad), RAG (good), Summaries (compact), Hybrid (best)
 - **Tool Filtering**: Show only relevant tools based on intent
 - **Structured Views**: Pre-computed summaries for LLM consumption
 - **Cost Optimization**: Reducing token usage by 50-70%
-- **Performance Monitoring**: Tracking metrics for production deployment
+- **Performance Patterns**: Scalable patterns for real-world applications
 
 ---
 
-## 🏗️ Production Patterns
+## 🏗️ Practical Patterns
 
 ### 1. Complete Memory Flow
 ```python
@@ -515,12 +519,12 @@ compressed = await summarize_memory(
 ### Notebook Structure
 
 All patterns are demonstrated in notebooks with:
-- ✅ **Conceptual explanations** - Theory and principles
-- ✅ **Bad examples** - What not to do and why
-- ✅ **Good examples** - Best practices and patterns
-- ✅ **Runnable code** - Complete, executable examples
-- ✅ **Testing and verification** - Validate your implementation
-- ✅ **Exercises for practice** - Hands-on challenges
+- **Conceptual explanations** - Theory and principles
+- **Bad examples** - What not to do and why
+- **Good examples** - Best practices and patterns
+- **Runnable code** - Complete, executable examples
+- **Testing and verification** - Validate your implementation
+- **Exercises for practice** - Hands-on challenges
 
 ### Importing Components in Your Code
 
@@ -584,7 +588,7 @@ from redis_context_course import (
 
 ## 🎯 Key Takeaways
 
-### What Makes a Production-Ready Agent?
+### What Makes a Well-Designed Agent?
 
 1. **Clear System Instructions** - Tell the agent what to do and how to behave
 2. **Well-Designed Tools** - Give it capabilities with clear descriptions and examples
@@ -606,17 +610,17 @@ from redis_context_course import (
 - Use only full context or only RAG (inefficient or incomplete)
 - Forget to save working memory (no automatic extraction)
 - Store everything in long-term memory (noise and retrieval issues)
-- Skip error handling (production failures)
+- Skip error handling (leads to failures)
 - Ignore performance monitoring (can't optimize what you don't measure)
 
-✅ **Do:**
+**Do:**
 - Filter tools by intent (show only relevant tools)
 - Write detailed tool descriptions with examples (clear guidance for LLM)
 - Estimate and monitor token usage (stay within budgets)
 - Use hybrid retrieval (summary + targeted search for best results)
 - Save working memory to trigger extraction (automatic memory management)
 - Store only important facts in long-term memory (high signal-to-noise ratio)
-- Implement graceful error handling (production resilience)
+- Implement graceful error handling (system resilience)
 - Track metrics and optimize (continuous improvement)
 
 ---
@@ -637,11 +641,11 @@ The patterns learned in this course apply directly to:
 - **Intelligent tutoring systems** with adaptive responses
 - **Student support chatbots** with institutional knowledge
 
-### Production AI Services
+### AI Services
 - **Multi-tenant SaaS AI platforms** with user isolation and scaling
-- **API-based AI services** with cost optimization and monitoring
+- **API-based AI services** with cost optimization
 - **Scalable conversation systems** with memory persistence
-- **Enterprise AI deployments** with comprehensive analytics
+- **Enterprise AI systems** with comprehensive features
 
 ---
 
@@ -651,15 +655,15 @@ The patterns learned in this course apply directly to:
 - **50-70% token reduction** through intelligent context optimization
 - **Semantic tool selection** replacing brittle keyword matching
 - **Cross-session memory** enabling natural conversation continuity
-- **Production scalability** supporting thousands of concurrent users
+- **Scalable patterns** that can handle high-volume scenarios
 - **Cost optimization** reducing LLM API expenses significantly
 
 ### Skills Gained
 - 💼 **Portfolio project** demonstrating context engineering mastery
-- 📊 **Performance monitoring expertise** for production deployment
-- 🛠️ **Production-ready patterns** for building AI agents
+- 📊 **Performance optimization** understanding and application
+- 🛠️ **Practical patterns** for building AI agents
 - 🎯 **Cost optimization skills** for managing LLM expenses
-- 🚀 **Scalable architecture design** for enterprise deployments
+- 🚀 **Scalable architecture design** for real-world applications
 
 ---
 
@@ -670,7 +674,7 @@ After completing this course, you can:
 1. **Extend the reference agent** - Add new tools and capabilities for your domain
 2. **Apply to your use case** - Adapt patterns to your specific requirements
 3. **Optimize further** - Experiment with different strategies and measure results
-4. **Deploy to production** - Use learned patterns for real-world applications
+4. **Build real-world applications** - Use learned patterns in your projects
 5. **Share your learnings** - Contribute back to the community
 6. **Build your portfolio** - Showcase your context engineering expertise
 
@@ -715,11 +719,11 @@ After completing this course, you can:
 - OpenAI GPT-4
 
 **Course Stats**:
-- **Duration**: 13-18 hours
+- **Duration**: 14.5-20 hours
 - **Sections**: 4
-- **Notebooks**: 10
+- **Notebooks**: 11
 - **Hands-on Exercises**: 25+
-- **Production Patterns**: 12+
+- **Practical Patterns**: 12+
 
 ---
 
@@ -727,5 +731,5 @@ After completing this course, you can:
 
 ---
 
-*This comprehensive course provides hands-on education in context engineering - taking you from fundamentals to production-ready expertise through a single, evolving project that demonstrates real-world impact.*
+*This comprehensive course provides hands-on education in context engineering - taking you from fundamentals to practical expertise through a single, evolving project that demonstrates real-world patterns.*
 

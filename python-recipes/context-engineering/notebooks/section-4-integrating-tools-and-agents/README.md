@@ -1,10 +1,10 @@
 # Section 4: Integrating Tools and Agents
 
-**⏱️ Estimated Time:** 2-2.5 hours total
+**⏱️ Estimated Time:** 3.5-4.5 hours total
 
 ## 🎯 Overview
 
-This section teaches you how to build intelligent agents that combine RAG, memory, and tools to create adaptive, multi-step workflows. You'll progress from understanding tool fundamentals to building a complete course advisor agent.
+This section teaches you how to build intelligent agents that combine RAG, memory, and tools to create adaptive, multi-step workflows. You'll progress from understanding tool fundamentals to building a complete course advisor agent, and then learn how to scale it with semantic tool selection.
 
 ## 📚 Notebooks
 
@@ -50,6 +50,47 @@ A complete course advisor agent with:
 - Active context engineering
 - Multi-step reasoning with memory
 - Personalized recommendations using stored preferences
+
+### 3. Agent with Memory Compression (90-120 minutes)
+**File:** `03_agent_with_memory_compression.ipynb`
+
+**What You'll Learn:**
+- Memory compression strategies for long conversations
+- Truncation and sliding window techniques
+- Production memory patterns
+- Managing token budgets
+
+**Key Concepts:**
+- Working memory compression
+- Conversation history management
+- Token optimization
+- Production memory patterns
+
+### 4. Semantic Tool Selection (60-75 minutes)
+**File:** `04_semantic_tool_selection.ipynb`
+
+**What You'll Build:**
+An enhanced agent that scales from 3 to 5 tools using semantic selection:
+- **2 New Tools:**
+  1. `check_prerequisites` - Course prerequisite checking
+  2. `compare_courses` - Side-by-side course comparison
+
+- **Tool Selection Strategies:**
+  - Static/hardcoded selection
+  - Pre-filtered/rule-based selection
+  - Semantic/dynamic selection with RedisVL
+
+- **Production Patterns:**
+  - RedisVL Semantic Router for intelligent tool routing
+  - 60% token reduction through selective tool loading
+  - Scalability to 100+ tools
+
+**Key Concepts:**
+- Tool token cost and scaling challenges
+- Tool selection strategy comparison
+- Semantic tool routing with embeddings
+- Production-ready routing patterns
+- Trade-offs and best practices
 
 ## 🔗 Connection to Previous Sections
 
@@ -115,8 +156,10 @@ See `../SETUP_GUIDE.md` for detailed instructions.
 
 1. **Start with Notebook 1** to learn tool fundamentals
 2. **Then Notebook 2** to build the complete agent
-3. **Experiment** with different queries and watch the agent work
-4. **Extend** the agent with additional tools (see suggestions in notebooks)
+3. **Continue with Notebook 3** to learn memory compression
+4. **Finish with Notebook 4** to scale with semantic tool selection
+5. **Experiment** with different queries and watch the agent work
+6. **Extend** the agent with additional tools (see suggestions in notebooks)
 
 ## 🎓 Learning Outcomes
 
@@ -126,7 +169,11 @@ By the end of this section, you will be able to:
 - ✅ Build LangGraph workflows with conditional routing
 - ✅ Integrate memory systems with agents
 - ✅ Create agents that make multi-step decisions
+- ✅ Compress conversation history for long interactions
+- ✅ Implement semantic tool selection for scalability
+- ✅ Scale agents to 100+ tools without token explosion
 - ✅ Choose between RAG, Memory-RAG, and Agent architectures
+- ✅ Make informed decisions about tool selection strategies
 - ✅ Understand trade-offs (complexity, latency, cost, capabilities)
 
 ## 📁 Archive

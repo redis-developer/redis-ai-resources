@@ -72,7 +72,7 @@ By the end of this section, you will be able to:
 
 ---
 
-### 02_engineering_context_for_production.ipynb
+### 02_crafting_and_optimizing_context.ipynb
 
 **Time:** 90-105 minutes
 
