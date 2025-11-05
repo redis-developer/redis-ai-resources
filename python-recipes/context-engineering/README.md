@@ -32,7 +32,7 @@
 
 ## 🎓 Course Overview
 
-**Duration**: 18-23 hours
+**Duration**: 13-18 hours
 **Format**: Self-paced, hands-on notebooks
 **Level**: Intermediate to Advanced
 **Prerequisites**: Python, basic AI/ML understanding, familiarity with LLMs
@@ -79,19 +79,24 @@ Learn the foundational concepts of context engineering and the four context type
 
 ---
 
-### **Section 2: Retrieved Context Engineering** (3-4 hours)
-**1 notebook** | **Prerequisites**: Section 1
+### **Section 2: Retrieved Context Engineering** (2.5-3 hours)
+**2 notebooks** | **Prerequisites**: Section 1
 
-Build a RAG system using Redis and RedisVL for semantic course search.
+Build production-ready RAG systems with Redis, from fundamentals to advanced engineering patterns.
 
 **Notebooks**:
-1. **Engineering Retrieved Context with RAG** - Vector embeddings, semantic search, course recommendations
+1. **RAG Fundamentals and Implementation** (45-50 min) - Vector embeddings, semantic search, building your first RAG system
+2. **Engineering Context for Production** (90-105 min) - Data engineering, chunking strategies, production pipelines, quality optimization
 
 **Learning Outcomes**:
 - Implement vector embeddings with OpenAI
 - Build semantic search with Redis and RedisVL
 - Create a course recommendation system
 - Understand RAG architecture patterns
+- Engineer production-ready context from raw data
+- Apply chunking strategies with LangChain
+- Build data engineering pipelines
+- Optimize context quality for production
 
 **Reference Agent Components Used**:
 - `CourseManager` - Course storage and search
@@ -147,37 +152,6 @@ Build production agents with LangGraph, semantic tool selection, and state manag
 
 ---
 
-### **Section 5: Optimization & Production** (4-5 hours)
-**3 notebooks** | **Prerequisites**: Sections 1-4 | **Status**: ✅ Complete
-
-Optimize for production with token management, cost optimization, semantic routing, and caching.
-
-**Notebooks**:
-1. **Measuring and Optimizing Performance** - Token counting, cost tracking, performance metrics
-2. **Scaling with Semantic Tool Selection** - 🆕 RedisVL Semantic Router & Semantic Cache
-3. **Production Readiness and Quality Assurance** - Validation, monitoring, error handling
-
-**Learning Outcomes**:
-- Implement token counting and budget management
-- Optimize context assembly for cost reduction
-- 🆕 **Use RedisVL Semantic Router for production tool selection**
-- 🆕 **Implement Semantic Cache for 92% latency reduction**
-- Build production monitoring and analytics
-- Handle errors and edge cases gracefully
-- Deploy scalable AI agents
-
-**🆕 New in Notebook 2**:
-- **RedisVL Semantic Router**: Production-ready semantic routing (60% code reduction vs custom implementation)
-- **RedisVL Semantic Cache**: Intelligent caching for tool selections (30-40% cache hit rate)
-- **Performance**: 5ms cache hits vs 65ms cache misses (10-20x faster)
-- **Industry Patterns**: Learn production-ready approaches, not custom implementations
-
-**Reference Agent Components Used**:
-- Optimization helpers: `count_tokens`, `estimate_token_budget`, `hybrid_retrieval`
-- Production utilities: `create_summary_view`, `filter_tools_by_intent`
-
----
-
 ## 📁 Repository Structure
 
 ```
@@ -195,8 +169,7 @@ context-engineering/
 │   ├── section-1-context-engineering-foundations/  # Section 1 notebooks
 │   ├── section-2-retrieved-context-engineering/  # Section 2 notebooks
 │   ├── section-3-memory-systems-for-context-engineering/  # Section 3 notebooks
-│   ├── section-4-integrating-tools-and-agents/  # Section 4 notebooks
-│   └── section-5-optimization-production/  # Section 5 notebooks
+│   └── section-4-integrating-tools-and-agents/  # Section 4 notebooks
 │
 └── reference-agent/                    # Production-ready reference implementation
     ├── README.md                       # Reference agent documentation
@@ -452,15 +425,14 @@ docker-compose down -v
 ## 📖 Recommended Learning Path
 
 ### For Beginners
-**Timeline**: 3-4 weeks (6-8 hours/week)
+**Timeline**: 2-3 weeks (6-8 hours/week)
 
 1. **Week 1**: Complete Section 1 (Foundations) and Section 2 (RAG)
 2. **Week 2**: Work through Section 3 (Memory Systems for Context Engineering)
 3. **Week 3**: Build agents in Section 4 (Integrating Tools and Agents)
-4. **Week 4**: Optimize in Section 5 (Production)
 
 ### For Experienced Developers
-**Timeline**: 1-2 weeks (full-time) or 2-3 weeks (part-time)
+**Timeline**: 1 week (full-time) or 2 weeks (part-time)
 
 - **Skip to Section 2** if familiar with context engineering basics
 - **Jump to Section 3** if you've built RAG systems before
@@ -468,9 +440,9 @@ docker-compose down -v
 
 ### Time Commitment Options
 
-- **Intensive**: 1 week (full-time, 8 hours/day)
-- **Standard**: 3-4 weeks (part-time, 6-8 hours/week)
-- **Relaxed**: 6-8 weeks (casual, 3-4 hours/week)
+- **Intensive**: 1 week (full-time, 6-8 hours/day)
+- **Standard**: 2-3 weeks (part-time, 6-8 hours/week)
+- **Relaxed**: 4-6 weeks (casual, 3-4 hours/week)
 
 ### Learning Tips
 
@@ -495,6 +467,8 @@ docker-compose down -v
 - Implement vector embeddings and semantic search
 - Build RAG systems with Redis and RedisVL
 - Create course recommendation engines
+- Engineer production-ready context from raw data
+- Apply chunking strategies and quality optimization
 
 **Section 3: Memory Systems for Context Engineering**
 - Master dual memory systems (working + long-term)
@@ -505,11 +479,6 @@ docker-compose down -v
 - Build stateful agents with LangGraph
 - Implement semantic tool selection
 - Manage complex agent workflows
-
-**Section 5: Optimization & Production**
-- Optimize token usage and costs
-- Implement production monitoring
-- Deploy scalable AI agents
 
 ### Complete Program Outcomes
 
@@ -660,11 +629,11 @@ This is an educational resource. Contributions that improve clarity, add example
 - OpenAI GPT-4
 
 **Course Stats**:
-- **Duration**: 18-23 hours
-- **Sections**: 5
-- **Notebooks**: 12
-- **Hands-on Exercises**: 30+
-- **Production Patterns**: 15+
+- **Duration**: 13-18 hours
+- **Sections**: 4
+- **Notebooks**: 10
+- **Hands-on Exercises**: 25+
+- **Production Patterns**: 12+
 
 ---
 

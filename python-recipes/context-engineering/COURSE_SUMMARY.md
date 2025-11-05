@@ -6,7 +6,7 @@
 
 ## 📊 Course Overview
 
-**Duration**: 18-23 hours
+**Duration**: 13-18 hours
 **Format**: Self-paced, hands-on Jupyter notebooks
 **Level**: Intermediate to Advanced
 **Prerequisites**: Python, basic AI/ML understanding, familiarity with LLMs
@@ -60,12 +60,13 @@ None (pure theory and conceptual foundation)
 
 ---
 
-### **Section 2: Retrieved Context Engineering** (3-4 hours)
+### **Section 2: Retrieved Context Engineering** (2.5-3 hours)
 
-**Notebooks**: 1 | **Prerequisites**: Section 1
+**Notebooks**: 2 | **Prerequisites**: Section 1
 
 #### Notebooks
-1. **Engineering Retrieved Context with RAG** - Vector embeddings, semantic search, course recommendations
+1. **RAG Fundamentals and Implementation** (45-50 min) - Vector embeddings, semantic search, building your first RAG system, context quality preview
+2. **Engineering Context for Production** (90-105 min) - Data engineering pipelines, chunking strategies with LangChain, production architectures, quality optimization
 
 #### Learning Outcomes
 - ✅ Implement vector embeddings with OpenAI
@@ -73,6 +74,11 @@ None (pure theory and conceptual foundation)
 - ✅ Create a course recommendation system
 - ✅ Understand RAG architecture patterns
 - ✅ Ingest and query vector data
+- ✅ Engineer production-ready context from raw data
+- ✅ Apply chunking strategies (fixed-size, recursive, semantic, custom)
+- ✅ Build data engineering pipelines for context
+- ✅ Implement three engineering approaches (RAG, Structured Views, Hybrid)
+- ✅ Optimize context quality for production
 
 #### Key Concepts
 - **Vector Embeddings**: Converting text to numerical representations
@@ -80,6 +86,10 @@ None (pure theory and conceptual foundation)
 - **RAG Pattern**: Retrieval Augmented Generation
 - **Redis Vector Search**: Using Redis for vector storage and retrieval
 - **Course Catalog Management**: Storing and querying course data
+- **Data Engineering Pipeline**: Transform raw data → structured data → LLM-optimized context
+- **Chunking Strategies**: Fixed-size, Recursive Character, Semantic, Custom domain-specific
+- **Engineering Approaches**: RAG (semantic search), Structured Views (pre-computed), Hybrid (best of both)
+- **Context Quality**: Relevance, Completeness, Efficiency, Accuracy
 
 #### Reference Agent Components Used
 - `CourseManager` - Course storage and semantic search
@@ -92,6 +102,9 @@ None (pure theory and conceptual foundation)
 - Semantic search with similarity scoring
 - Hybrid search (keyword + semantic)
 - Course recommendation algorithms
+- Batch processing pipelines for data engineering
+- LangChain text splitters (RecursiveCharacterTextSplitter, SemanticChunker)
+- Quality metrics and optimization workflows
 
 ---
 
@@ -174,108 +187,6 @@ None (pure theory and conceptual foundation)
 - Working memory compression in production
 
 ---
-
-### **Section 5: Optimization & Production** (4-5 hours)
-
-**Notebooks**: 3 | **Prerequisites**: Sections 1-4 | **Status**: ✅ Complete
-
-#### Notebooks
-1. **Measuring and Optimizing Performance** - Token counting, cost tracking, performance metrics
-2. **Scaling with Semantic Tool Selection** - 🆕 **RedisVL Semantic Router & Semantic Cache**
-3. **Production Readiness and Quality Assurance** - Validation, monitoring, error handling
-
-#### Learning Outcomes
-- ✅ Implement token counting and budget management
-- ✅ Optimize context assembly for cost reduction
-- ✅ 🆕 **Use RedisVL Semantic Router for production tool selection**
-- ✅ 🆕 **Implement Semantic Cache for 92% latency reduction**
-- ✅ 🆕 **Apply industry-standard semantic routing patterns**
-- ✅ Build production monitoring and analytics
-- ✅ Handle errors and edge cases gracefully
-- ✅ Deploy scalable AI agents
-- ✅ Implement advanced tool selection strategies
-
-#### Key Concepts
-- **Token Counting**: Accurate token estimation for cost management
-- **Token Budgets**: Allocating context window space efficiently
-- **Cost Optimization**: Reducing LLM API costs
-- **🆕 Semantic Routing**: Production-ready tool selection with RedisVL
-- **🆕 Semantic Caching**: Intelligent caching for similar queries
-- **Performance Monitoring**: Tracking agent performance metrics
-- **Production Deployment**: Scaling to thousands of users
-- **Error Handling**: Graceful degradation and recovery
-
-#### 🆕 RedisVL Extensions Used (Notebook 2)
-- **`SemanticRouter`**: Production-ready semantic routing for tool selection
-  - Automatic index creation and management
-  - Route-based tool organization
-  - Distance threshold configuration
-  - Serialization support (YAML/dict)
-  - 60% code reduction vs custom implementation
-
-- **`SemanticCache`**: Intelligent caching for LLM operations
-  - Semantic similarity-based cache matching
-  - TTL policies for cache expiration
-  - Filterable fields for multi-tenant scenarios
-  - 30-40% cache hit rate typical
-  - 92% latency reduction on cache hits (5ms vs 65ms)
-
-#### Reference Agent Components Used
-- Optimization helpers: `count_tokens`, `estimate_token_budget`, `hybrid_retrieval`
-- Production utilities: `create_summary_view`, `filter_tools_by_intent`
-- `classify_intent_with_llm` - LLM-based intent classification
-- `extract_references` - Reference extraction for grounding
-- `format_context_for_llm` - Context formatting utilities
-
-#### Production Patterns Demonstrated
-```python
-# Semantic Router Pattern (Notebook 2)
-from redisvl.extensions.router import Route, SemanticRouter
-
-# Define routes for tools
-route = Route(
-    name="search_courses",
-    references=["Find courses", "Search catalog", ...],
-    metadata={"tool": search_tool},
-    distance_threshold=0.3
-)
-
-# Initialize router (handles everything automatically)
-router = SemanticRouter(
-    name="tool-router",
-    routes=[route1, route2, ...],
-    redis_url=REDIS_URL
-)
-
-# Select tools (one line!)
-matches = router.route_many(query, max_k=3)
-selected_tools = [m.metadata["tool"] for m in matches]
-
-# Semantic Cache Pattern (Notebook 2)
-from redisvl.extensions.llmcache import SemanticCache
-
-# Initialize cache
-cache = SemanticCache(
-    name="tool_selection_cache",
-    distance_threshold=0.1,
-    ttl=3600
-)
-
-# Check cache first (fast path)
-if cached := cache.check(prompt=query):
-    return cached[0]["response"]  # 5ms
-
-# Cache miss - compute and store (slow path)
-result = compute_expensive_operation(query)  # 65ms
-cache.store(prompt=query, response=result)
-```
-
-#### Key Patterns
-- Token budget estimation and tracking
-- Hybrid retrieval (summary + targeted search)
-- Tool filtering by intent
-- Structured view creation for efficiency
-- Production monitoring and analytics
 
 ---
 
@@ -647,21 +558,20 @@ from redis_context_course import (
 
 ### Recommended Learning Path
 
-#### For Beginners (3-4 weeks, 6-8 hours/week)
+#### For Beginners (2-3 weeks, 6-8 hours/week)
 1. **Week 1**: Complete Section 1 (Foundations) and Section 2 (RAG)
 2. **Week 2**: Work through Section 3 (Memory Systems for Context Engineering)
 3. **Week 3**: Build agents in Section 4 (Integrating Tools and Agents)
-4. **Week 4**: Optimize in Section 5 (Production)
 
-#### For Experienced Developers (1-2 weeks full-time)
+#### For Experienced Developers (1 week full-time or 2 weeks part-time)
 - **Skip to Section 2** if familiar with context engineering basics
 - **Jump to Section 3** if you've built RAG systems before
 - **Start at Section 4** if you want to focus on LangGraph and agents
 
 #### Time Commitment Options
-- **Intensive**: 1 week (full-time, 8 hours/day)
-- **Standard**: 3-4 weeks (part-time, 6-8 hours/week)
-- **Relaxed**: 6-8 weeks (casual, 3-4 hours/week)
+- **Intensive**: 1 week (full-time, 6-8 hours/day)
+- **Standard**: 2-3 weeks (part-time, 6-8 hours/week)
+- **Relaxed**: 4-6 weeks (casual, 3-4 hours/week)
 
 ### Learning Tips
 1. **Start with Section 1** - Build foundational understanding
@@ -805,11 +715,11 @@ After completing this course, you can:
 - OpenAI GPT-4
 
 **Course Stats**:
-- **Duration**: 18-23 hours
-- **Sections**: 5
-- **Notebooks**: 12
-- **Hands-on Exercises**: 30+
-- **Production Patterns**: 15+
+- **Duration**: 13-18 hours
+- **Sections**: 4
+- **Notebooks**: 10
+- **Hands-on Exercises**: 25+
+- **Production Patterns**: 12+
 
 ---
 

@@ -239,3 +239,6 @@ python-recipes/agents/02_full_featured_agent-Copy1.ipynb
 python-recipes/vector-search/01_redisvl-nk.ipynb
 python-recipes/vector-search/08_vector_algorithm_benchmark.ipynb
 python-recipes/vector_search.py
+
+# Context engineering course - generated data files
+python-recipes/context-engineering/notebooks/section-2-retrieved-context-engineering/course_catalog_section2.json
