@@ -162,15 +162,15 @@ A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md
 
 #### Notebooks
 
-| Notebook                                                                                                               | Description                                                                                                  |
-|------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| [notebooks/RAG/spring_ai_redis_rag.ipynb](./java-recipes/notebooks/RAG/spring_ai_redis_rag.ipynb)                      | Demonstrates building a RAG-ba sed beer recommendation chatbot using Spring AI and Redis as the vector store |
-| [RAG/spring_ai_redis_rag.ipynb](./RAG/spring_ai_redis_rag.ipynb)                                                       | Demonstrates building a RAG-based beer recommendation chatbot using Spring AI and Redis as the vector store  |
-| [semantic-routing/1_semantic_classification.ipynb](./semantic-routing/1_semantic_classification.ipynb)                 | Demonstrates how to perform text classification with vector search (RedisVL) instead of LLMs                 |
-| [semantic-routing/2_semantic_tool_calling.ipynb](./semantic-routing/2_semantic_tool_calling.ipynb)                     | Demonstrates how to perform tool selection with vector search (RedisVL) instead of LLMs                      |
-| [semantic-routing/3_semantic_guardrails.ipynb](./semantic-routing/3_semantic_guardrails.ipynb)                         | Demonstrates how to implement guardrails with vector search (RedisVL)                                        |
-| [semantic-caching/1_pre_generated_semantic_caching.ipynb](./semantic-caching/1_pre_generated_semantic_caching.ipynb)   | Demonstrates how to perform pre generated semantic caching with RedisVL                                      |
-| [semantic-caching/2_semantic_caching_with_langcache.ipynb](./semantic-caching/2_semantic_caching_with_langcache.ipynb) | Demonstrates how to perform pre generated semantic caching with LangCache                                    |
+| Notebook                                                                                                                                      | Description                                                                                                  |
+|-----------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| [notebooks/RAG/spring_ai_redis_rag.ipynb](./java-recipes/notebooks/RAG/spring_ai_redis_rag.ipynb)                                             | Demonstrates building a RAG-ba sed beer recommendation chatbot using Spring AI and Redis as the vector store |
+| [RAG/spring_ai_redis_rag.ipynb](./java-recipes/notebooks/RAG/spring_ai_redis_rag.ipynb)                                                       | Demonstrates building a RAG-based beer recommendation chatbot using Spring AI and Redis as the vector store  |
+| [semantic-routing/1_semantic_classification.ipynb](./java-recipes/notebooks/semantic-routing/1_semantic_classification.ipynb)                 | Demonstrates how to perform text classification with vector search (RedisVL) instead of LLMs                 |
+| [semantic-routing/2_semantic_tool_calling.ipynb](./java-recipes/notebooks/semantic-routing/2_semantic_tool_calling.ipynb)                     | Demonstrates how to perform tool selection with vector search (RedisVL) instead of LLMs                      |
+| [semantic-routing/3_semantic_guardrails.ipynb](./java-recipes/notebooks/semantic-routing/3_semantic_guardrails.ipynb)                         | Demonstrates how to implement guardrails with vector search (RedisVL)                                        |
+| [semantic-caching/1_pre_generated_semantic_caching.ipynb](./java-recipes/notebooks/semantic-caching/1_pre_generated_semantic_caching.ipynb)   | Demonstrates how to perform pre generated semantic caching with RedisVL                                      |
+| [semantic-caching/2_semantic_caching_with_langcache.ipynb](./java-recipes/notebooks/semantic-caching/2_semantic_caching_with_langcache.ipynb) | Demonstrates how to perform pre generated semantic caching with LangCache                                    |
 
 
 #### Applications

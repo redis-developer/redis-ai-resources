@@ -26,14 +26,14 @@ There are two types of Java Recipes: Notebooks and Applications. Notebooks are i
 
 Notebooks require a Jupyter Notebook environment to run. Check out the [Setup Instructions & Implementation Details](./notebooks/README.md) for more details on how to set up your environment.
 
-| Notebook                                                                                                               | Description                                                                                                 |
-|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| [RAG/spring_ai_redis_rag.ipynb](./RAG/spring_ai_redis_rag.ipynb)                                                       | Demonstrates building a RAG-based beer recommendation chatbot using Spring AI and Redis as the vector store |
-| [semantic-routing/1_semantic_classification.ipynb](./semantic-routing/1_semantic_classification.ipynb)                 | Demonstrates how to perform text classification with vector search (RedisVL) instead of LLMs                |
-| [semantic-routing/2_semantic_tool_calling.ipynb](./semantic-routing/2_semantic_tool_calling.ipynb)                     | Demonstrates how to perform tool selection with vector search (RedisVL) instead of LLMs                     |
-| [semantic-routing/3_semantic_guardrails.ipynb](./semantic-routing/3_semantic_guardrails.ipynb)                         | Demonstrates how to implement guardrails with vector search (RedisVL)                                       |
-| [semantic-caching/1_pre_generated_semantic_caching.ipynb](./semantic-caching/1_pre_generated_semantic_caching.ipynb)   | Demonstrates how to perform pre generated semantic caching with RedisVL                                     |
-| [semantic-caching/2_semantic_caching_with_langcache.ipynb](./semantic-caching/2_semantic_caching_with_langcache.ipynb) | Demonstrates how to perform pre generated semantic caching with LangCache                                   |
+| Notebook                                                                                                                         | Description                                                                                                 |
+|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| [RAG/spring_ai_redis_rag.ipynb](./notebooks/RAG/spring_ai_redis_rag.ipynb)                                                       | Demonstrates building a RAG-based beer recommendation chatbot using Spring AI and Redis as the vector store |
+| [semantic-routing/1_semantic_classification.ipynb](./notebooks/semantic-routing/1_semantic_classification.ipynb)                 | Demonstrates how to perform text classification with vector search (RedisVL) instead of LLMs                |
+| [semantic-routing/2_semantic_tool_calling.ipynb](./notebooks/semantic-routing/2_semantic_tool_calling.ipynb)                     | Demonstrates how to perform tool selection with vector search (RedisVL) instead of LLMs                     |
+| [semantic-routing/3_semantic_guardrails.ipynb](./notebooks/semantic-routing/3_semantic_guardrails.ipynb)                         | Demonstrates how to implement guardrails with vector search (RedisVL)                                       |
+| [semantic-caching/1_pre_generated_semantic_caching.ipynb](./notebooks/semantic-caching/1_pre_generated_semantic_caching.ipynb)   | Demonstrates how to perform pre generated semantic caching with RedisVL                                     |
+| [semantic-caching/2_semantic_caching_with_langcache.ipynb](./notebooks/semantic-caching/2_semantic_caching_with_langcache.ipynb) | Demonstrates how to perform pre generated semantic caching with LangCache                                   |
 
 ## Applications
 
