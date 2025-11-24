@@ -24,7 +24,7 @@
 
 This project uses Docker Compose to set up a complete environment for running Java-based AI applications with Redis. The environment includes:
 
-- A Jupyter Notebook server with Java kernel support
+- A Jupyter Notebook server with Java kernel support (For notebooks that based on Java)
 - Redis Stack (includes Redis and RedisInsight)
 - Pre-installed dependencies for AI/ML workloads
 
@@ -79,9 +79,15 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 ## Notebooks
 
-| Notebook | Description |
-| --- | --- |
-| [RAG/spring_ai_redis_rag.ipynb](./RAG/spring_ai_redis_rag.ipynb) | Demonstrates building a RAG-based beer recommendation chatbot using Spring AI and Redis as the vector store |
+| Notebook                                                                                                               | Description                                                                                                 |
+|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| [RAG/spring_ai_redis_rag.ipynb](./RAG/spring_ai_redis_rag.ipynb)                                                       | Demonstrates building a RAG-based beer recommendation chatbot using Spring AI and Redis as the vector store |
+| [semantic-routing/1_semantic_classification.ipynb](./semantic-routing/1_semantic_classification.ipynb)                 | Demonstrates how to perform text classification with vector search (RedisVL) instead of LLMs                |
+| [semantic-routing/2_semantic_tool_calling.ipynb](./semantic-routing/2_semantic_tool_calling.ipynb)                     | Demonstrates how to perform tool selection with vector search (RedisVL) instead of LLMs                     |
+| [semantic-routing/3_semantic_guardrails.ipynb](./semantic-routing/3_semantic_guardrails.ipynb)                         | Demonstrates how to implement guardrails with vector search (RedisVL)                                       |
+| [semantic-caching/1_pre_generated_semantic_caching.ipynb](./semantic-caching/1_pre_generated_semantic_caching.ipynb)   | Demonstrates how to perform pre generated semantic caching with RedisVL                                     |
+| [semantic-caching/2_semantic_caching_with_langcache.ipynb](./semantic-caching/2_semantic_caching_with_langcache.ipynb) | Demonstrates how to perform pre generated semantic caching with LangCache                                   |
+
 
 ## Project Structure
 

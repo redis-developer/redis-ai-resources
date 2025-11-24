@@ -10,3 +10,8 @@ spring_ai_redis_rag.ipynb
 04_redisvl_benchmarking_basics.ipynb
 06_hnsw_to_svs_vamana_migration.ipynb
 07_flat_to_svs_vamana_migration.ipynb
+1_pre_generated_semantic_caching.ipynb
+2_semantic_caching_with_langcache.ipynb
+1_semantic_classification.ipynb
+2_semantic_tool_calling.ipynb
+3_semantic_guardrails.ipynb
