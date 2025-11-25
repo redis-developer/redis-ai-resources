@@ -1,322 +1,221 @@
-# Progressive RAG Agents
+# Progressive Agents - Context Engineering Learning Path
 
-A 3-stage learning system that teaches context engineering from basic RAG to production-ready patterns.
+This directory contains a progressive learning experience that teaches students how to evolve from basic RAG to optimized context engineering, using a LangGraph-based agent architecture.
 
-## Overview
+## 🎯 Learning Objectives
 
-This directory contains three progressively optimized RAG agents that demonstrate the evolution from naive to production-ready context engineering:
+Students will learn how to:
 
-| Stage | Name | Token Usage | Cost/1K | Key Feature |
-|-------|------|-------------|---------|-------------|
-| **Stage 1** | Baseline RAG | ~2,500 | $6.25 | Raw JSON, no optimization |
-| **Stage 2** | Context-Engineered | ~1,200 | $3.00 | Natural text, cleaning |
-| **Stage 3** | Hybrid RAG | ~800 | $2.00 | Structured views, smart selection |
+1. **Build RAG systems** from basic to advanced implementations
+2. **Apply context engineering techniques** to optimize LLM performance
+3. **Use LangGraph** for observable, stateful agent workflows
+4. **Implement quality evaluation** and iterative improvement
+5. **Integrate memory systems** for personalized, multi-turn interactions
 
-**Total Improvement:** 70% token reduction, 68% cost savings
+## 📚 Progressive Stages
 
-## Educational Philosophy
+### Stage 1: Baseline RAG (Future)
+**Goal**: Show that basic retrieval works but is inefficient
 
-### Why Progressive Learning?
+- Simple Q&A flow (no memory, no optimization)
+- Raw JSON context formatting
+- No context cleaning or transformation
+- Demonstrates: ✅ It works, but ❌ Inefficient
 
-Instead of showing a complete, production-ready agent all at once, we break it down into stages:
+### Stage 2: Context-Engineered RAG (Future)
+**Goal**: Apply Section 2 techniques to optimize context quality
 
-1. **Stage 1 (Baseline)** - Shows that basic RAG works but is inefficient
-2. **Stage 2 (Optimized)** - Applies context engineering for 50% improvement
-3. **Stage 3 (Hybrid)** - Adds production patterns for another 33% improvement
+- Fill-in-the-blanks exercises for students
+- Context cleaning (remove noise fields)
+- Context transformation (JSON → natural text)
+- Context optimization (token reduction)
+- Demonstrates: How context engineering improves efficiency
 
-**Benefits:**
-- ✅ Students see the **why** behind each optimization
-- ✅ Clear **before/after** comparisons with metrics
-- ✅ Builds confidence through **incremental complexity**
-- ✅ Learn to make **informed trade-off decisions**
+### Stage 3: Full Agent without Memory (Current)
+**Goal**: Production-ready patterns with quality evaluation
 
-## Quick Start
+- ✅ **Currently Implemented**
+- Complete LangGraph workflow
+- Query decomposition
+- Semantic course search with CourseManager
+- Quality evaluation and iterative improvement
+- Context engineering techniques applied
+- Semantic caching commented out (for future stages)
+- Demonstrates: Advanced RAG patterns
+
+**Location**: `stage3_full_agent_without_memory/`
+
+### Stage 4: Memory-Augmented Agent (Future)
+**Goal**: Add personalization through memory integration
+
+- Integrate Redis Agent Memory Server
+- Add memory tools (store/search memories)
+- Multi-turn conversations with context
+- Personalized recommendations
+- Demonstrates: How memory + RAG complement each other
+
+## 🏗️ Architecture Overview
+
+All stages follow the same LangGraph architecture pattern:
+
+```
+User Query
+    ↓
+[Decompose Query] - Break into sub-questions
+    ↓
+[Check Cache] - Look for cached answers
+    ↓
+[Research/Search] - Find relevant information
+    ↓
+[Evaluate Quality] - Assess answer quality
+    ↓
+[Synthesize Response] - Combine into final answer
+    ↓
+Final Response
+```
+
+**Key Differences Between Stages**:
+- **Stage 1**: Raw context, no optimization
+- **Stage 2**: Optimized context, student exercises
+- **Stage 3**: Full workflow, quality evaluation
+- **Stage 4**: + Memory integration
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-1. **Redis 8** running locally or remotely
-2. **OpenAI API key** configured
-3. **Course data** ingested into Redis
-
 ```bash
+# Install the redis-context-course package
+cd python-recipes/context-engineering/reference-agent
+pip install -e .
+
 # Set environment variables
-export OPENAI_API_KEY="your-key"
+export OPENAI_API_KEY="your-openai-api-key"
 export REDIS_URL="redis://localhost:6379"
-
-# Generate and ingest course data (from reference-agent root)
-cd ../..
-generate-courses --courses-per-major 15 --output course_catalog.json
-ingest-courses --catalog course_catalog.json --clear
 ```
 
-### Try Each Stage
-
-**Stage 1: Baseline RAG**
-```bash
-cd stage1_baseline
-python cli.py
-```
-
-**Stage 2: Context-Engineered**
-```bash
-cd stage2_optimized
-python cli.py
-```
-
-**Stage 3: Hybrid RAG**
-```bash
-cd stage3_hybrid
-python cli.py
-```
-
-## Stage Details
-
-### Stage 1: Baseline RAG
-
-**Purpose:** Show that basic RAG works but has inefficiencies
-
-**Architecture:**
-```
-User Query → Semantic Search → Raw JSON Context → LLM → Answer
-```
-
-**Characteristics:**
-- ✅ Works correctly
-- ❌ Inefficient (raw JSON with all fields)
-- ❌ Poor formatting (JSON harder for LLM)
-- ❌ No personalization (stateless)
-
-**Metrics:**
-- Token count: ~2,500 (5 courses)
-- Cost per 1K queries: $6.25
-- Format: Raw JSON
-
-**Learn more:** [stage1_baseline/README.md](stage1_baseline/README.md)
-
----
-
-### Stage 2: Context-Engineered
-
-**Purpose:** Apply context engineering techniques for 50% improvement
-
-**Architecture:**
-```
-User Query → Semantic Search → Context Cleaning → Text Transformation → LLM → Answer
-```
-
-**Improvements:**
-- ✅ Context cleaning (remove unnecessary fields)
-- ✅ Natural text transformation (JSON → text)
-- ✅ Token optimization (~50% reduction)
-- ✅ Better LLM comprehension
-
-**Metrics:**
-- Token count: ~1,200 (5 courses)
-- Cost per 1K queries: $3.00
-- Format: Natural text
-- Reduction vs Stage 1: **-50%**
-
-**Learn more:** [stage2_optimized/README.md](stage2_optimized/README.md)
-
----
-
-### Stage 3: Hybrid RAG
-
-**Purpose:** Production-ready patterns with structured views
-
-**Architecture:**
-```
-User Query → Semantic Search + Catalog Retrieval
-          → Smart View Selection → Hybrid Assembly → LLM → Answer
-```
-
-**Innovations:**
-- ✅ Structured catalog views (hierarchical organization)
-- ✅ Hybrid assembly (overview + details)
-- ✅ Query-aware optimization (smart view selection)
-- ✅ Multi-strategy retrieval
-- ✅ Scalable to large catalogs
-
-**Metrics:**
-- Token count: ~800 (5 courses + catalog)
-- Cost per 1K queries: $2.00
-- Format: Hybrid views
-- Reduction vs Stage 1: **-68%**
-- Reduction vs Stage 2: **-33%**
-
-**Learn more:** [stage3_hybrid/README.md](stage3_hybrid/README.md)
-
-## Comparison
-
-### Token Usage Progression
-
-```
-Stage 1: ████████████████████████████████████████ 2,500 tokens
-Stage 2: ████████████████████ 1,200 tokens (-50%)
-Stage 3: ████████████ 800 tokens (-68%)
-```
-
-### Cost Savings (per 1M queries)
-
-| Stage | Cost | Savings vs Stage 1 |
-|-------|------|-------------------|
-| Stage 1 | $6,250 | — |
-| Stage 2 | $3,000 | **-$3,250 (52%)** |
-| Stage 3 | $2,000 | **-$4,250 (68%)** |
-
-### When to Use Each Stage
-
-**Use Stage 1 (Baseline) when:**
-- Prototyping / debugging
-- Need exact field names
-- ⚠️ Not recommended for production
-
-**Use Stage 2 (Optimized) when:**
-- Small catalog (<50 items)
-- Specific queries only
-- Good balance of simplicity and efficiency
-
-**Use Stage 3 (Hybrid) when:**
-- Large catalog (50+ items)
-- Diverse query types (browsing + specific)
-- Production deployment
-- Need scalability
-
-## Learning Path
-
-### Recommended Order
-
-1. **Start with Stage 1**
-   - Run the CLI and ask questions
-   - Use `metrics` command to see token usage
-   - Understand the baseline
-
-2. **Move to Stage 2**
-   - See the impact of context engineering
-   - Use `compare` command to see improvements
-   - Learn optimization techniques
-
-3. **Finish with Stage 3**
-   - Explore different query types
-   - See smart view selection in action
-   - Compare all three stages
-
-### Key Learning Objectives
-
-After completing all stages, students should understand:
-
-1. ✅ **Basic RAG works** - But has room for improvement
-2. ✅ **Context engineering matters** - 50-70% token reduction possible
-3. ✅ **Trade-offs exist** - Balance clarity, efficiency, complexity
-4. ✅ **Measurement is critical** - Always measure impact
-5. ✅ **Production patterns** - Structured views, hybrid assembly, smart selection
-
-## CLI Commands
-
-All stages support these commands:
-
-- **Ask questions** - Natural language queries about courses
-- **`metrics`** - Show token usage for last query
-- **`compare`** - Compare with other stages (Stage 2 & 3)
-- **`help`** - Show available commands
-- **`quit`** - Exit the CLI
-
-### Example Session
+### Running Stage 3 (Current)
 
 ```bash
-$ python cli.py
-
-You: What machine learning courses are available?
-Agent: [Detailed response about ML courses]
-
-You: metrics
-📊 Metrics:
-• Token count: 847
-• Format: hybrid
-• Views included: include_catalog
-
-You: compare
-[Shows comparison table across all stages]
-
-You: quit
-Goodbye! 👋
+cd progressive_agents/stage3_full_agent_without_memory
+python examples/basic_usage.py
 ```
 
-## Python API
+## 📖 Educational Flow
 
-All agents can also be used programmatically:
+### For Instructors
 
-```python
-import asyncio
-from progressive_agents.stage3_hybrid.agent import HybridRAGAgent
+1. **Start with Stage 3** (working backwards approach)
+   - Show students the complete, working agent
+   - Demonstrate all features and capabilities
+   - Explain the architecture and design decisions
 
-async def main():
-    agent = HybridRAGAgent()
-    
-    # Chat
-    response = await agent.chat("What courses are available?")
-    print(response)
-    
-    # Get metrics
-    metrics = await agent.get_metrics("What courses are available?")
-    print(f"Tokens: {metrics['token_count']:,}")
-    
-    # Compare stages
-    comparison = await agent.compare_all_stages("machine learning")
-    print(f"Stage 1: {comparison['stage1']['tokens']:,} tokens")
-    print(f"Stage 3: {comparison['stage3']['tokens']:,} tokens")
+2. **Deconstruct to Stage 2**
+   - Remove quality evaluation
+   - Create fill-in-the-blanks exercises
+   - Focus on context engineering techniques
 
-asyncio.run(main())
-```
+3. **Deconstruct to Stage 1**
+   - Remove context optimization
+   - Use raw JSON formatting
+   - Show inefficiencies to motivate improvements
 
-## Architecture Diagrams
+4. **Build up to Stage 4**
+   - Add memory integration
+   - Show multi-turn conversations
+   - Demonstrate personalization
 
-Each stage includes a Mermaid diagram showing the flow:
+### For Students
 
-- **Stage 1:** Simple linear flow
-- **Stage 2:** Added optimization steps
-- **Stage 3:** Multi-strategy retrieval with smart selection
+**Recommended Learning Path**:
 
-See individual README files for detailed diagrams.
+1. **Understand the Goal** (Stage 3)
+   - Run the complete agent
+   - See what's possible
+   - Understand the architecture
 
-## Next Steps
+2. **Learn Context Engineering** (Stage 2)
+   - Complete fill-in-the-blanks exercises
+   - Apply transformation techniques
+   - Measure improvements
 
-### Future Enhancements (Stage 4+)
+3. **Appreciate the Baseline** (Stage 1)
+   - See the naive approach
+   - Understand why optimization matters
+   - Compare performance metrics
 
-The progressive agent system can be extended with:
+4. **Add Memory** (Stage 4)
+   - Integrate memory tools
+   - Build multi-turn conversations
+   - Create personalized experiences
 
-1. **Memory Integration** (Section 3 patterns)
-   - Working memory (conversation history)
-   - Long-term memory (user preferences)
-   - Memory-aware context selection
+## 🔧 Technical Details
 
-2. **Tool Calling** (Section 4 patterns)
-   - Course search tools
-   - Memory management tools
-   - LangGraph integration
+### Context Engineering Techniques
 
-3. **Advanced Optimization** (Section 5 patterns)
-   - Prompt caching
-   - Batch processing
-   - Streaming responses
+All stages use techniques from Section 2 notebooks:
 
-## References
+1. **Context Transformation** (`transform_course_to_text`)
+   - Converts structured data to natural text
+   - Easier for LLMs to process
 
-- **Section 2 Notebooks:** Context engineering techniques
-- **Section 3 Notebooks:** Memory integration patterns
-- **Section 4 Notebooks:** Tool calling and LangGraph
-- **Original Agent:** See `../archive/original_agent/` for full-featured implementation
+2. **Context Optimization** (`optimize_course_text`)
+   - Ultra-compact format
+   - Reduces token count
 
-## Contributing
+3. **Semantic Search**
+   - Vector-based retrieval
+   - Finds relevant courses by meaning
 
-This is an educational resource. If you find issues or have suggestions:
+### LangGraph Workflow
 
-1. Test all three stages
-2. Document the issue with metrics
-3. Propose improvements with trade-off analysis
-4. Consider educational impact
+- **State Management**: Explicit state tracking with TypedDict
+- **Node Functions**: Pure functions that transform state
+- **Conditional Edges**: Dynamic routing based on state
+- **Observable**: Clear execution path and metrics
 
-## License
+### CourseManager Integration
 
-MIT License - See repository root for details.
+- **Semantic Search**: `search_courses(query, filters, limit, threshold)`
+- **Course Retrieval**: `get_all_courses()`
+- **Redis Vector Index**: Powered by RedisVL
+
+## 📊 Comparison Across Stages
+
+| Feature | Stage 1 | Stage 2 | Stage 3 | Stage 4 |
+|---------|---------|---------|---------|---------|
+| **Context Format** | Raw JSON | Optimized Text | Optimized Text | Optimized Text |
+| **Query Decomposition** | ❌ | ❌ | ✅ | ✅ |
+| **Quality Evaluation** | ❌ | ❌ | ✅ | ✅ |
+| **Semantic Caching** | ❌ | ❌ | 🚧 Commented | ✅ |
+| **Memory Integration** | ❌ | ❌ | ❌ | ✅ |
+| **Token Efficiency** | Low | High | High | High |
+| **Multi-turn Support** | ❌ | ❌ | ❌ | ✅ |
+
+## 🎓 Learning Outcomes
+
+By completing this progressive learning path, students will:
+
+1. **Understand RAG fundamentals** and evolution
+2. **Master context engineering** techniques
+3. **Build production-ready agents** with LangGraph
+4. **Implement quality assurance** mechanisms
+5. **Integrate memory systems** for personalization
+6. **Make informed design decisions** based on trade-offs
+
+## 📚 Related Resources
+
+- **Section 2 Notebooks**: Context engineering techniques
+- **Section 3 Notebooks**: Memory systems integration
+- **CourseManager**: `redis_context_course.course_manager`
+- **LangGraph Docs**: https://langchain-ai.github.io/langgraph/
+- **Original Caching Agent**: Inspiration for architecture
+
+## 🤝 Contributing
+
+This is part of the Redis University context engineering course. Improvements and extensions are welcome!
+
+## 📄 License
+
+MIT License - See LICENSE file for details
 
