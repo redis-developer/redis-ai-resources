@@ -90,43 +90,57 @@ def optimize_course_text(course: Course) -> str:
     )
 
 
-async def search_courses(
-    query: str, 
+def search_courses_sync(
+    query: str,
     top_k: int = 5,
     use_optimized_format: bool = False
 ) -> str:
     """
-    Search for relevant courses using semantic search.
-    
+    Search for relevant courses using semantic search (synchronous version).
+
     This tool uses CourseManager.search_courses() for semantic retrieval
     and applies context engineering techniques to format results.
-    
+
     Args:
         query: Search query
         top_k: Number of top results to return
         use_optimized_format: If True, use compact format; if False, use full format
-        
+
     Returns:
         Formatted search results as string
     """
     if not course_manager:
         return "Course search not available - CourseManager not initialized"
-    
+
     try:
+        # Use asyncio to run the async search in a sync context
+        import asyncio
+        import nest_asyncio
+
+        # Allow nested event loops (needed when LangGraph is already running async)
+        nest_asyncio.apply()
+
+        # Get or create event loop
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+
         # Search for courses using semantic search
-        results = await course_manager.search_courses(
+        results = loop.run_until_complete(course_manager.search_courses(
             query=query,
             filters=None,
             limit=top_k,
-            similarity_threshold=0.6
-        )
-        
+            similarity_threshold=0.5  # Lowered threshold for better recall
+        ))
+
         if not results:
             return "No relevant courses found"
-        
+
         # Format results using context engineering techniques
         formatted_results = []
-        
+
         for i, course in enumerate(results, 1):
             if use_optimized_format:
                 # Use compact format (Stage 3 optimization)
@@ -134,11 +148,67 @@ async def search_courses(
             else:
                 # Use full LLM-friendly format (Stage 2 transformation)
                 course_text = transform_course_to_text(course)
-            
+
             formatted_results.append(f"Course {i}:\n{course_text}")
-        
+
         return "\n\n".join(formatted_results)
-        
+
+    except Exception as e:
+        logger.error(f"Course search failed: {e}")
+        import traceback
+        traceback.print_exc()
+        return f"Search failed: {str(e)}"
+
+
+async def search_courses(
+    query: str,
+    top_k: int = 5,
+    use_optimized_format: bool = False
+) -> str:
+    """
+    Search for relevant courses using semantic search (async version).
+
+    This tool uses CourseManager.search_courses() for semantic retrieval
+    and applies context engineering techniques to format results.
+
+    Args:
+        query: Search query
+        top_k: Number of top results to return
+        use_optimized_format: If True, use compact format; if False, use full format
+
+    Returns:
+        Formatted search results as string
+    """
+    if not course_manager:
+        return "Course search not available - CourseManager not initialized"
+
+    try:
+        # Search for courses using semantic search
+        results = await course_manager.search_courses(
+            query=query,
+            filters=None,
+            limit=top_k,
+            similarity_threshold=0.5  # Lowered threshold for better recall
+        )
+
+        if not results:
+            return "No relevant courses found"
+
+        # Format results using context engineering techniques
+        formatted_results = []
+
+        for i, course in enumerate(results, 1):
+            if use_optimized_format:
+                # Use compact format (Stage 3 optimization)
+                course_text = optimize_course_text(course)
+            else:
+                # Use full LLM-friendly format (Stage 2 transformation)
+                course_text = transform_course_to_text(course)
+
+            formatted_results.append(f"Course {i}:\n{course_text}")
+
+        return "\n\n".join(formatted_results)
+
     except Exception as e:
         logger.error(f"Course search failed: {e}")
         return f"Search failed: {str(e)}"

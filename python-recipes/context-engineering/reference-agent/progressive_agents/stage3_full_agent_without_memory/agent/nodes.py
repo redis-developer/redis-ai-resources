@@ -14,7 +14,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.prebuilt import create_react_agent
 
 from .state import WorkflowState, initialize_metrics
-from .tools import search_courses
+from .tools import search_courses, search_courses_sync
 
 # Configure logger
 logger = logging.getLogger("course-qa-workflow")
@@ -173,24 +173,24 @@ def check_cache_node(state: WorkflowState) -> WorkflowState:
 # def check_cache_node(state: WorkflowState) -> WorkflowState:
 #     start_time = time.perf_counter()
 #     sub_questions = state["sub_questions"]
-#     
+#
 #     logger.info(f"🔍 Checking cache for {len(sub_questions)} sub-questions")
-#     
+#
 #     cache_hits = 0
 #     for question in sub_questions:
 #         if state["cache_enabled"]:
 #             try:
 #                 cache_results = semantic_cache.check(question, num_results=1)
-#                 
+#
 #                 if cache_results:
 #                     cached_entry = cache_results[0]
 #                     confidence = 1.0 - cached_entry.get("vector_distance", 1.0)
-#                     
+#
 #                     state["cache_hits"][question] = True
 #                     state["cache_confidences"][question] = confidence
 #                     state["sub_answers"][question] = cached_entry["response"]
 #                     cache_hits += 1
-#                     
+#
 #                     logger.info(f"   ✅ Cache HIT: '{question[:40]}...' (confidence: {confidence:.3f})")
 #                 else:
 #                     state["cache_hits"][question] = False
@@ -203,17 +203,220 @@ def check_cache_node(state: WorkflowState) -> WorkflowState:
 #         else:
 #             state["cache_hits"][question] = False
 #             state["cache_confidences"][question] = 0.0
-#     
+#
 #     cache_time = (time.perf_counter() - start_time) * 1000
 #     hit_rate = (cache_hits / len(sub_questions)) * 100 if sub_questions else 0
-#     
+#
 #     state["metrics"]["cache_latency"] = cache_time
 #     state["metrics"]["cache_hit_rate"] = hit_rate
 #     state["metrics"]["cache_hits_count"] = cache_hits
 #     state["execution_path"].append("cache_checked")
-#     
+#
 #     logger.info(f"🔍 Cache check complete: {cache_hits}/{len(sub_questions)} hits ({hit_rate:.1f}%) in {cache_time:.2f}ms")
-#     
+#
 #     return state
 # """
+
+
+def research_node(state: WorkflowState) -> WorkflowState:
+    """
+    Research sub-questions using course search.
+
+    Uses CourseManager.search_courses() to find relevant courses.
+    Simplified version that directly calls search without ReAct agent.
+    """
+    start_time = time.perf_counter()
+    cache_hits = state.get("cache_hits", {})
+    sub_answers = state.get("sub_answers", {}).copy()
+    research_iterations = state.get("research_iterations", {}).copy()
+    questions_researched = 0
+
+    # Track LLM usage
+    llm_calls = state.get("llm_calls", {}).copy()
+
+    logger.info("🔬 Research: Starting course search")
+
+    try:
+        for sub_question, is_cached in cache_hits.items():
+            if not is_cached:
+                iteration = research_iterations.get(sub_question, 0) + 1
+                current_strategy = state.get("current_research_strategy", {}).get(sub_question, "initial")
+
+                logger.info(f"🔍 Researching: '{sub_question[:50]}...' (iteration {iteration}, strategy: {current_strategy})")
+
+                # Directly search for courses using synchronous wrapper
+                search_results = search_courses_sync(sub_question, top_k=5)
+
+                # Format the answer
+                if search_results and "No relevant courses found" not in search_results:
+                    answer = f"Found relevant courses:\n\n{search_results}"
+                else:
+                    answer = "No relevant courses found for this question."
+
+                sub_answers[sub_question] = answer
+                research_iterations[sub_question] = iteration
+                questions_researched += 1
+
+                # Track LLM usage (just for embeddings)
+                llm_calls["research_llm"] = llm_calls.get("research_llm", 0) + 1
+
+                logger.info(f"   ✅ Research complete (iteration {iteration}): '{answer[:50]}...'")
+
+        # Update state
+        state["sub_answers"] = sub_answers
+        state["research_iterations"] = research_iterations
+        state["llm_calls"] = llm_calls
+        state["execution_path"].append("researched")
+
+        # Update metrics
+        research_time = (time.perf_counter() - start_time) * 1000
+        state["metrics"]["research_latency"] = research_time
+        state["metrics"]["questions_researched"] = questions_researched
+
+        logger.info(f"🔬 Research complete: {questions_researched} questions researched in {research_time:.2f}ms")
+
+        return state
+
+    except Exception as e:
+        logger.error(f"Research failed: {e}")
+        import traceback
+        traceback.print_exc()
+        state["execution_path"].append("research_failed")
+        return state
+
+
+def evaluate_quality_node(state: WorkflowState) -> WorkflowState:
+    """Evaluate the quality of research results."""
+    start_time = time.perf_counter()
+    sub_answers = state.get("sub_answers", {})
+    quality_scores = {}
+
+    logger.info(f"🎯 Quality Evaluation: Evaluating research quality for {len(sub_answers)} answers")
+
+    # Track LLM usage
+    llm_calls = state.get("llm_calls", {}).copy()
+
+    try:
+        needs_improvement = 0
+
+        for question, answer in sub_answers.items():
+            # Skip quality evaluation for cached answers
+            if state["cache_hits"].get(question, False):
+                quality_scores[question] = 1.0
+                continue
+
+            # Evaluate research quality
+            evaluation_prompt = f"""
+            Evaluate the quality of this course search answer on a scale of 0.0 to 1.0.
+
+            Question: {question}
+            Answer: {answer}
+
+            Criteria:
+            - Completeness: Does it fully answer the question?
+            - Accuracy: Is the course information correct and relevant?
+            - Relevance: Does it directly address what was asked?
+            - Grounding: Does it provide specific course details and stick to facts, not general knowledge?
+
+            Respond with only a number between 0.0 and 1.0 (e.g., 0.85)
+            """
+
+            response = get_analysis_llm().invoke([HumanMessage(content=evaluation_prompt)])
+            llm_calls["analysis_llm"] = llm_calls.get("analysis_llm", 0) + 1
+
+            try:
+                score = float(response.content.strip())
+                score = max(0.0, min(1.0, score))
+            except ValueError:
+                score = 0.8
+
+            quality_scores[question] = score
+
+            if score < 0.7:
+                needs_improvement += 1
+                logger.info(f"   📊 {question[:40]}... - Score: {score:.2f} - Needs improvement")
+            else:
+                logger.info(f"   ✅ {question[:40]}... - Score: {score:.2f} - Adequate")
+
+        # Update state
+        state["research_quality_scores"] = quality_scores
+        state["llm_calls"] = llm_calls
+        state["execution_path"].append("quality_evaluated")
+
+        # Update metrics
+        evaluation_time = (time.perf_counter() - start_time) * 1000
+
+        logger.info(f"🎯 Quality evaluation complete in {evaluation_time:.2f}ms")
+        logger.info(f"📊 {needs_improvement} sub-questions need additional research")
+
+        return state
+
+    except Exception as e:
+        logger.error(f"Quality evaluation failed: {e}")
+        for question in sub_answers:
+            state["research_quality_scores"][question] = 0.8
+        state["execution_path"].append("quality_evaluated")
+        return state
+
+
+def synthesize_response_node(state: WorkflowState) -> WorkflowState:
+    """Synthesize final response from all sub-answers."""
+    start_time = time.perf_counter()
+    original_query = state["original_query"]
+    sub_questions = state["sub_questions"]
+    sub_answers = state["sub_answers"]
+
+    logger.info(f"🔗 Synthesizing {len(sub_answers)} answers into final response")
+
+    # Track LLM usage
+    llm_calls = state.get("llm_calls", {}).copy()
+
+    try:
+        # NOTE: Semantic cache storage commented out for now
+        # Will be added in future stages
+
+        # Create synthesis prompt
+        if len(sub_questions) == 1:
+            # Single question - return answer directly
+            final_response = sub_answers.get(sub_questions[0], "No answer available")
+        else:
+            # Multiple questions - synthesize
+            qa_pairs = []
+            for i, question in enumerate(sub_questions, 1):
+                answer = sub_answers.get(question, "No answer available")
+                qa_pairs.append(f"Q{i}: {question}\nA{i}: {answer}")
+
+            synthesis_prompt = f"""
+            Original question: {original_query}
+
+            Course search findings:
+            {chr(10).join(qa_pairs)}
+
+            Synthesize these findings into a comprehensive, well-structured response that fully addresses the original question.
+            Be conversational and helpful while ensuring all key course information is included.
+            """
+
+            response = get_analysis_llm().invoke([HumanMessage(content=synthesis_prompt)])
+            llm_calls["analysis_llm"] = llm_calls.get("analysis_llm", 0) + 1
+            final_response = response.content
+
+        # Update state
+        state["final_response"] = final_response
+        state["llm_calls"] = llm_calls
+        state["execution_path"].append("synthesized")
+
+        # Update metrics
+        synthesis_time = (time.perf_counter() - start_time) * 1000
+        state["metrics"]["synthesis_latency"] = synthesis_time
+
+        logger.info(f"🔗 Response synthesized in {synthesis_time:.2f}ms")
+        logger.info(f"📝 Final response: {final_response[:100]}...")
+
+        return state
+
+    except Exception as e:
+        logger.error(f"Synthesis failed: {e}")
+        state["final_response"] = f"Error synthesizing response: {e}"
+        state["execution_path"].append("synthesis_failed")
+        return state
 

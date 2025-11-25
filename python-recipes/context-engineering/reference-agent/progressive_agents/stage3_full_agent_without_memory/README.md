@@ -6,45 +6,59 @@ A LangGraph-based intelligent agent for answering questions about courses using 
 
 ## 🚀 Features
 
-- **Intelligent Query Decomposition**: Breaks down complex course questions into focused sub-questions
-- **Semantic Course Search**: Uses CourseManager with Redis vector search for relevant course retrieval
+- **Intelligent Query Decomposition**: Breaks down complex course questions into focused sub-questions using LLM
+- **Semantic Course Search**: Uses CourseManager with Redis vector search (RedisVL) for relevant course retrieval
 - **Context Engineering**: Applies transformation and optimization techniques from Section 2 notebooks
 - **Quality Assurance**: Evaluates and improves research quality through iterative loops
 - **LangGraph Workflow**: Clean, observable agent architecture with explicit state management
+- **Auto-loading Course Data**: Automatically generates and loads ~100 sample courses on first run
+- **Persistent Storage**: Courses persist in Redis between runs (optional cleanup on exit)
 
 ## 🎯 How It Works
 
 The agent follows a deep research workflow adapted for course Q&A:
 
-1. **Query Decomposition**: Complex questions are broken into focused sub-questions
-2. **Cache Check**: Each sub-question is checked against semantic cache (currently disabled)
-3. **Course Search**: Cache misses trigger semantic search using CourseManager
-4. **Quality Evaluation**: Search results are evaluated for completeness and accuracy
-5. **Iterative Improvement**: Low-quality results trigger additional search rounds
-6. **Response Synthesis**: All answers are combined into a comprehensive final response
+1. **Query Decomposition**: Complex questions are broken into focused sub-questions using LLM
+2. **Cache Check**: Each sub-question is checked against semantic cache (currently disabled for educational purposes)
+3. **Course Search**: Semantic search using CourseManager with Redis vector embeddings (RedisVL)
+4. **Quality Evaluation**: LLM evaluates search results for completeness and accuracy (0.0-1.0 score)
+5. **Iterative Improvement**: Low-quality results (score < 0.7) trigger additional search rounds
+6. **Response Synthesis**: All answers are combined into a comprehensive final response using LLM
 
 ### Workflow Diagram
 
 ```mermaid
 graph TD
-    A[User Query] --> B[Decompose Query]
-    B --> C[Check Cache]
-    C -->|Cache Disabled| D[Course Search]
-    C -->|Future: Cache Hits| E[Synthesize Response]
-    D --> F[Evaluate Quality]
-    F -->|Low Quality| D
-    F -->|High Quality| G[Cache Results - Disabled]
-    G --> E
-    E --> H[Final Response]
-    
-    style C fill:#f9f,stroke:#333,stroke-width:2px
-    style G fill:#f9f,stroke:#333,stroke-width:2px
-    
-    classDef disabled fill:#ddd,stroke:#999,stroke-dasharray: 5 5
-    class C,G disabled
+    Start([User Query]) --> Decompose[Decompose Query<br/>LLM breaks into sub-questions]
+    Decompose --> Cache{Check Cache<br/>DISABLED}
+
+    Cache -->|All Cache Misses| Research[Course Search<br/>Redis Vector Search]
+    Cache -.->|Future: Cache Hits| Synthesize
+
+    Research --> Quality{Evaluate Quality<br/>LLM scores 0.0-1.0}
+
+    Quality -->|Score < 0.7<br/>Needs Improvement| Research
+    Quality -->|Score >= 0.7<br/>Adequate| CacheStore[Store in Cache<br/>DISABLED]
+
+    CacheStore --> Synthesize[Synthesize Response<br/>LLM combines answers]
+    Synthesize --> End([Final Response])
+
+    style Cache fill:#f9f,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    style CacheStore fill:#f9f,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    style Decompose fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    style Research fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style Quality fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Synthesize fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
 ```
 
-**Note**: Nodes marked in gray (Cache Check, Cache Results) are currently disabled. Semantic caching will be added in future stages.
+**Legend**:
+- 🔵 **Blue**: LLM-powered decomposition
+- 🟢 **Green**: Redis vector search (RAG)
+- 🟠 **Orange**: LLM-powered quality evaluation
+- 🟣 **Purple**: LLM-powered synthesis
+- 🩷 **Pink (dashed)**: Disabled features (semantic caching)
+
+**Note**: Semantic caching is currently disabled for educational purposes. The agent demonstrates the full workflow without caching to show how RAG works at its core.
 
 ## 📁 Project Structure
 
@@ -58,8 +72,7 @@ stage3_full_agent_without_memory/
 │   ├── state.py               # Agent state definitions
 │   ├── tools.py               # Course search tools
 │   └── workflow.py            # LangGraph workflow definition
-├── examples/                   # Example usage scripts
-│   └── basic_usage.py         # Simple example
+├── cli.py                      # Interactive CLI
 └── README.md                  # This file
 ```
 
@@ -87,6 +100,35 @@ export REDIS_URL="redis://localhost:6379"
 
 ### Quick Start
 
+**Interactive Mode** (recommended):
+```bash
+cd progressive_agents/stage3_full_agent_without_memory
+python cli.py
+```
+
+**Single Query Mode**:
+```bash
+python cli.py "What machine learning courses are available for beginners?"
+```
+
+**Simulation Mode** (run example queries):
+```bash
+python cli.py --simulate
+```
+
+**Course Data Management**:
+- On first run, the CLI automatically generates and loads ~50 sample courses into Redis
+- Courses persist in Redis between runs (no need to reload each time)
+- Use `--cleanup` flag to remove courses from Redis on exit:
+  ```bash
+  python cli.py --cleanup --simulate
+  ```
+- Debug course search with the debug script:
+  ```bash
+  python debug_search.py
+  ```
+
+**Programmatic Usage**:
 ```python
 import asyncio
 from agent import setup_agent, create_workflow, run_agent
@@ -94,16 +136,16 @@ from agent import setup_agent, create_workflow, run_agent
 async def main():
     # Initialize the agent
     course_manager, _ = await setup_agent()
-    
+
     # Create the workflow
     agent = create_workflow(course_manager)
-    
+
     # Run a query
     result = run_agent(
-        agent, 
+        agent,
         "What machine learning courses are available for beginners?"
     )
-    
+
     # Print the response
     print(result["final_response"])
 
@@ -146,15 +188,17 @@ CS101: Intro to Programming - Fundamental programming concepts using Python... (
 
 ### 3. Semantic Search
 
-Uses Redis vector search to find relevant courses based on semantic similarity:
+Uses Redis vector search (RedisVL) to find relevant courses based on semantic similarity:
 
 ```python
 results = await course_manager.search_courses(
     query="machine learning courses",
     limit=5,
-    similarity_threshold=0.6
+    similarity_threshold=0.5  # Lowered for better recall
 )
 ```
+
+**Implementation Note**: The agent uses a simplified direct search approach instead of a ReAct agent to avoid recursion issues. The `search_courses_sync` function wraps the async CourseManager search with `nest_asyncio` to handle nested event loops in LangGraph.
 
 **Benefits**: Finds relevant courses even with different wording
 
@@ -197,11 +241,50 @@ Students learn:
 4. **Quality Evaluation**: Iterative improvement through self-assessment
 5. **Semantic Search**: Vector-based retrieval for relevant information
 
+## 🔧 Implementation Details
+
+### Simplified Architecture
+
+This agent uses a **simplified direct search approach** instead of the original ReAct agent pattern:
+
+**Original (caching-agent)**:
+- Used `create_react_agent` with tool calling
+- Agent autonomously decided when to call search tools
+- Hit LangGraph recursion limits (25 iterations)
+
+**Simplified (this implementation)**:
+- Direct call to `search_courses_sync` function
+- No ReAct agent loop - just semantic search
+- Avoids recursion issues while maintaining functionality
+
+**Why the change?**:
+- Educational clarity: Students see exactly what's happening
+- Reliability: No recursion limit errors
+- Performance: Fewer LLM calls, faster execution
+- Simplicity: Easier to understand and debug
+
+### Async/Sync Handling
+
+The agent handles async/sync compatibility using `nest_asyncio`:
+
+```python
+def search_courses_sync(query: str, top_k: int = 5) -> str:
+    """Synchronous wrapper for async search_courses."""
+    import asyncio
+    import nest_asyncio
+
+    nest_asyncio.apply()  # Allow nested event loops
+    loop = asyncio.get_event_loop()
+    return loop.run_until_complete(course_manager.search_courses(...))
+```
+
+This allows the async CourseManager to work within LangGraph's synchronous node functions.
+
 ## 🚧 What's Commented Out (For Future Stages)
 
 ### Semantic Caching
 
-Currently disabled to focus on core workflow. Will be added in future stages:
+Currently disabled to focus on core RAG workflow. Will be added in future stages:
 
 ```python
 # In nodes.py - check_cache_node
@@ -219,11 +302,17 @@ Currently disabled to focus on core workflow. Will be added in future stages:
 
 ## 🧪 Testing
 
-Run the example script:
+Run the CLI in simulation mode to test with example queries:
 
 ```bash
 cd progressive_agents/stage3_full_agent_without_memory
-python examples/basic_usage.py
+python cli.py --simulate
+```
+
+Or test interactively:
+
+```bash
+python cli.py
 ```
 
 ## 📚 Related Resources

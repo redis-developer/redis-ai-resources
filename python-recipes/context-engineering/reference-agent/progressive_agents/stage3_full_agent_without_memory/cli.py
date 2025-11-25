@@ -2,219 +2,263 @@
 """
 Interactive CLI for the Course Q&A Agent (Stage 3).
 
-This CLI provides an interactive REPL for asking questions about courses.
-It loads all course data on startup and maintains the agent session.
-
 Usage:
-    python cli.py
-    
-Commands:
-    - Type your question and press Enter
-    - 'metrics' - Show performance metrics for last query
-    - 'help' - Show available commands
-    - 'clear' - Clear the screen
-    - 'exit' or 'quit' - Exit the CLI
+    python cli.py                    # Interactive mode
+    python cli.py "your question"    # Single query mode
+    python cli.py --simulate         # Simulate with example queries
+    python cli.py --no-cleanup       # Don't cleanup courses on exit
 """
 
 import asyncio
 import os
 import sys
+import atexit
 from pathlib import Path
+from typing import Optional
 
-# Add parent directory to path to import agent module
+# Load environment variables from .env file
+from dotenv import load_dotenv
+
+# Load .env from reference-agent directory
+env_path = Path(__file__).parent.parent.parent / ".env"
+load_dotenv(env_path)
+
+# Add agent module to path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from agent import setup_agent, create_workflow, run_agent
+from agent.setup import cleanup_courses
 
 
 class CourseQACLI:
-    """Interactive CLI for the Course Q&A Agent."""
-    
-    def __init__(self):
+    """Interactive CLI for Course Q&A Agent."""
+
+    def __init__(self, cleanup_on_exit: bool = False):
         self.agent = None
         self.course_manager = None
-        self.last_result = None
-        
+        self.cleanup_on_exit = cleanup_on_exit
+
+        # Register cleanup handler if requested
+        if cleanup_on_exit:
+            atexit.register(self._cleanup)
+
+    def _cleanup(self):
+        """Cleanup handler called on exit."""
+        if self.course_manager and self.cleanup_on_exit:
+            print("\n🧹 Cleaning up courses from Redis...")
+            try:
+                asyncio.run(cleanup_courses(self.course_manager))
+                print("✅ Cleanup complete")
+            except Exception as e:
+                print(f"⚠️  Cleanup failed: {e}")
+
     async def initialize(self):
         """Initialize the agent and load course data."""
         print("=" * 80)
         print("Course Q&A Agent - Stage 3 (Full Agent without Memory)")
         print("=" * 80)
         print()
-        
+
         # Check for required environment variables
         if not os.getenv("OPENAI_API_KEY"):
             print("❌ Error: OPENAI_API_KEY environment variable not set")
             print("   Please set it with: export OPENAI_API_KEY='your-key-here'")
-            return False
-        
+            sys.exit(1)
+
         try:
-            # Initialize the agent
+            # Initialize the agent (will auto-load courses if needed)
             print("🔧 Initializing Course Q&A Agent...")
-            self.course_manager, _ = await setup_agent()
+            print("📦 Loading courses into Redis (if not already loaded)...")
+            self.course_manager, _ = await setup_agent(auto_load_courses=True)
             print()
-            
+
             # Create the workflow
             print("🔧 Creating LangGraph workflow...")
             self.agent = create_workflow(self.course_manager)
             print("✅ Workflow created successfully")
             print()
-            
-            # Load and display course count
-            all_courses = await self.course_manager.get_all_courses()
-            print(f"📚 Loaded {len(all_courses)} courses from the catalog")
+
+            # Show cleanup status
+            if self.cleanup_on_exit:
+                print("🧹 Courses will be cleaned up on exit")
+            else:
+                print("💾 Courses will persist in Redis after exit")
             print()
-            
-            return True
-            
+
         except Exception as e:
             print(f"\n❌ Initialization failed: {e}")
             import traceback
             traceback.print_exc()
-            return False
-    
-    def show_help(self):
-        """Display help information."""
-        print("\n" + "=" * 80)
-        print("Available Commands:")
+            sys.exit(1)
+
+    def ask_question(self, query: str, show_details: bool = True):
+        """Ask a question and get a response."""
         print("=" * 80)
-        print("  <question>  - Ask a question about courses")
-        print("  metrics     - Show performance metrics for the last query")
-        print("  help        - Show this help message")
-        print("  clear       - Clear the screen")
-        print("  exit/quit   - Exit the CLI")
+        print(f"❓ Question: {query}")
         print("=" * 80)
-        print("\nExample questions:")
-        print("  - What machine learning courses are available?")
-        print("  - Tell me about database courses and their prerequisites")
-        print("  - What are the best courses for learning web development?")
-        print("=" * 80 + "\n")
-    
-    def show_metrics(self):
-        """Display metrics from the last query."""
-        if not self.last_result:
-            print("\n❌ No query has been run yet\n")
-            return
-        
-        metrics = self.last_result.get("metrics", {})
-        llm_calls = self.last_result.get("llm_calls", {})
-        
-        print("\n" + "=" * 80)
-        print("📊 Performance Metrics (Last Query)")
-        print("=" * 80)
-        print(f"Total Latency:        {metrics.get('total_latency', 0):.2f}ms")
-        print(f"Decomposition:        {metrics.get('decomposition_latency', 0):.2f}ms")
-        print(f"Cache Check:          {metrics.get('cache_latency', 0):.2f}ms")
-        print(f"Research:             {metrics.get('research_latency', 0):.2f}ms")
-        print(f"Synthesis:            {metrics.get('synthesis_latency', 0):.2f}ms")
-        print(f"Cache Hit Rate:       {metrics.get('cache_hit_rate', 0):.1f}%")
-        print(f"Sub-questions:        {metrics.get('sub_question_count', 0)}")
-        print(f"Questions Researched: {metrics.get('questions_researched', 0)}")
-        print(f"Execution Path:       {metrics.get('execution_path', 'N/A')}")
-        
-        if llm_calls:
-            print("\n🤖 LLM Usage:")
-            for llm_type, count in llm_calls.items():
-                print(f"  {llm_type}: {count} calls")
-        
-        # Show sub-questions if decomposed
-        sub_questions = self.last_result.get("sub_questions", [])
-        if len(sub_questions) > 1:
-            print("\n🧠 Sub-questions:")
-            for i, sq in enumerate(sub_questions, 1):
-                print(f"  {i}. {sq}")
-        
-        print("=" * 80 + "\n")
-    
-    def clear_screen(self):
-        """Clear the terminal screen."""
-        os.system('clear' if os.name != 'nt' else 'cls')
-    
-    async def process_query(self, query: str):
-        """Process a user query and display the response."""
-        print("\n🔍 Processing query...")
         print()
-        
-        try:
-            # Run the agent
-            result = run_agent(self.agent, query, enable_caching=False)
-            self.last_result = result
-            
-            # Display the response
-            print("=" * 80)
-            print("📝 Response:")
-            print("=" * 80)
-            print(result["final_response"])
-            print("=" * 80)
-            print()
-            
-            # Show quick metrics summary
+
+        # Run the agent
+        result = run_agent(self.agent, query, enable_caching=False)
+
+        # Print the response
+        print("📝 Answer:")
+        print("-" * 80)
+        print(result["final_response"])
+        print("-" * 80)
+        print()
+
+        if show_details:
+            # Print metrics
             metrics = result["metrics"]
-            print(f"⏱️  Completed in {metrics['total_latency']:.2f}ms")
-            print(f"📊 {metrics['sub_question_count']} sub-questions, {metrics['questions_researched']} researched")
-            print(f"💡 Type 'metrics' to see detailed performance metrics")
+            print("📊 Performance:")
+            print(f"   Total Time: {metrics['total_latency']:.2f}ms")
+            print(f"   Sub-questions: {metrics['sub_question_count']}")
+            print(f"   Questions Researched: {metrics['questions_researched']}")
+            print(f"   Execution: {metrics['execution_path']}")
             print()
-            
-        except Exception as e:
-            print(f"\n❌ Error processing query: {e}")
-            import traceback
-            traceback.print_exc()
-            print()
-    
-    async def run(self):
-        """Run the interactive CLI loop."""
-        # Initialize
-        if not await self.initialize():
-            return
-        
-        # Show welcome message
+
+            # Print sub-questions if decomposed
+            if len(result.get("sub_questions", [])) > 1:
+                print("🧠 Sub-questions:")
+                for i, sq in enumerate(result["sub_questions"], 1):
+                    print(f"   {i}. {sq}")
+                print()
+
+        return result
+
+    async def interactive_mode(self):
+        """Run in interactive mode."""
         print("=" * 80)
-        print("🎓 Welcome to the Course Q&A Agent!")
-        print("=" * 80)
-        print("Ask me anything about courses. Type 'help' for commands, 'exit' to quit.")
+        print("Interactive Mode - Ask questions about courses")
+        print("Commands: 'quit' or 'exit' to stop, 'help' for help")
         print("=" * 80)
         print()
-        
-        # Main loop
+
         while True:
             try:
                 # Get user input
-                query = input("💬 You: ").strip()
-                
-                # Handle empty input
+                query = input("❓ Your question: ").strip()
+
                 if not query:
                     continue
-                
+
                 # Handle commands
-                if query.lower() in ['exit', 'quit']:
-                    print("\n👋 Goodbye!\n")
+                if query.lower() in ['quit', 'exit', 'q']:
+                    print("\n👋 Goodbye!")
                     break
-                elif query.lower() == 'help':
+
+                if query.lower() == 'help':
                     self.show_help()
-                elif query.lower() == 'metrics':
-                    self.show_metrics()
-                elif query.lower() == 'clear':
-                    self.clear_screen()
-                else:
-                    # Process as a course query
-                    await self.process_query(query)
-                    
+                    continue
+
+                # Ask the question
+                print()
+                self.ask_question(query, show_details=True)
+
             except KeyboardInterrupt:
-                print("\n\n👋 Goodbye!\n")
-                break
-            except EOFError:
-                print("\n\n👋 Goodbye!\n")
+                print("\n\n👋 Goodbye!")
                 break
             except Exception as e:
-                print(f"\n❌ Unexpected error: {e}\n")
+                print(f"\n❌ Error: {e}")
                 import traceback
                 traceback.print_exc()
+                print()
+
+    async def simulate_mode(self):
+        """Run simulation with example queries."""
+        print("=" * 80)
+        print("Simulation Mode - Running example queries")
+        print("=" * 80)
+        print()
+
+        example_queries = [
+            "What machine learning courses are available for beginners?",
+            "Tell me about database courses and their prerequisites",
+            "What are the best courses for learning web development?",
+            "I want to learn data science. What courses should I take?",
+            "What advanced computer science courses are offered?",
+        ]
+
+        for i, query in enumerate(example_queries, 1):
+            print(f"\n{'=' * 80}")
+            print(f"Example {i}/{len(example_queries)}")
+            print(f"{'=' * 80}\n")
+
+            self.ask_question(query, show_details=True)
+
+            # Pause between queries
+            if i < len(example_queries):
+                print("Press Enter to continue to next example...")
+                input()
+
+        print("=" * 80)
+        print("✅ Simulation complete!")
+        print("=" * 80)
+
+    def show_help(self):
+        """Show help information."""
+        print()
+        print("=" * 80)
+        print("Help - Course Q&A Agent")
+        print("=" * 80)
+        print()
+        print("This agent can answer questions about courses in the catalog.")
+        print()
+        print("Example questions:")
+        print("  • What machine learning courses are available?")
+        print("  • Tell me about database courses and their prerequisites")
+        print("  • What courses should I take to learn web development?")
+        print("  • What are the requirements for CS301?")
+        print()
+        print("Commands:")
+        print("  • help  - Show this help message")
+        print("  • quit  - Exit the program")
+        print("  • exit  - Exit the program")
+        print()
+        print("=" * 80)
+        print()
 
 
 async def main():
-    """Main entry point for the CLI."""
-    cli = CourseQACLI()
-    await cli.run()
+    """Main entry point."""
+    # Parse command line arguments
+    cleanup_on_exit = False
+    args = sys.argv[1:]
+
+    # Check for --cleanup flag
+    if "--cleanup" in args:
+        cleanup_on_exit = True
+        args.remove("--cleanup")
+
+    # Check for --no-cleanup flag (default behavior, but explicit)
+    if "--no-cleanup" in args:
+        cleanup_on_exit = False
+        args.remove("--no-cleanup")
+
+    if len(args) > 0:
+        if args[0] == "--simulate":
+            # Simulation mode
+            cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit)
+            await cli.initialize()
+            await cli.simulate_mode()
+        elif args[0] in ["-h", "--help"]:
+            # Show usage
+            print(__doc__)
+            print("\nOptions:")
+            print("  --cleanup      Clean up courses from Redis on exit")
+            print("  --no-cleanup   Keep courses in Redis after exit (default)")
+        else:
+            # Single query mode
+            query = " ".join(args)
+            cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit)
+            await cli.initialize()
+            cli.ask_question(query, show_details=True)
+    else:
+        # Interactive mode
+        cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit)
+        await cli.initialize()
+        await cli.interactive_mode()
 
 
 if __name__ == "__main__":

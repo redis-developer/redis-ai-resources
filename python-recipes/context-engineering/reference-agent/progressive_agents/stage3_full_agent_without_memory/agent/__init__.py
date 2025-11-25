@@ -9,7 +9,7 @@ Adapted from the caching-agent architecture with CourseManager integration.
 
 from .state import WorkflowState, WorkflowMetrics, initialize_metrics
 from .workflow import create_workflow, run_agent
-from .setup import setup_agent, initialize_course_manager
+from .setup import setup_agent, initialize_course_manager, cleanup_courses
 from .tools import search_courses, transform_course_to_text, optimize_course_text
 
 __all__ = [
@@ -17,15 +17,16 @@ __all__ = [
     "WorkflowState",
     "WorkflowMetrics",
     "initialize_metrics",
-    
+
     # Workflow
     "create_workflow",
     "run_agent",
-    
+
     # Setup
     "setup_agent",
     "initialize_course_manager",
-    
+    "cleanup_courses",
+
     # Tools
     "search_courses",
     "transform_course_to_text",
