@@ -17,6 +17,7 @@ from .edges import (
     route_after_quality_evaluation,
 )
 from .nodes import (
+    agent_node,
     check_cache_node,
     classify_intent_node,
     decompose_query_node,
@@ -54,17 +55,12 @@ def create_workflow(course_manager):
     # Create workflow graph
     workflow = StateGraph(WorkflowState)
 
-    # Add nodes (including NEW memory nodes)
-    workflow.add_node("load_memory", load_working_memory_node)  # NEW: Load at start
-    workflow.add_node("classify_intent", classify_intent_node)
-    workflow.add_node("handle_greeting", handle_greeting_node)
-    workflow.add_node("extract_entities", extract_entities_node)
-    workflow.add_node("decompose_query", decompose_query_node)
-    workflow.add_node("check_cache", check_cache_node)
-    workflow.add_node("research", research_node)
-    workflow.add_node("evaluate_quality", evaluate_quality_node)
-    workflow.add_node("synthesize", synthesize_response_node)
-    workflow.add_node("save_memory", save_working_memory_node)  # NEW: Save at end
+    # Add nodes
+    workflow.add_node("load_memory", load_working_memory_node)  # Load working memory
+    workflow.add_node("classify_intent", classify_intent_node)  # Classify intent
+    workflow.add_node("handle_greeting", handle_greeting_node)  # Handle greetings
+    workflow.add_node("agent", agent_node)  # NEW: Agent with tool calling
+    workflow.add_node("save_memory", save_working_memory_node)  # Save working memory
 
     # Set entry point to load memory first
     workflow.set_entry_point("load_memory")
@@ -77,40 +73,21 @@ def create_workflow(course_manager):
         if intent == "GREETING":
             return "handle_greeting"
         else:
-            return "extract_entities"
+            return "agent"  # Route to agent for all non-greeting queries
 
     # Add edges
-    workflow.add_edge("load_memory", "classify_intent")  # NEW: Load memory first
+    workflow.add_edge("load_memory", "classify_intent")  # Load memory first
     workflow.add_conditional_edges(
         "classify_intent",
         route_after_intent,
         {
             "handle_greeting": "handle_greeting",
-            "extract_entities": "extract_entities",
+            "agent": "agent",
         },
     )
-    workflow.add_edge("handle_greeting", "save_memory")  # NEW: Save even for greetings
-    workflow.add_edge("extract_entities", "decompose_query")
-    workflow.add_edge("decompose_query", "check_cache")
-    workflow.add_conditional_edges(
-        "check_cache",
-        route_after_cache_check,
-        {
-            "research": "research",
-            "synthesize": "synthesize",
-        },
-    )
-    workflow.add_edge("research", "evaluate_quality")
-    workflow.add_conditional_edges(
-        "evaluate_quality",
-        route_after_quality_evaluation,
-        {
-            "research": "research",
-            "synthesize": "synthesize",
-        },
-    )
-    workflow.add_edge("synthesize", "save_memory")  # NEW: Save memory at end
-    workflow.add_edge("save_memory", END)  # NEW: End after saving
+    workflow.add_edge("handle_greeting", "save_memory")  # Save even for greetings
+    workflow.add_edge("agent", "save_memory")  # Agent → save memory
+    workflow.add_edge("save_memory", END)  # End after saving
 
     # Compile and return
     return workflow.compile()

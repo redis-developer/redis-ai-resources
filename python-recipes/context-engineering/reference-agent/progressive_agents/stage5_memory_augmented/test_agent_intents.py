@@ -153,7 +153,6 @@ async def main():
     """Run all intent tests."""
     print("Initializing Course Manager...")
     course_manager = CourseManager()
-    await course_manager.initialize()
 
     print("Creating agent workflow...")
     agent = create_workflow(course_manager)
@@ -188,9 +187,6 @@ async def main():
 
     overall_percentage = (total_passed / total_tests * 100) if total_tests > 0 else 0
     print(f"{'TOTAL':20s}: {total_passed:2d}/{total_tests:2d} ({overall_percentage:5.1f}%)")
-
-    # Cleanup
-    await course_manager.cleanup()
 
     return all_results
 
