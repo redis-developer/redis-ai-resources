@@ -24,6 +24,8 @@ from redis_context_course.hierarchical_models import (
     HierarchicalCourse,
 )
 from redis_context_course.models import Course
+from redisvl.query import FilterQuery
+from redisvl.query.filter import Tag
 
 # Configure logger
 logger = logging.getLogger("course-qa-workflow")
@@ -257,17 +259,45 @@ def search_courses_sync(
             )
 
             for course_code in extracted_entities["course_codes"]:
-                # Search by exact course code
-                results = loop.run_until_complete(
-                    course_manager.search_courses(
-                        query=course_code,
-                        filters=None,
-                        limit=1,
-                        similarity_threshold=0.9,  # High threshold for exact match
-                    )
+                # Use FilterQuery for exact course code matching (text query, not vector)
+                filter_query = FilterQuery(
+                    filter_expression=Tag("course_code") == course_code,
+                    return_fields=[
+                        "id",
+                        "course_code",
+                        "title",
+                        "description",
+                        "department",
+                        "major",
+                        "difficulty_level",
+                        "format",
+                        "semester",
+                        "year",
+                        "credits",
+                        "tags",
+                        "instructor",
+                        "max_enrollment",
+                        "current_enrollment",
+                        "learning_objectives",
+                        "prerequisites",
+                        "schedule",
+                        "created_at",
+                        "updated_at",
+                    ],
                 )
-                if results:
-                    basic_results.extend(results)
+                results = course_manager.vector_index.query(filter_query)
+
+                # Handle both list and object with .docs attribute
+                result_list = results if isinstance(results, list) else results.docs
+
+                if result_list:
+                    # Convert result to Course object using CourseManager's method
+                    # Result can be dict or object with __dict__
+                    first_result = result_list[0]
+                    course_dict = first_result if isinstance(first_result, dict) else first_result.__dict__
+                    course = course_manager._dict_to_course(course_dict)
+                    if course:
+                        basic_results.append(course)
 
             # If we found exact matches, we're done
             if basic_results:
@@ -284,16 +314,44 @@ def search_courses_sync(
             # First, try exact matches for course codes
             if extracted_entities and extracted_entities.get("course_codes"):
                 for course_code in extracted_entities["course_codes"]:
-                    results = loop.run_until_complete(
-                        course_manager.search_courses(
-                            query=course_code,
-                            filters=None,
-                            limit=1,
-                            similarity_threshold=0.9,
-                        )
+                    # Use FilterQuery for exact course code matching (text query, not vector)
+                    filter_query = FilterQuery(
+                        filter_expression=Tag("course_code") == course_code,
+                        return_fields=[
+                            "id",
+                            "course_code",
+                            "title",
+                            "description",
+                            "department",
+                            "major",
+                            "difficulty_level",
+                            "format",
+                            "semester",
+                            "year",
+                            "credits",
+                            "tags",
+                            "instructor",
+                            "max_enrollment",
+                            "current_enrollment",
+                            "learning_objectives",
+                            "prerequisites",
+                            "schedule",
+                            "created_at",
+                            "updated_at",
+                        ],
                     )
-                    if results:
-                        basic_results.extend(results)
+                    results = course_manager.vector_index.query(filter_query)
+
+                    # Handle both list and object with .docs attribute
+                    result_list = results if isinstance(results, list) else results.docs
+
+                    if result_list:
+                        # Convert result to Course object using CourseManager's method
+                        first_result = result_list[0]
+                        course_dict = first_result if isinstance(first_result, dict) else first_result.__dict__
+                        course = course_manager._dict_to_course(course_dict)
+                        if course:
+                            basic_results.append(course)
 
             # Then, semantic search with metadata filters
             semantic_query = query

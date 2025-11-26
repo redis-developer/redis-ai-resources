@@ -1,12 +1,12 @@
 """
 Tools for the Course Q&A Agent workflow.
 
-Stage 6: Long-term Memory Tools!
+Stage 5: Memory-Augmented Agent with LLM-controlled search tool!
 
-This demonstrates agentic memory management:
-- LLM decides when to search courses vs search memories vs store memories
-- Three tools: search_courses, search_memories, store_memory
-- Enables cross-session personalization with long-term memory
+This demonstrates the transition from scripted to agentic workflows:
+- LLM decides when to search and what parameters to use
+- Complex tool with multiple parameters (intent, strategy, entities)
+- Replaces hardcoded nodes with tool-based decision making
 """
 
 import json
@@ -314,44 +314,16 @@ def search_courses_sync(
             # First, try exact matches for course codes
             if extracted_entities and extracted_entities.get("course_codes"):
                 for course_code in extracted_entities["course_codes"]:
-                    # Use FilterQuery for exact course code matching (text query, not vector)
-                    filter_query = FilterQuery(
-                        filter_expression=Tag("course_code") == course_code,
-                        return_fields=[
-                            "id",
-                            "course_code",
-                            "title",
-                            "description",
-                            "department",
-                            "major",
-                            "difficulty_level",
-                            "format",
-                            "semester",
-                            "year",
-                            "credits",
-                            "tags",
-                            "instructor",
-                            "max_enrollment",
-                            "current_enrollment",
-                            "learning_objectives",
-                            "prerequisites",
-                            "schedule",
-                            "created_at",
-                            "updated_at",
-                        ],
+                    results = loop.run_until_complete(
+                        course_manager.search_courses(
+                            query=course_code,
+                            filters=None,
+                            limit=1,
+                            similarity_threshold=0.9,
+                        )
                     )
-                    results = course_manager.vector_index.query(filter_query)
-
-                    # Handle both list and object with .docs attribute
-                    result_list = results if isinstance(results, list) else results.docs
-
-                    if result_list:
-                        # Convert result to Course object using CourseManager's method
-                        first_result = result_list[0]
-                        course_dict = first_result if isinstance(first_result, dict) else first_result.__dict__
-                        course = course_manager._dict_to_course(course_dict)
-                        if course:
-                            basic_results.append(course)
+                    if results:
+                        basic_results.extend(results)
 
             # Then, semantic search with metadata filters
             semantic_query = query
@@ -669,149 +641,3 @@ async def search_courses_tool(
     except Exception as e:
         logger.error(f"   ❌ Search failed: {e}")
         return f"Search failed: {str(e)}"
-
-
-# ============================================================================
-# LONG-TERM MEMORY TOOLS (NEW IN STAGE 6)
-# ============================================================================
-
-# Global variable for current student ID (set by agent_node)
-_current_student_id: Optional[str] = None
-
-
-class SearchMemoriesInput(BaseModel):
-    """Input schema for searching long-term memories."""
-
-    query: str = Field(
-        description="Natural language query to search for in user's long-term memory. "
-        "Examples: 'career goals', 'course preferences', 'learning style', 'interests'"
-    )
-    limit: int = Field(
-        default=5, description="Maximum number of memories to return. Default is 5."
-    )
-
-
-@tool("search_memories", args_schema=SearchMemoriesInput)
-async def search_memories_tool(query: str, limit: int = 5) -> str:
-    """
-    Search the student's long-term memory for relevant facts, preferences, and past interactions.
-
-    Use this tool when you need to:
-    - Recall user preferences: "What format does the user prefer?"
-    - Remember past goals: "What career path is the user interested in?"
-    - Find previous interactions: "What courses did we discuss before?"
-    - Personalize recommendations: "What are the user's interests?"
-
-    The search uses semantic matching to find relevant memories.
-
-    Returns: List of relevant memories with content and metadata.
-    """
-    try:
-        from agent_memory_client.filters import UserId
-
-        # Import memory client from nodes module
-        from .nodes import get_memory_client
-
-        memory_client = get_memory_client()
-
-        # Get student_id from global variable
-        if _current_student_id is None:
-            return "Error: Student ID not set. Cannot search memories."
-
-        logger.info(f"🔍 Searching long-term memory: '{query}' (limit={limit})")
-
-        # Search long-term memory
-        results = await memory_client.search_long_term_memory(
-            text=query, user_id=UserId(eq=_current_student_id), limit=limit
-        )
-
-        if not results.memories or len(results.memories) == 0:
-            logger.info("   ℹ️  No relevant memories found")
-            return "No relevant memories found."
-
-        # Format results
-        output = []
-        for i, memory in enumerate(results.memories, 1):
-            output.append(f"{i}. {memory.text}")
-            if memory.topics:
-                output.append(f"   Topics: {', '.join(memory.topics)}")
-
-        logger.info(f"   ✅ Found {len(results.memories)} memories")
-        return "\n".join(output)
-
-    except Exception as e:
-        logger.error(f"   ❌ Memory search failed: {e}")
-        return f"Error searching memories: {str(e)}"
-
-
-class StoreMemoryInput(BaseModel):
-    """Input schema for storing memories."""
-
-    text: str = Field(
-        description="The information to store. Should be a clear, factual statement. "
-        "Examples: 'User prefers online courses', 'User's career goal is AI research', "
-        "'User is interested in machine learning'"
-    )
-    memory_type: str = Field(
-        default="semantic",
-        description="Type of memory: 'semantic' (facts/preferences), 'episodic' (events/interactions). "
-        "Default is 'semantic'.",
-    )
-    topics: List[str] = Field(
-        default=[],
-        description="Optional tags to categorize the memory. Examples: ['preferences', 'courses'], "
-        "['goals', 'career'], ['interests', 'ML']",
-    )
-
-
-@tool("store_memory", args_schema=StoreMemoryInput)
-async def store_memory_tool(
-    text: str, memory_type: str = "semantic", topics: List[str] = []
-) -> str:
-    """
-    Store important information to the student's long-term memory.
-
-    Use this tool when the student shares:
-    - Preferences: "I prefer online courses", "I like hands-on projects"
-    - Goals: "I want to work in AI", "I'm preparing for grad school"
-    - Important facts: "I have a part-time job", "I'm interested in startups"
-    - Constraints: "I can only take 2 courses per semester"
-
-    Do NOT store:
-    - Temporary information (use conversation context instead)
-    - Course details (already in course catalog)
-    - General questions
-
-    Returns: Confirmation message.
-    """
-    try:
-        from agent_memory_client.models import ClientMemoryRecord
-
-        # Import memory client from nodes module
-        from .nodes import get_memory_client
-
-        memory_client = get_memory_client()
-
-        # Get student_id from global variable
-        if _current_student_id is None:
-            return "Error: Student ID not set. Cannot store memory."
-
-        logger.info(f"💾 Storing memory: '{text}' (type={memory_type}, topics={topics})")
-
-        # Create memory record
-        memory = ClientMemoryRecord(
-            text=text,
-            user_id=_current_student_id,
-            memory_type=memory_type,
-            topics=topics or [],
-        )
-
-        # Store in long-term memory
-        await memory_client.create_long_term_memory([memory])
-
-        logger.info(f"   ✅ Memory stored successfully")
-        return f"✅ Stored to long-term memory: {text}"
-
-    except Exception as e:
-        logger.error(f"   ❌ Memory storage failed: {e}")
-        return f"Error storing memory: {str(e)}"
