@@ -229,3 +229,26 @@ python-recipes/vector-search/datasets
 litellm_proxy.log
 litellm_redis.yml
 .vscode/
+
+# Development directories
+nk_scripts/
+python-recipes/context-engineering/notebooks_archive/
+
+# Personal development files (keep locally, not in git)
+python-recipes/agents/02_full_featured_agent-Copy1.ipynb
+python-recipes/vector-search/01_redisvl-nk.ipynb
+python-recipes/vector-search/08_vector_algorithm_benchmark.ipynb
+python-recipes/vector_search.py
+
+# Context engineering course - generated data files
+python-recipes/context-engineering/notebooks/section-2-retrieved-context-engineering/course_catalog_section2.json
+
+# Context engineering course - analysis and merge documentation (keep locally)
+python-recipes/context-engineering/notebooks/SECTION_2_MERGE_ANALYSIS.md
+python-recipes/context-engineering/overlap-analysis-summary.md
+python-recipes/context-engineering/section-2.5-analysis.md
+python-recipes/context-engineering/section-2.5-overlap-analysis.md
+python-recipes/context-engineering/section-2.5-philosophy-alignment.md
+python-recipes/context-engineering/section-2.5-revised-plan.md
+python-recipes/context-engineering/sections-1-4-notebooks.html
+python-recipes/context-engineering/pdfs/

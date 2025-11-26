@@ -1,0 +1,23 @@
+# Include the README and license files
+include README.md
+include LICENSE
+include requirements.txt
+include .env.example
+
+# Include configuration files
+include pyproject.toml
+include setup.py
+
+# Include data files
+recursive-include redis_context_course/data *.json
+recursive-include redis_context_course/templates *.txt
+
+# Include test files
+recursive-include tests *.py
+
+# Exclude development and build files
+exclude .gitignore
+exclude .env
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
