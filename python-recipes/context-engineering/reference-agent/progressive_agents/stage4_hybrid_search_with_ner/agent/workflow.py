@@ -17,6 +17,7 @@ from .edges import (
     route_after_quality_evaluation,
 )
 from .nodes import (
+    agent_node,
     check_cache_node,
     classify_intent_node,
     decompose_query_node,
@@ -55,12 +56,7 @@ def create_workflow(course_manager):
     # Add nodes
     workflow.add_node("classify_intent", classify_intent_node)
     workflow.add_node("handle_greeting", handle_greeting_node)
-    workflow.add_node("extract_entities", extract_entities_node)  # NEW in Stage 4
-    workflow.add_node("decompose_query", decompose_query_node)
-    workflow.add_node("check_cache", check_cache_node)
-    workflow.add_node("research", research_node)
-    workflow.add_node("evaluate_quality", evaluate_quality_node)
-    workflow.add_node("synthesize", synthesize_response_node)
+    workflow.add_node("agent", agent_node)  # NEW: Agent with tool calling
 
     # Set entry point
     workflow.set_entry_point("classify_intent")
@@ -68,13 +64,12 @@ def create_workflow(course_manager):
     # Add routing function for intent classification
     def route_after_intent(state: WorkflowState) -> str:
         """Route based on query intent."""
-        intent = state.get("query_intent", "GENERAL_QUESTION")
-        detail_level = state.get("detail_level", "summary")
+        intent = state.get("query_intent", "GENERAL")
 
-        if intent == "GREETING" or detail_level == "none":
+        if intent == "GREETING":
             return "handle_greeting"
         else:
-            return "extract_entities"  # NEW in Stage 4: Extract entities before decomposition
+            return "agent"  # Route to agent for all non-greeting queries
 
     # Add edges
     workflow.add_conditional_edges(
@@ -82,30 +77,11 @@ def create_workflow(course_manager):
         route_after_intent,
         {
             "handle_greeting": "handle_greeting",
-            "extract_entities": "extract_entities",  # NEW in Stage 4
+            "agent": "agent",
         },
     )
     workflow.add_edge("handle_greeting", END)
-    workflow.add_edge("extract_entities", "decompose_query")  # NEW in Stage 4
-    workflow.add_edge("decompose_query", "check_cache")
-    workflow.add_conditional_edges(
-        "check_cache",
-        route_after_cache_check,
-        {
-            "research": "research",  # Go to research if cache misses
-            "synthesize": "synthesize",  # Skip to synthesis if all cached
-        },
-    )
-    workflow.add_edge("research", "evaluate_quality")
-    workflow.add_conditional_edges(
-        "evaluate_quality",
-        route_after_quality_evaluation,
-        {
-            "research": "research",  # Additional research if needed
-            "synthesize": "synthesize",  # Proceed to synthesis
-        },
-    )
-    workflow.add_edge("synthesize", END)
+    workflow.add_edge("agent", END)
 
     # Compile and return
     return workflow.compile()
