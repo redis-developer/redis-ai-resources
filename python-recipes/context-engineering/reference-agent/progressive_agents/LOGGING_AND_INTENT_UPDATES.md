@@ -187,10 +187,98 @@ These changes are backward compatible:
 
 ---
 
+---
+
+## 3. Added Debug Mode to CLI
+
+### Problem
+Error tracebacks were always shown in the CLI, cluttering the output for end users. Detailed stack traces are useful for developers but confusing for regular users.
+
+### Solution
+Added a `--debug` flag to all CLI files that controls whether detailed error messages and tracebacks are shown.
+
+**Default behavior (no --debug):**
+```
+❌ Error: Connection failed
+```
+
+**With --debug flag:**
+```
+❌ Error: Connection failed
+Traceback (most recent call last):
+  File "cli.py", line 162, in interactive_mode
+    result = self.ask_question(query)
+  ...
+```
+
+### Files Modified
+- `stage1_baseline_rag/cli.py`
+- `stage2_context_engineered/cli.py`
+- `stage3_full_agent_without_memory/cli.py`
+- `stage4_hybrid_search_with_ner/cli.py`
+
+### Changes Made
+
+**1. Added debug parameter to CLI class:**
+```python
+def __init__(self, cleanup_on_exit: bool = False, debug: bool = False):
+    self.debug = debug
+```
+
+**2. Conditional traceback printing:**
+```python
+except Exception as e:
+    logger.error(f"Error: {e}")
+    if self.debug:
+        import traceback
+        traceback.print_exc()
+```
+
+**3. Added --debug argument:**
+```python
+parser.add_argument(
+    "--debug",
+    action="store_true",
+    help="Show detailed error messages and tracebacks"
+)
+```
+
+**4. Pass debug flag to CLI:**
+```python
+cli = CourseQACLI(cleanup_on_exit=cleanup, debug=args.debug)
+```
+
+### Usage
+
+**Normal mode (clean errors):**
+```bash
+python cli.py "What courses are available?"
+```
+
+**Debug mode (detailed errors):**
+```bash
+python cli.py --debug "What courses are available?"
+```
+
+**Interactive mode with debug:**
+```bash
+python cli.py --debug
+```
+
+### Benefits
+
+1. **Cleaner User Experience**: End users see simple error messages
+2. **Developer-Friendly**: Developers can enable debug mode for troubleshooting
+3. **Professional Output**: Production-like behavior by default
+4. **Easy Debugging**: One flag to see all details when needed
+
+---
+
 ## Summary
 
 ✅ **Suppressed httpx logs** in all 4 stages for cleaner output
 ✅ **Improved intent classification** in Stage 3 and 4 to default to summary
+✅ **Added debug mode** to all 4 CLI files for conditional error tracebacks
 ✅ **Better user experience** with progressive disclosure
 ✅ **Token efficiency** improved by ~85% for general questions
 ✅ **Backward compatible** with existing query patterns
@@ -200,4 +288,5 @@ These changes make the agents more production-ready and demonstrate best practic
 - Intent understanding and classification
 - Progressive disclosure patterns
 - Token efficiency and cost optimization
+- User-friendly error handling
 

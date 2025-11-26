@@ -23,14 +23,14 @@ Students will see:
 - Clear ROI on context engineering
 """
 
-from .setup import setup_agent, load_courses_if_needed, cleanup_courses
-from .workflow import create_workflow
-from .state import AgentState, initialize_state
 from .context_engineering import (
-    transform_course_to_text,
-    optimize_course_text,
     format_courses_for_llm,
+    optimize_course_text,
+    transform_course_to_text,
 )
+from .setup import cleanup_courses, load_courses_if_needed, setup_agent
+from .state import AgentState, initialize_state
+from .workflow import create_workflow
 
 __all__ = [
     "setup_agent",
@@ -43,4 +43,3 @@ __all__ = [
     "optimize_course_text",
     "format_courses_for_llm",
 ]
-

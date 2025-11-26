@@ -1,5 +1,6 @@
 import os
 import time
+
 import pytest
 from testcontainers.core.container import DockerContainer
 
@@ -17,4 +18,3 @@ def redis_stack_url():
         # Tiny wait for readiness
         time.sleep(1.0)
         yield url
-

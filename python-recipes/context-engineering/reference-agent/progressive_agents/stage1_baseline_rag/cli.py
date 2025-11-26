@@ -5,41 +5,40 @@ CLI for Stage 1 Baseline RAG Agent.
 Usage:
     # Interactive mode
     python cli.py
-    
+
     # Single query
     python cli.py "What machine learning courses are available?"
-    
+
     # Simulation mode (run example queries)
     python cli.py --simulate
-    
+
     # Cleanup courses on exit
     python cli.py --cleanup
 """
 
-import os
-import sys
 import asyncio
 import atexit
 import logging
+import sys
 from pathlib import Path
-from typing import Optional
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
 # Load environment variables from reference-agent/.env
 from dotenv import load_dotenv
+
 env_path = Path(__file__).parent.parent.parent / ".env"
 load_dotenv(env_path)
 
-from redis_context_course import CourseManager
-from agent import setup_agent, cleanup_courses, initialize_state
+from agent import cleanup_courses, initialize_state, setup_agent
+
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s %(name)-20s %(levelname)-8s %(message)s',
-    datefmt='%H:%M:%S'
+    format="%(asctime)s %(name)-20s %(levelname)-8s %(message)s",
+    datefmt="%H:%M:%S",
 )
 
 logger = logging.getLogger("stage1-cli")
@@ -52,16 +51,18 @@ class BaselineRAGCLI:
     Provides interactive mode, single query mode, and simulation mode.
     """
 
-    def __init__(self, cleanup_on_exit: bool = False):
+    def __init__(self, cleanup_on_exit: bool = False, debug: bool = False):
         """
         Initialize CLI.
 
         Args:
             cleanup_on_exit: If True, remove courses from Redis on exit
+            debug: If True, show detailed error messages and tracebacks
         """
         self.workflow = None
         self.course_manager = None
         self.cleanup_on_exit = cleanup_on_exit
+        self.debug = debug
 
         # Register cleanup handler
         if cleanup_on_exit:
@@ -130,7 +131,7 @@ class BaselineRAGCLI:
         logger.info("📊 Metrics:")
         logger.info("=" * 60)
         logger.info(f"   Courses Found: {result['courses_found']}")
-        if result.get('total_tokens'):
+        if result.get("total_tokens"):
             logger.info(f"   Estimated Tokens: ~{result['total_tokens']}")
         logger.info("")
         logger.warning("⚠️  This agent uses RAW context - no optimization!")
@@ -152,7 +153,7 @@ class BaselineRAGCLI:
                 if not query:
                     continue
 
-                if query.lower() in ['quit', 'exit', 'q']:
+                if query.lower() in ["quit", "exit", "q"]:
                     logger.info("👋 Goodbye!")
                     break
 
@@ -164,8 +165,10 @@ class BaselineRAGCLI:
                 break
             except Exception as e:
                 logger.error(f"Error: {e}")
-                import traceback
-                traceback.print_exc()
+                if self.debug:
+                    import traceback
+
+                    traceback.print_exc()
 
     def single_query_mode(self, query: str):
         """Run a single query."""
@@ -210,22 +213,25 @@ def main():
     parser.add_argument(
         "query",
         nargs="?",
-        help="Question to ask (if not provided, runs in interactive mode)"
+        help="Question to ask (if not provided, runs in interactive mode)",
     )
     parser.add_argument(
         "--simulate",
         action="store_true",
-        help="Run simulation mode with example queries"
+        help="Run simulation mode with example queries",
     )
     parser.add_argument(
-        "--cleanup",
-        action="store_true",
-        help="Remove courses from Redis on exit"
+        "--cleanup", action="store_true", help="Remove courses from Redis on exit"
     )
     parser.add_argument(
         "--no-cleanup",
         action="store_true",
-        help="Keep courses in Redis after exit (default)"
+        help="Keep courses in Redis after exit (default)",
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Show detailed error messages and tracebacks",
     )
 
     args = parser.parse_args()
@@ -234,7 +240,7 @@ def main():
     cleanup = args.cleanup and not args.no_cleanup
 
     # Create CLI
-    cli = BaselineRAGCLI(cleanup_on_exit=cleanup)
+    cli = BaselineRAGCLI(cleanup_on_exit=cleanup, debug=args.debug)
 
     try:
         if args.simulate:
@@ -248,11 +254,12 @@ def main():
             cli.interactive_mode()
     except Exception as e:
         logger.error(f"Fatal error: {e}")
-        import traceback
-        traceback.print_exc()
+        if cli.debug:
+            import traceback
+
+            traceback.print_exc()
         sys.exit(1)
 
 
 if __name__ == "__main__":
     main()
-

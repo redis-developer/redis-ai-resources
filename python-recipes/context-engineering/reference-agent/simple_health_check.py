@@ -7,6 +7,7 @@ Quick validation of core system functionality.
 
 import asyncio
 import os
+
 import redis
 from dotenv import load_dotenv
 
@@ -51,6 +52,7 @@ async def test_course_search():
     """Test course search functionality."""
     try:
         from redis_context_course.course_manager import CourseManager
+
         course_manager = CourseManager()
         courses = await course_manager.search_courses("programming", limit=1)
         return len(courses) > 0
@@ -62,6 +64,7 @@ async def test_agent():
     """Test basic agent functionality."""
     try:
         from redis_context_course import ClassAgent
+
         agent = ClassAgent("test_student")
         response = await agent.chat("How many courses are available?")
         return response and len(response) > 10
@@ -71,14 +74,14 @@ async def test_agent():
 
 def check_env_vars():
     """Check required environment variables."""
-    required_vars = ['OPENAI_API_KEY', 'REDIS_URL', 'AGENT_MEMORY_URL']
+    required_vars = ["OPENAI_API_KEY", "REDIS_URL", "AGENT_MEMORY_URL"]
     missing = []
-    
+
     for var in required_vars:
         value = os.getenv(var)
-        if not value or value == 'your_openai_api_key_here':
+        if not value or value == "your_openai_api_key_here":
             missing.append(var)
-    
+
     return missing
 
 
@@ -86,7 +89,7 @@ async def main():
     """Run all health checks."""
     print("""Redis Context Course - Health Check
 =====================================""")
-    
+
     # Environment check
     missing_vars = check_env_vars()
     if missing_vars:
@@ -95,7 +98,7 @@ async def main():
         return False
     else:
         print("✅ Environment: All variables set")
-    
+
     # Redis check
     if test_redis():
         print("✅ Redis: Connected")
@@ -103,24 +106,24 @@ async def main():
         print("❌ Redis: Connection failed")
         print("   Fix: Start Redis with 'docker run -d -p 6379:6379 redis:8-alpine'")
         return False
-    
+
     # Data checks
     course_count = count_courses()
     major_count = count_majors()
-    
+
     if course_count > 0:
         print(f"✅ Courses: {course_count} found")
     else:
         print("❌ Courses: None found")
         print("   Fix: Run 'ingest-courses --catalog course_catalog.json --clear'")
         return False
-    
+
     if major_count > 0:
         print(f"✅ Majors: {major_count} found")
     else:
         print("❌ Majors: None found")
         print("   Fix: Run 'ingest-courses --catalog course_catalog.json --clear'")
-    
+
     # Functionality checks
     if await test_course_search():
         print("✅ Course Search: Working")
@@ -128,21 +131,21 @@ async def main():
         print("❌ Course Search: Failed")
         print("   Fix: Check if courses have embeddings")
         return False
-    
+
     if await test_agent():
         print("✅ Agent: Working")
     else:
         print("❌ Agent: Failed")
         print("   Fix: Check OpenAI API key and course data")
         return False
-    
+
     # Success
     print("""
 🎯 Status: READY
 📊 All checks passed!
 
 🚀 Try: redis-class-agent --student-id your_name""")
-    
+
     return True
 
 

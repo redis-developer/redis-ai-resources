@@ -7,8 +7,9 @@ AI agent for university course recommendations, demonstrating context engineerin
 principles using Redis, LangGraph, and OpenAI.
 """
 
-from setuptools import setup, find_packages
 from pathlib import Path
+
+from setuptools import find_packages, setup
 
 # Read the README file
 this_directory = Path(__file__).parent
@@ -17,7 +18,9 @@ long_description = (this_directory / "README.md").read_text()
 # Read requirements
 requirements = []
 with open("requirements.txt", "r") as f:
-    requirements = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+    requirements = [
+        line.strip() for line in f if line.strip() and not line.startswith("#")
+    ]
 
 setup(
     name="redis-context-course",

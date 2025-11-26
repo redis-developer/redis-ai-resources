@@ -5,7 +5,8 @@ while preserving the original memory architecture and graph orchestration.
 This demonstrates the recommended extension pattern: inherit from ClassAgent,
 override _get_tools() to append domain tools, and optionally extend the system prompt.
 """
-from typing import List, Optional, Dict, Any
+
+from typing import Any, Dict, List, Optional
 
 from langchain_core.tools import tool
 
@@ -43,7 +44,8 @@ class AugmentedClassAgent(ClassAgent):
         tags = ", ".join(course.tags[:5]) or "-"
         schedule = (
             f"{course.schedule.days} {course.schedule.start_time}-{course.schedule.end_time}"
-            if course.schedule else "TBD"
+            if course.schedule
+            else "TBD"
         )
 
         return (
@@ -124,4 +126,3 @@ Additional tools available:
 - check_prerequisites_tool: Use to verify whether the student meets prerequisites for a course. If the student's completed/current courses are unknown, you may call get_course_details_tool first, then ask the user to share their completed/current courses in your final response.
         """
         return prompt + extra
-

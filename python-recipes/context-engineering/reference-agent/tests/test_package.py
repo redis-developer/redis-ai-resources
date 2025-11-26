@@ -9,6 +9,7 @@ def test_package_imports():
     """Test that the main package imports work correctly."""
     try:
         import redis_context_course
+
         assert redis_context_course.__version__ == "1.0.0"
         assert redis_context_course.__author__ == "Redis AI Resources Team"
     except ImportError as e:
@@ -19,13 +20,14 @@ def test_model_imports():
     """Test that model imports work correctly."""
     try:
         from redis_context_course.models import (
-            Course, StudentProfile, DifficultyLevel, CourseFormat
+            CourseFormat,
+            DifficultyLevel,
         )
-        
+
         # Test enum values
         assert DifficultyLevel.BEGINNER == "beginner"
         assert CourseFormat.ONLINE == "online"
-        
+
     except ImportError as e:
         pytest.fail(f"Failed to import models: {e}")
 
@@ -50,11 +52,11 @@ def test_manager_imports():
 def test_agent_imports():
     """Test that agent imports work correctly."""
     try:
-        from redis_context_course.agent import ClassAgent, AgentState
-        
+        from redis_context_course.agent import AgentState, ClassAgent
+
         assert ClassAgent is not None
         assert AgentState is not None
-        
+
     except ImportError as e:
         pytest.fail(f"Failed to import agent: {e}")
 
@@ -63,10 +65,10 @@ def test_scripts_imports():
     """Test that script imports work correctly."""
     try:
         from redis_context_course.scripts import generate_courses, ingest_courses
-        
+
         assert generate_courses is not None
         assert ingest_courses is not None
-        
+
     except ImportError as e:
         pytest.fail(f"Failed to import scripts: {e}")
 
@@ -77,7 +79,7 @@ def test_cli_imports():
         from redis_context_course import cli
 
         assert cli is not None
-        assert hasattr(cli, 'main')
+        assert hasattr(cli, "main")
 
     except ImportError as e:
         pytest.fail(f"Failed to import CLI: {e}")
@@ -89,7 +91,7 @@ def test_tools_imports():
         from redis_context_course.tools import (
             create_course_tools,
             create_memory_tools,
-            select_tools_by_keywords
+            select_tools_by_keywords,
         )
 
         assert create_course_tools is not None
@@ -105,11 +107,11 @@ def test_optimization_helpers_imports():
     try:
         from redis_context_course.optimization_helpers import (
             count_tokens,
-            estimate_token_budget,
-            hybrid_retrieval,
             create_summary_view,
+            estimate_token_budget,
             filter_tools_by_intent,
-            format_context_for_llm
+            format_context_for_llm,
+            hybrid_retrieval,
         )
 
         assert count_tokens is not None

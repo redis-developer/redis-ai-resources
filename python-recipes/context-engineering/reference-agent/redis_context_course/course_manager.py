@@ -6,13 +6,19 @@ using Redis vector search for semantic course discovery.
 """
 
 import json
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
+
 import numpy as np
+from redisvl.query import FilterQuery, VectorQuery
+from redisvl.query.filter import Num, Tag
 
-from redisvl.query import VectorQuery, FilterQuery
-from redisvl.query.filter import Tag, Num
-
-from .models import Course, CourseRecommendation, StudentProfile, DifficultyLevel, CourseFormat
+from .models import (
+    Course,
+    CourseFormat,
+    CourseRecommendation,
+    DifficultyLevel,
+    StudentProfile,
+)
 from .redis_config import redis_config
 
 
@@ -36,7 +42,9 @@ class CourseManager:
         if "major" in filters:
             filter_conditions.append(Tag("major") == filters["major"])
         if "difficulty_level" in filters:
-            filter_conditions.append(Tag("difficulty_level") == filters["difficulty_level"])
+            filter_conditions.append(
+                Tag("difficulty_level") == filters["difficulty_level"]
+            )
         if "format" in filters:
             filter_conditions.append(Tag("format") == filters["format"])
         if "semester" in filters:
@@ -58,15 +66,15 @@ class CourseManager:
             return combined_filter
 
         return ""
-    
+
     async def store_course(self, course: Course) -> str:
         """Store a course in Redis with vector embedding."""
         # Create searchable content for embedding
         content = f"{course.title} {course.description} {course.department} {course.major} {' '.join(course.tags)} {' '.join(course.learning_objectives)}"
-        
+
         # Generate embedding
         embedding = await self.embeddings.aembed_query(content)
-        
+
         # Prepare course data for storage
         course_data = {
             "id": course.id,
@@ -87,36 +95,56 @@ class CourseManager:
             "learning_objectives": json.dumps(course.learning_objectives),
             "prerequisites": json.dumps([p.model_dump() for p in course.prerequisites]),
             # Use default=str to handle datetime.time serialization
-            "schedule": json.dumps(course.schedule.model_dump(), default=str) if course.schedule else "",
+            "schedule": json.dumps(course.schedule.model_dump(), default=str)
+            if course.schedule
+            else "",
             "created_at": course.created_at.timestamp(),
             "updated_at": course.updated_at.timestamp(),
-            "content_vector": np.array(embedding, dtype=np.float32).tobytes()
+            "content_vector": np.array(embedding, dtype=np.float32).tobytes(),
         }
-        
+
         # Store in Redis
         key = f"{redis_config.vector_index_name}:{course.id}"
         self.redis_client.hset(key, mapping=course_data)
-        
+
         return course.id
-    
+
     async def get_course(self, course_id: str) -> Optional[Course]:
         """Retrieve a course by ID."""
         key = f"{redis_config.vector_index_name}:{course_id}"
         course_data = self.redis_client.hgetall(key)
-        
+
         if not course_data:
             return None
-        
+
         return self._dict_to_course(course_data)
-    
+
     async def get_course_by_code(self, course_code: str) -> Optional[Course]:
         """Retrieve a course by course code."""
         query = FilterQuery(
             filter_expression=Tag("course_code") == course_code,
-            return_fields=["id", "course_code", "title", "description", "department", "major",
-                          "difficulty_level", "format", "semester", "year", "credits", "tags",
-                          "instructor", "max_enrollment", "current_enrollment", "learning_objectives",
-                          "prerequisites", "schedule", "created_at", "updated_at"]
+            return_fields=[
+                "id",
+                "course_code",
+                "title",
+                "description",
+                "department",
+                "major",
+                "difficulty_level",
+                "format",
+                "semester",
+                "year",
+                "credits",
+                "tags",
+                "instructor",
+                "max_enrollment",
+                "current_enrollment",
+                "learning_objectives",
+                "prerequisites",
+                "schedule",
+                "created_at",
+                "updated_at",
+            ],
         )
         results = self.vector_index.query(query)
 
@@ -128,34 +156,52 @@ class CourseManager:
         """Retrieve all courses from the catalog."""
         # Use search with empty query to get all courses
         return await self.search_courses(query="", limit=1000, similarity_threshold=0.0)
-    
+
     async def search_courses(
         self,
         query: str,
         filters: Optional[Dict[str, Any]] = None,
         limit: int = 10,
-        similarity_threshold: float = 0.6
+        similarity_threshold: float = 0.6,
     ) -> List[Course]:
         """Search courses using semantic similarity."""
         # Generate query embedding
         query_embedding = await self.embeddings.aembed_query(query)
-        
+
         # Build vector query
         vector_query = VectorQuery(
             vector=query_embedding,
             vector_field_name="content_vector",
-            return_fields=["id", "course_code", "title", "description", "department", "major", 
-                          "difficulty_level", "format", "semester", "year", "credits", "tags",
-                          "instructor", "max_enrollment", "current_enrollment", "learning_objectives",
-                          "prerequisites", "schedule", "created_at", "updated_at"],
-            num_results=limit
+            return_fields=[
+                "id",
+                "course_code",
+                "title",
+                "description",
+                "department",
+                "major",
+                "difficulty_level",
+                "format",
+                "semester",
+                "year",
+                "credits",
+                "tags",
+                "instructor",
+                "max_enrollment",
+                "current_enrollment",
+                "learning_objectives",
+                "prerequisites",
+                "schedule",
+                "created_at",
+                "updated_at",
+            ],
+            num_results=limit,
         )
-        
+
         # Apply filters using the helper method
         filter_expression = self._build_filters(filters or {})
         if filter_expression:
             vector_query.set_filter(filter_expression)
-        
+
         # Execute search
         results = self.vector_index.query(vector_query)
 
@@ -167,115 +213,118 @@ class CourseManager:
             # Handle different result formats
             if isinstance(result, dict):
                 # Direct dictionary result
-                vector_score = result.get('vector_score', 1.0)
+                vector_score = result.get("vector_score", 1.0)
                 if vector_score >= similarity_threshold:
                     course = self._dict_to_course(result)
                     if course:
                         courses.append(course)
             else:
                 # Object with attributes
-                vector_score = getattr(result, 'vector_score', 1.0)
+                vector_score = getattr(result, "vector_score", 1.0)
                 if vector_score >= similarity_threshold:
                     course = self._dict_to_course(result.__dict__)
                     if course:
                         courses.append(course)
-        
+
         return courses
-    
+
     async def recommend_courses(
-        self,
-        student_profile: StudentProfile,
-        query: str = "",
-        limit: int = 5
+        self, student_profile: StudentProfile, query: str = "", limit: int = 5
     ) -> List[CourseRecommendation]:
         """Generate personalized course recommendations."""
         # Build search query based on student profile and interests
         search_terms = []
-        
+
         if query:
             search_terms.append(query)
-        
+
         if student_profile.interests:
             search_terms.extend(student_profile.interests)
-        
+
         if student_profile.major:
             search_terms.append(student_profile.major)
-        
+
         search_query = " ".join(search_terms) if search_terms else "courses"
-        
+
         # Build filters based on student preferences
         filters = {}
         if student_profile.preferred_format:
             filters["format"] = student_profile.preferred_format.value
         if student_profile.preferred_difficulty:
             filters["difficulty_level"] = student_profile.preferred_difficulty.value
-        
+
         # Search for relevant courses
         courses = await self.search_courses(
             query=search_query,
             filters=filters,
-            limit=limit * 2  # Get more to filter out completed courses
+            limit=limit * 2,  # Get more to filter out completed courses
         )
-        
+
         # Generate recommendations with scoring
         recommendations = []
         for course in courses:
             # Skip if already completed or currently enrolled
-            if (course.course_code in student_profile.completed_courses or 
-                course.course_code in student_profile.current_courses):
+            if (
+                course.course_code in student_profile.completed_courses
+                or course.course_code in student_profile.current_courses
+            ):
                 continue
-            
+
             # Check prerequisites
             prerequisites_met = self._check_prerequisites(course, student_profile)
-            
+
             # Calculate relevance score
-            relevance_score = self._calculate_relevance_score(course, student_profile, query)
-            
+            relevance_score = self._calculate_relevance_score(
+                course, student_profile, query
+            )
+
             # Generate reasoning
-            reasoning = self._generate_reasoning(course, student_profile, relevance_score)
-            
+            reasoning = self._generate_reasoning(
+                course, student_profile, relevance_score
+            )
+
             recommendation = CourseRecommendation(
                 course=course,
                 relevance_score=relevance_score,
                 reasoning=reasoning,
                 prerequisites_met=prerequisites_met,
                 fits_schedule=True,  # Simplified for now
-                fits_preferences=self._fits_preferences(course, student_profile)
+                fits_preferences=self._fits_preferences(course, student_profile),
             )
-            
+
             recommendations.append(recommendation)
-            
+
             if len(recommendations) >= limit:
                 break
-        
+
         # Sort by relevance score
         recommendations.sort(key=lambda x: x.relevance_score, reverse=True)
-        
+
         return recommendations[:limit]
-    
+
     def _dict_to_course(self, data: Dict[str, Any]) -> Optional[Course]:
         """Convert Redis hash data to Course object."""
         try:
-            from .models import Prerequisite, CourseSchedule
-            
+            from .models import CourseSchedule, Prerequisite
+
             # Parse prerequisites
             prerequisites = []
             if data.get("prerequisites"):
                 prereq_data = json.loads(data["prerequisites"])
                 prerequisites = [Prerequisite(**p) for p in prereq_data]
-            
+
             # Parse schedule
             schedule = None
             if data.get("schedule"):
                 schedule_data = json.loads(data["schedule"])
                 if schedule_data:
                     schedule = CourseSchedule(**schedule_data)
-            
+
             # Parse learning objectives
             learning_objectives = []
             if data.get("learning_objectives"):
                 learning_objectives = json.loads(data["learning_objectives"])
-            
+
             course = Course(
                 id=data["id"],
                 course_code=data["course_code"],
@@ -294,75 +343,100 @@ class CourseManager:
                 current_enrollment=int(data["current_enrollment"]),
                 learning_objectives=learning_objectives,
                 prerequisites=prerequisites,
-                schedule=schedule
+                schedule=schedule,
             )
-            
+
             return course
         except Exception as e:
             print(f"Error converting data to Course: {e}")
             return None
-    
+
     def _check_prerequisites(self, course: Course, student: StudentProfile) -> bool:
         """Check if student meets course prerequisites."""
         for prereq in course.prerequisites:
             if prereq.course_code not in student.completed_courses:
-                if not prereq.can_be_concurrent or prereq.course_code not in student.current_courses:
+                if (
+                    not prereq.can_be_concurrent
+                    or prereq.course_code not in student.current_courses
+                ):
                     return False
         return True
-    
-    def _calculate_relevance_score(self, course: Course, student: StudentProfile, query: str) -> float:
+
+    def _calculate_relevance_score(
+        self, course: Course, student: StudentProfile, query: str
+    ) -> float:
         """Calculate relevance score for a course recommendation."""
         score = 0.5  # Base score
-        
+
         # Major match
         if student.major and course.major.lower() == student.major.lower():
             score += 0.3
-        
+
         # Interest match
         for interest in student.interests:
-            if (interest.lower() in course.title.lower() or 
-                interest.lower() in course.description.lower() or
-                interest.lower() in " ".join(course.tags).lower()):
+            if (
+                interest.lower() in course.title.lower()
+                or interest.lower() in course.description.lower()
+                or interest.lower() in " ".join(course.tags).lower()
+            ):
                 score += 0.1
-        
+
         # Difficulty preference
-        if student.preferred_difficulty and course.difficulty_level == student.preferred_difficulty:
+        if (
+            student.preferred_difficulty
+            and course.difficulty_level == student.preferred_difficulty
+        ):
             score += 0.1
-        
+
         # Format preference
         if student.preferred_format and course.format == student.preferred_format:
             score += 0.1
-        
+
         # Ensure score is between 0 and 1
         return min(1.0, max(0.0, score))
-    
+
     def _fits_preferences(self, course: Course, student: StudentProfile) -> bool:
         """Check if course fits student preferences."""
         if student.preferred_format and course.format != student.preferred_format:
             return False
-        if student.preferred_difficulty and course.difficulty_level != student.preferred_difficulty:
+        if (
+            student.preferred_difficulty
+            and course.difficulty_level != student.preferred_difficulty
+        ):
             return False
         return True
-    
-    def _generate_reasoning(self, course: Course, student: StudentProfile, score: float) -> str:
+
+    def _generate_reasoning(
+        self, course: Course, student: StudentProfile, score: float
+    ) -> str:
         """Generate human-readable reasoning for the recommendation."""
         reasons = []
-        
+
         if student.major and course.major.lower() == student.major.lower():
             reasons.append(f"matches your {student.major} major")
-        
+
         matching_interests = [
-            interest for interest in student.interests
-            if (interest.lower() in course.title.lower() or 
-                interest.lower() in course.description.lower())
+            interest
+            for interest in student.interests
+            if (
+                interest.lower() in course.title.lower()
+                or interest.lower() in course.description.lower()
+            )
         ]
         if matching_interests:
-            reasons.append(f"aligns with your interests in {', '.join(matching_interests)}")
-        
-        if student.preferred_difficulty and course.difficulty_level == student.preferred_difficulty:
-            reasons.append(f"matches your preferred {course.difficulty_level.value} difficulty level")
-        
+            reasons.append(
+                f"aligns with your interests in {', '.join(matching_interests)}"
+            )
+
+        if (
+            student.preferred_difficulty
+            and course.difficulty_level == student.preferred_difficulty
+        ):
+            reasons.append(
+                f"matches your preferred {course.difficulty_level.value} difficulty level"
+            )
+
         if not reasons:
             reasons.append("is relevant to your academic goals")
-        
+
         return f"This course {', '.join(reasons)}."

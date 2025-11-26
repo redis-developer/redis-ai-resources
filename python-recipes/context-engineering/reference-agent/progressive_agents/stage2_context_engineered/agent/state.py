@@ -5,7 +5,7 @@ Same simple state as Stage 1 - the difference is in HOW we process
 the context (with context engineering), not in the state structure.
 """
 
-from typing import TypedDict, Optional
+from typing import Optional, TypedDict
 
 
 class AgentState(TypedDict):
@@ -15,6 +15,7 @@ class AgentState(TypedDict):
     Same structure as Stage 1, but the context will be engineered
     using Section 2 techniques (cleaning, transformation, optimization).
     """
+
     # Input
     query: str
 
@@ -48,4 +49,3 @@ def initialize_state(query: str) -> AgentState:
         "total_tokens": None,
         "total_time_ms": None,
     }
-

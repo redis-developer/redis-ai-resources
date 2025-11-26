@@ -38,49 +38,52 @@ Command Line Tools:
 """
 
 # Import core models (these have minimal dependencies)
-from .models import (
-    Course, Major, StudentProfile,
-    CourseRecommendation, AgentResponse, Prerequisite,
-    CourseSchedule, DifficultyLevel, CourseFormat,
-    Semester, DayOfWeek
-)
-
-# Import agent components
-from .agent import ClassAgent, AgentState
-from .augmented_agent import AugmentedClassAgent
-
-
 # Import memory client directly from agent_memory_client
 from agent_memory_client import MemoryAPIClient as MemoryClient
 from agent_memory_client import MemoryClientConfig
-from .course_manager import CourseManager
-from .redis_config import RedisConfig, redis_config
 
-# Import tools (used in notebooks)
-from .tools import (
-    create_course_tools,
-    create_memory_tools,
-    select_tools_by_keywords
+# Import agent components
+from .agent import AgentState, ClassAgent
+from .augmented_agent import AugmentedClassAgent
+from .course_manager import CourseManager
+from .models import (
+    AgentResponse,
+    Course,
+    CourseFormat,
+    CourseRecommendation,
+    CourseSchedule,
+    DayOfWeek,
+    DifficultyLevel,
+    Major,
+    Prerequisite,
+    Semester,
+    StudentProfile,
 )
 
 # Import optimization helpers (from Section 4)
 from .optimization_helpers import (
+    classify_intent_with_llm,
     count_tokens,
-    estimate_token_budget,
-    hybrid_retrieval,
     create_summary_view,
     create_user_profile_view,
-    filter_tools_by_intent,
-    classify_intent_with_llm,
+    estimate_token_budget,
     extract_references,
-    format_context_for_llm
+    filter_tools_by_intent,
+    format_context_for_llm,
+    hybrid_retrieval,
 )
+from .redis_config import RedisConfig, redis_config
+
+# Import tools (used in notebooks)
+from .tools import create_course_tools, create_memory_tools, select_tools_by_keywords
 
 __version__ = "1.0.0"
 __author__ = "Redis AI Resources Team"
 __email__ = "redis-ai@redis.com"
 __license__ = "MIT"
-__description__ = "Context Engineering with Redis - University Class Agent Reference Implementation"
+__description__ = (
+    "Context Engineering with Redis - University Class Agent Reference Implementation"
+)
 
 __all__ = [
     # Core classes
@@ -92,7 +95,6 @@ __all__ = [
     "CourseManager",
     "RedisConfig",
     "redis_config",
-
     # Data models
     "Course",
     "Major",
@@ -101,18 +103,15 @@ __all__ = [
     "AgentResponse",
     "Prerequisite",
     "CourseSchedule",
-
     # Enums
     "DifficultyLevel",
     "CourseFormat",
     "Semester",
     "DayOfWeek",
-
     # Tools (for notebooks)
     "create_course_tools",
     "create_memory_tools",
     "select_tools_by_keywords",
-
     # Optimization helpers (Section 4)
     "count_tokens",
     "estimate_token_budget",

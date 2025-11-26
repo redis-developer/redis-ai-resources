@@ -10,11 +10,10 @@ Usage:
 """
 
 import asyncio
+import atexit
 import os
 import sys
-import atexit
 from pathlib import Path
-from typing import Optional
 
 # Load environment variables from .env file
 from dotenv import load_dotenv
@@ -26,17 +25,18 @@ load_dotenv(env_path)
 # Add agent module to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from agent import setup_agent, create_workflow, run_agent
+from agent import create_workflow, run_agent, setup_agent
 from agent.setup import cleanup_courses
 
 
 class CourseQACLI:
     """Interactive CLI for Course Q&A Agent."""
 
-    def __init__(self, cleanup_on_exit: bool = False):
+    def __init__(self, cleanup_on_exit: bool = False, debug: bool = False):
         self.agent = None
         self.course_manager = None
         self.cleanup_on_exit = cleanup_on_exit
+        self.debug = debug
 
         # Register cleanup handler if requested
         if cleanup_on_exit:
@@ -87,8 +87,10 @@ class CourseQACLI:
 
         except Exception as e:
             print(f"\n❌ Initialization failed: {e}")
-            import traceback
-            traceback.print_exc()
+            if self.debug:
+                import traceback
+
+                traceback.print_exc()
             sys.exit(1)
 
     def ask_question(self, query: str, show_details: bool = True):
@@ -144,11 +146,11 @@ class CourseQACLI:
                     continue
 
                 # Handle commands
-                if query.lower() in ['quit', 'exit', 'q']:
+                if query.lower() in ["quit", "exit", "q"]:
                     print("\n👋 Goodbye!")
                     break
 
-                if query.lower() == 'help':
+                if query.lower() == "help":
                     self.show_help()
                     continue
 
@@ -161,8 +163,10 @@ class CourseQACLI:
                 break
             except Exception as e:
                 print(f"\n❌ Error: {e}")
-                import traceback
-                traceback.print_exc()
+                if self.debug:
+                    import traceback
+
+                    traceback.print_exc()
                 print()
 
     async def simulate_mode(self):
@@ -222,45 +226,56 @@ class CourseQACLI:
 
 async def main():
     """Main entry point."""
-    # Parse command line arguments
-    cleanup_on_exit = False
-    args = sys.argv[1:]
+    import argparse
 
-    # Check for --cleanup flag
-    if "--cleanup" in args:
-        cleanup_on_exit = True
-        args.remove("--cleanup")
+    parser = argparse.ArgumentParser(
+        description="Stage 3 Full Agent - Hierarchical Retrieval with Progressive Disclosure"
+    )
+    parser.add_argument(
+        "query",
+        nargs="?",
+        help="Question to ask (if not provided, runs in interactive mode)",
+    )
+    parser.add_argument(
+        "--simulate",
+        action="store_true",
+        help="Run simulation mode with example queries",
+    )
+    parser.add_argument(
+        "--cleanup", action="store_true", help="Remove courses from Redis on exit"
+    )
+    parser.add_argument(
+        "--no-cleanup",
+        action="store_true",
+        help="Keep courses in Redis after exit (default)",
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Show detailed error messages and tracebacks",
+    )
 
-    # Check for --no-cleanup flag (default behavior, but explicit)
-    if "--no-cleanup" in args:
-        cleanup_on_exit = False
-        args.remove("--no-cleanup")
+    args = parser.parse_args()
 
-    if len(args) > 0:
-        if args[0] == "--simulate":
-            # Simulation mode
-            cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit)
-            await cli.initialize()
-            await cli.simulate_mode()
-        elif args[0] in ["-h", "--help"]:
-            # Show usage
-            print(__doc__)
-            print("\nOptions:")
-            print("  --cleanup      Clean up courses from Redis on exit")
-            print("  --no-cleanup   Keep courses in Redis after exit (default)")
-        else:
-            # Single query mode
-            query = " ".join(args)
-            cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit)
-            await cli.initialize()
-            cli.ask_question(query, show_details=True)
+    # Determine cleanup behavior
+    cleanup_on_exit = args.cleanup and not args.no_cleanup
+
+    if args.simulate:
+        # Simulation mode
+        cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit, debug=args.debug)
+        await cli.initialize()
+        await cli.simulate_mode()
+    elif args.query:
+        # Single query mode
+        cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit, debug=args.debug)
+        await cli.initialize()
+        cli.ask_question(args.query, show_details=True)
     else:
         # Interactive mode
-        cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit)
+        cli = CourseQACLI(cleanup_on_exit=cleanup_on_exit, debug=args.debug)
         await cli.initialize()
         await cli.interactive_mode()
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-

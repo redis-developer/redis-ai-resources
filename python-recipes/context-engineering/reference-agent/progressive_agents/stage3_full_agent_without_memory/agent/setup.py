@@ -5,10 +5,9 @@ Initializes CourseManager, Redis, and other dependencies.
 Semantic cache initialization is commented out for now.
 """
 
-import os
-import logging
 import json
-import asyncio
+import logging
+import os
 from pathlib import Path
 from typing import Optional
 
@@ -18,14 +17,15 @@ from redis_context_course.scripts.ingest_courses import CourseIngestionPipeline
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 
 logger = logging.getLogger("course-qa-setup")
 
 
-async def load_courses_if_needed(course_manager: CourseManager, force_reload: bool = False) -> int:
+async def load_courses_if_needed(
+    course_manager: CourseManager, force_reload: bool = False
+) -> int:
     """
     Load courses into Redis if they don't exist or if force_reload is True.
 
@@ -46,7 +46,9 @@ async def load_courses_if_needed(course_manager: CourseManager, force_reload: bo
 
     # If we get here, either no courses exist OR force_reload is True
     if not existing_courses:
-        logger.info("📦 No courses found in Redis. Generating and loading sample courses...")
+        logger.info(
+            "📦 No courses found in Redis. Generating and loading sample courses..."
+        )
     else:
         logger.info("🔄 Force reload requested. Regenerating courses...")
 
@@ -61,10 +63,10 @@ async def load_courses_if_needed(course_manager: CourseManager, force_reload: bo
         temp_catalog_path = Path("/tmp/course_catalog_temp.json")
         catalog_data = {
             "majors": [],  # We don't need majors for basic functionality
-            "courses": [course.model_dump(mode='json') for course in courses]
+            "courses": [course.model_dump(mode="json") for course in courses],
         }
 
-        with open(temp_catalog_path, 'w') as f:
+        with open(temp_catalog_path, "w") as f:
             json.dump(catalog_data, f, indent=2, default=str)
 
         logger.info(f"💾 Saved catalog to {temp_catalog_path}")
@@ -79,7 +81,7 @@ async def load_courses_if_needed(course_manager: CourseManager, force_reload: bo
 
         # Load and ingest courses
         catalog_data = ingestion.load_catalog_from_json(str(temp_catalog_path))
-        courses_data = catalog_data.get('courses', [])
+        courses_data = catalog_data.get("courses", [])
 
         ingested_count = await ingestion.ingest_courses(courses_data)
 
@@ -95,7 +97,9 @@ async def load_courses_if_needed(course_manager: CourseManager, force_reload: bo
         raise
 
 
-async def initialize_course_manager(redis_url: Optional[str] = None, auto_load: bool = True) -> CourseManager:
+async def initialize_course_manager(
+    redis_url: Optional[str] = None, auto_load: bool = True
+) -> CourseManager:
     """
     Initialize the CourseManager for course search.
 
@@ -137,7 +141,7 @@ async def initialize_course_manager(redis_url: Optional[str] = None, auto_load: 
 # ORIGINAL IMPLEMENTATION (from caching-agent):
 # """
 # from redisvl.extensions.llmcache import SemanticCache
-# 
+#
 # def initialize_semantic_cache(
 #     redis_url: str = "redis://localhost:6379",
 #     cache_name: str = "course-qa-cache",
@@ -146,18 +150,18 @@ async def initialize_course_manager(redis_url: Optional[str] = None, auto_load: 
 # ) -> SemanticCache:
 #     '''
 #     Initialize semantic cache for caching course Q&A responses.
-#     
+#
 #     Args:
 #         redis_url: Redis connection URL
 #         cache_name: Name for the cache instance
 #         distance_threshold: Similarity threshold (0.0-1.0, lower = stricter)
 #         ttl: Time-to-live for cache entries in seconds
-#         
+#
 #     Returns:
 #         Initialized SemanticCache instance
 #     '''
 #     logger.info(f"Initializing semantic cache: {cache_name}")
-#     
+#
 #     try:
 #         cache = SemanticCache(
 #             name=cache_name,
@@ -165,10 +169,10 @@ async def initialize_course_manager(redis_url: Optional[str] = None, auto_load: 
 #             distance_threshold=distance_threshold,
 #             ttl=ttl
 #         )
-#         
+#
 #         logger.info(f"✅ Semantic cache initialized: {cache_name}")
 #         return cache
-#         
+#
 #     except Exception as e:
 #         logger.error(f"Failed to initialize semantic cache: {e}")
 #         raise
@@ -219,4 +223,3 @@ async def setup_agent(auto_load_courses: bool = True):
     logger.info("=" * 80)
 
     return course_manager, semantic_cache
-

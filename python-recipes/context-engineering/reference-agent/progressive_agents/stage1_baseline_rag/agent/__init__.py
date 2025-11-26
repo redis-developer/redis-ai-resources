@@ -17,9 +17,9 @@ Students will see:
 Stage 2 will apply Section 2 context engineering techniques to fix these issues.
 """
 
-from .setup import setup_agent, load_courses_if_needed, cleanup_courses
-from .workflow import create_workflow
+from .setup import cleanup_courses, load_courses_if_needed, setup_agent
 from .state import AgentState, initialize_state
+from .workflow import create_workflow
 
 __all__ = [
     "setup_agent",
@@ -29,4 +29,3 @@ __all__ = [
     "AgentState",
     "initialize_state",
 ]
-

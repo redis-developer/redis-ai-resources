@@ -7,13 +7,15 @@ including courses, majors, prerequisites, and student information.
 
 from datetime import datetime, time
 from enum import Enum
-from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field, ConfigDict
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 from ulid import ULID
 
 
 class DifficultyLevel(str, Enum):
     """Course difficulty levels."""
+
     BEGINNER = "beginner"
     INTERMEDIATE = "intermediate"
     ADVANCED = "advanced"
@@ -22,6 +24,7 @@ class DifficultyLevel(str, Enum):
 
 class CourseFormat(str, Enum):
     """Course delivery formats."""
+
     IN_PERSON = "in_person"
     ONLINE = "online"
     HYBRID = "hybrid"
@@ -29,6 +32,7 @@ class CourseFormat(str, Enum):
 
 class Semester(str, Enum):
     """Academic semesters."""
+
     FALL = "fall"
     SPRING = "spring"
     SUMMER = "summer"
@@ -37,6 +41,7 @@ class Semester(str, Enum):
 
 class DayOfWeek(str, Enum):
     """Days of the week for scheduling."""
+
     MONDAY = "monday"
     TUESDAY = "tuesday"
     WEDNESDAY = "wednesday"
@@ -48,20 +53,18 @@ class DayOfWeek(str, Enum):
 
 class CourseSchedule(BaseModel):
     """Course schedule information."""
+
     days: List[DayOfWeek]
     start_time: time
     end_time: time
     location: Optional[str] = None
 
-    model_config = ConfigDict(
-        json_encoders={
-            time: lambda v: v.strftime("%H:%M")
-        }
-    )
+    model_config = ConfigDict(json_encoders={time: lambda v: v.strftime("%H:%M")})
 
 
 class Prerequisite(BaseModel):
     """Course prerequisite information."""
+
     course_code: str
     course_title: str
     minimum_grade: Optional[str] = "C"
@@ -70,6 +73,7 @@ class Prerequisite(BaseModel):
 
 class Course(BaseModel):
     """Complete course information."""
+
     id: str = Field(default_factory=lambda: str(ULID()))
     course_code: str  # e.g., "CS101"
     title: str
@@ -94,6 +98,7 @@ class Course(BaseModel):
 
 class Major(BaseModel):
     """Academic major information."""
+
     id: str = Field(default_factory=lambda: str(ULID()))
     name: str
     code: str  # e.g., "CS", "MATH", "ENG"
@@ -108,6 +113,7 @@ class Major(BaseModel):
 
 class StudentProfile(BaseModel):
     """Student profile and preferences."""
+
     id: str = Field(default_factory=lambda: str(ULID()))
     name: str
     email: str
@@ -125,6 +131,7 @@ class StudentProfile(BaseModel):
 
 class CourseRecommendation(BaseModel):
     """Course recommendation with reasoning."""
+
     course: Course
     relevance_score: float = Field(ge=0.0, le=1.0)
     reasoning: str
@@ -135,6 +142,7 @@ class CourseRecommendation(BaseModel):
 
 class AgentResponse(BaseModel):
     """Structured response from the agent."""
+
     message: str
     recommendations: List[CourseRecommendation] = Field(default_factory=list)
     suggested_actions: List[str] = Field(default_factory=list)

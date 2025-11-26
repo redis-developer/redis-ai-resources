@@ -1,59 +1,119 @@
-# Course Q&A Agent - Stage 3 (Full Agent without Memory)
+# Stage 3: Hierarchical Retrieval Agent (Progressive Disclosure)
 
-A LangGraph-based intelligent agent for answering questions about courses using semantic search and context engineering techniques. This agent demonstrates advanced RAG patterns with query decomposition, quality evaluation, and iterative improvement.
+A LangGraph-based intelligent agent demonstrating **hierarchical retrieval** and **progressive disclosure** patterns. This agent shows the best approach to context engineering: summaries for all results, full details (including syllabi) for top matches.
 
-**Stage 3** in the progressive learning path: Full-featured agent with optimized context engineering, but without memory integration (memory will be added in Stage 4).
+**Stage 3** in the progressive learning path: Advanced context engineering with two-tier retrieval, query decomposition, and quality evaluation.
 
 ## 🚀 Features
 
-- **Intelligent Query Decomposition**: Breaks down complex course questions into focused sub-questions using LLM
-- **Semantic Course Search**: Uses CourseManager with Redis vector search (RedisVL) for relevant course retrieval
-- **Context Engineering**: Applies transformation and optimization techniques from Section 2 notebooks
+### **NEW: Intent Classification & Adaptive Retrieval!**
+- **Query Intent Classification**: Automatically detects greeting, overview, or detail requests
+- **Adaptive Detail Levels**: Matches retrieval depth to query intent
+  - **Greetings**: No course search (~50 tokens)
+  - **Overview queries**: Summaries only (~400 tokens)
+  - **Detail requests**: Full syllabi (~700 tokens)
+- **Smart Routing**: Skips unnecessary processing for simple queries
+- **Token Efficiency**: 85-99% reduction for non-detail queries
+
+### **Hierarchical Retrieval**
+- **Two-Tier Retrieval**: Summaries for ALL courses, full details for top 2-3
+- **Progressive Disclosure**: Overview first, details on-demand
+- **Context Budget Management**: Strategic token allocation based on query intent
+- **Includes Syllabi**: Full 14-week syllabi for top matches (when requested)
+- **Summary-Only Mode**: Course overviews without syllabi for overview queries
+
+### Advanced RAG Patterns
+- **Intelligent Query Decomposition**: Breaks down complex questions into focused sub-questions
+- **Semantic Course Search**: Redis vector search with hierarchical course data
 - **Quality Assurance**: Evaluates and improves research quality through iterative loops
 - **LangGraph Workflow**: Clean, observable agent architecture with explicit state management
-- **Auto-loading Course Data**: Automatically generates and loads ~100 sample courses on first run
+- **Auto-loading Course Data**: Automatically loads 50 hierarchical courses with full syllabi
 - **Persistent Storage**: Courses persist in Redis between runs (optional cleanup on exit)
 
 ## 🎯 How It Works
 
-The agent follows a deep research workflow adapted for course Q&A:
+The agent follows an intelligent workflow with **intent classification** and **adaptive retrieval**:
 
-1. **Query Decomposition**: Complex questions are broken into focused sub-questions using LLM
-2. **Cache Check**: Each sub-question is checked against semantic cache (currently disabled for educational purposes)
-3. **Course Search**: Semantic search using CourseManager with Redis vector embeddings (RedisVL)
-4. **Quality Evaluation**: LLM evaluates search results for completeness and accuracy (0.0-1.0 score)
-5. **Iterative Improvement**: Low-quality results (score < 0.7) trigger additional search rounds
-6. **Response Synthesis**: All answers are combined into a comprehensive final response using LLM
+1. **Intent Classification**: LLM classifies query intent and determines detail level needed
+   - **GREETING**: Social interactions → No course search
+   - **COURSE_OVERVIEW**: "What courses exist?" → Summaries only
+   - **COURSE_DETAILS**: "Show me syllabus" → Full details with syllabi
+   - **GENERAL_QUESTION**: Other queries → Adaptive retrieval
+
+2. **Smart Routing**: Based on intent classification
+   - **Greetings** → Direct response, skip all course retrieval
+   - **Course queries** → Continue to decomposition and research
+
+3. **Query Decomposition**: Complex questions are broken into focused sub-questions using LLM
+
+4. **Cache Check**: Each sub-question is checked against semantic cache (currently disabled for educational purposes)
+
+5. **Adaptive Course Search**:
+   - **Summary Mode** (for overview queries):
+     - Semantic search returns top 5 courses
+     - Returns ONLY summaries (~400 tokens)
+     - No syllabi included
+   - **Full Mode** (for detail requests):
+     - Semantic search returns top 5 courses
+     - Returns summaries for ALL 5, full details for top 2-3
+     - Includes complete 14-week syllabi (~700 tokens)
+
+6. **Quality Evaluation**: LLM evaluates search results for completeness and accuracy (0.0-1.0 score)
+
+7. **Iterative Improvement**: Low-quality results (score < 0.7) trigger additional search rounds
+
+8. **Response Synthesis**: All answers are combined into a comprehensive final response using LLM
 
 ### Workflow Diagram
 
 ```mermaid
 graph TD
-    Start([User Query]) --> Decompose[Decompose Query<br/>LLM breaks into sub-questions]
-    Decompose --> Cache{Check Cache<br/>DISABLED}
+    Start([User Query]) --> Classify[Classify Intent<br/>LLM determines intent & detail level]
 
-    Cache -->|All Cache Misses| Research[Course Search<br/>Redis Vector Search]
+    Classify -->|GREETING<br/>detail=none| Greeting[Handle Greeting<br/>No course search]
+    Classify -->|COURSE_OVERVIEW<br/>detail=summary| Decompose
+    Classify -->|COURSE_DETAILS<br/>detail=full| Decompose
+
+    Greeting --> End1([Friendly Response])
+
+    Decompose[Decompose Query<br/>LLM breaks into sub-questions] --> Cache{Check Cache<br/>DISABLED}
+
+    Cache -->|All Cache Misses| Research[Adaptive Course Search<br/>Redis Vector Search]
     Cache -.->|Future: Cache Hits| Synthesize
 
-    Research --> Quality{Evaluate Quality<br/>LLM scores 0.0-1.0}
+    Research -->|detail=summary| SummaryOnly[Return Summaries Only<br/>~400 tokens, no syllabi]
+    Research -->|detail=full| Hierarchical[Hierarchical Retrieval<br/>~700 tokens, with syllabi]
+
+    SummaryOnly --> Quality
+    Hierarchical --> Quality
+
+    Quality{Evaluate Quality<br/>LLM scores 0.0-1.0}
 
     Quality -->|Score < 0.7<br/>Needs Improvement| Research
     Quality -->|Score >= 0.7<br/>Adequate| CacheStore[Store in Cache<br/>DISABLED]
 
     CacheStore --> Synthesize[Synthesize Response<br/>LLM combines answers]
-    Synthesize --> End([Final Response])
+    Synthesize --> End2([Final Response])
 
+    style Classify fill:#ffe0b2,stroke:#e65100,stroke-width:3px
+    style Greeting fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
     style Cache fill:#f9f,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
     style CacheStore fill:#f9f,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
     style Decompose fill:#e1f5ff,stroke:#01579b,stroke-width:2px
     style Research fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style SummaryOnly fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style Hierarchical fill:#b2dfdb,stroke:#00695c,stroke-width:2px
     style Quality fill:#fff3e0,stroke:#e65100,stroke-width:2px
     style Synthesize fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
 ```
 
 **Legend**:
+- 🟠 **Orange (thick)**: NEW! Intent classification
+- 🟢 **Green**: Greeting handler (no retrieval)
 - 🔵 **Blue**: LLM-powered decomposition
 - 🟢 **Green**: Redis vector search (RAG)
+- 🟡 **Yellow**: Summary-only retrieval
+- 🟢 **Teal**: Hierarchical retrieval (full details)
 - 🟠 **Orange**: LLM-powered quality evaluation
 - 🟣 **Purple**: LLM-powered synthesis
 - 🩷 **Pink (dashed)**: Disabled features (semantic caching)
@@ -116,17 +176,19 @@ python cli.py "What machine learning courses are available for beginners?"
 python cli.py --simulate
 ```
 
+**Help**:
+```bash
+python cli.py --help
+```
+
 **Course Data Management**:
-- On first run, the CLI automatically generates and loads ~50 sample courses into Redis
+- On first run, the CLI automatically loads 50 hierarchical courses with full syllabi
 - Courses persist in Redis between runs (no need to reload each time)
 - Use `--cleanup` flag to remove courses from Redis on exit:
   ```bash
-  python cli.py --cleanup --simulate
+  python cli.py --cleanup
   ```
-- Debug course search with the debug script:
-  ```bash
-  python debug_search.py
-  ```
+- Hierarchical course data is loaded from `redis_context_course/data/hierarchical/hierarchical_courses.json`
 
 **Programmatic Usage**:
 ```python
@@ -153,40 +215,206 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## 📚 Example Queries
+
+### Greeting (No Course Search)
+
+```bash
+$ python cli.py "hello"
+```
+
+**Response** (~50 tokens):
+```
+Hello! It's great to hear from you. I'm a course advisor agent here to help you
+find courses, view syllabi, check prerequisites, and more. How can I assist you today?
+```
+
+**What happened**:
+- Intent: GREETING, Detail Level: none
+- Execution: greeting_handled
+- Course search: ❌ Skipped
+- Token efficiency: ✅ 99% reduction vs full search
+
+---
+
+### Course Overview (Summaries Only)
+
+```bash
+$ python cli.py "What machine learning courses are available?"
+```
+
+**Response** (~400 tokens):
+```
+Found 5 relevant courses:
+
+1. CS002: Deep Learning and Neural Networks
+   Department: Computer Science | Instructor: Abigail Shaffer
+   Credits: 4 | Level: Graduate | Format: Hybrid
+   Description: Advanced neural network architectures and deep learning techniques.
+   Tags: deep learning, neural networks, transformers, computer vision
+
+2. CS009: Computer Vision
+   Department: Computer Science | Instructor: Sherry Decker
+   Credits: 4 | Level: Advanced | Format: Online
+   Description: Image processing, object detection, and visual recognition systems.
+   Prerequisites: CS004
+   Tags: computer vision, image processing, object detection, CNN
+
+[... 3 more course summaries ...]
+```
+
+**What happened**:
+- Intent: COURSE_OVERVIEW, Detail Level: summary
+- Execution: decomposed → researched → synthesized
+- Course search: ✅ Summary-only mode
+- Syllabi included: ❌ No (summaries only)
+- Token efficiency: ✅ 85% reduction vs full details
+
+---
+
+### Course Details (Full Syllabi)
+
+```bash
+$ python cli.py "Show me the syllabus for CS002"
+```
+
+**Response** (~3,900 tokens):
+```
+Found relevant courses:
+
+## Overview of All Matches (5 courses)
+[... summaries for all 5 courses ...]
+
+## Detailed Information (Top 3 Courses)
+
+---
+## CS002: Deep Learning and Neural Networks
+
+**Instructor**: Abigail Shaffer
+**Schedule**: Monday, Wednesday, Friday, 04:00 PM - 04:50 PM
+**Location**: Science Hall 540
+
+### Description
+Advanced neural network architectures and deep learning techniques...
+
+### Learning Objectives
+- Understand core concepts in deep learning...
+[... full learning objectives ...]
+
+### Grading Policy
+- Homework: 40%
+- Projects: 40%
+- Participation: 20%
+
+### Assignments (10 total, 1250 points)
+[... complete assignment list ...]
+
+### Course Syllabus (15 weeks)
+
+**Week 1: Deep Learning Foundations**
+Topics: Deep Learning Foundations - Part 1, Part 2, Part 3, Part 4
+Readings: Chapter 1, Research Paper 1
+
+**Week 2: Convolutional Neural Networks**
+[... complete 15-week syllabus ...]
+
+### Textbooks
+[... required and recommended textbooks ...]
+
+[... full details for 2 more courses ...]
+```
+
+**What happened**:
+- Intent: COURSE_DETAILS, Detail Level: full
+- Execution: decomposed → researched → synthesized
+- Course search: ✅ Hierarchical mode
+- Syllabi included: ✅ Yes (top 2-3 courses)
+- Token efficiency: ✅ Appropriate for detail request
+
+---
+
 ## 🧠 Context Engineering Techniques
 
-This agent applies context engineering techniques from Section 2 notebooks:
+This agent applies **advanced context engineering** from Section 2 notebooks:
 
-### 1. Context Transformation (`transform_course_to_text`)
+### 1. Intent Classification & Adaptive Retrieval (NEW!)
+
+**Match retrieval depth to query intent:**
+
+```python
+# Step 1: Classify intent
+intent, detail_level = classify_query_intent(query)
+# Returns: ("COURSE_OVERVIEW", "summary") or ("COURSE_DETAILS", "full")
+
+# Step 2: Adaptive retrieval
+if detail_level == "summary":
+    # Return ONLY summaries (~400 tokens)
+    context = assemble_summary_only_context(summaries)
+elif detail_level == "full":
+    # Return summaries + full details (~700 tokens)
+    context = assemble_hierarchical_context(summaries, details)
+else:  # detail_level == "none"
+    # Skip course search entirely
+    return handle_greeting(query)
+```
+
+**Benefits**:
+- **Token efficiency**: 85-99% reduction for non-detail queries
+- **Better UX**: Don't overwhelm users with unnecessary information
+- **Cost savings**: Fewer tokens = lower API costs
+- **Faster responses**: Skip unnecessary retrieval and processing
+
+### 2. Hierarchical Retrieval
+
+**Two-tier retrieval with progressive disclosure:**
+
+```python
+# TIER 1: Search summaries (lightweight)
+summaries = search_summaries(query, limit=5)  # ~300 tokens
+
+# TIER 2: Fetch details for top matches (comprehensive)
+top_details = fetch_details(summaries[:3])  # ~400 tokens
+
+# PROGRESSIVE DISCLOSURE: Combine both
+context = assemble_hierarchical_context(
+    summaries=summaries,      # All 5 courses (overview)
+    details=top_details       # Top 2-3 courses (full syllabi)
+)
+# Total: ~700 tokens with BETTER information quality
+```
+
+**Benefits**:
+- Overview of all options (broad awareness)
+- Deep details for best matches (informed decisions)
+- Efficient token usage (~700 vs ~6,000 in Stage 1)
+- Includes syllabi for top matches (vs none in Stage 2)
+
+### 2. Context Transformation
 
 Converts structured course objects into LLM-friendly natural text format:
 
 ```python
-# Before (JSON):
-{"course_code": "CS101", "title": "Intro to Programming", ...}
-
-# After (Natural Text):
+# Hierarchical format:
+## Overview of All Matches (5 courses)
 CS101: Intro to Programming
-Department: Computer Science
-Credits: 3
-Level: beginner
+Department: Computer Science, Credits: 3, Level: beginner
 ...
+
+## Detailed Information (Top 2 Courses)
+CS101: Intro to Programming
+[Full description, 14-week syllabus, assignments, grading policy]
 ```
 
-**Benefits**: Easier for LLMs to parse, more natural language processing
+**Benefits**: Easier for LLMs to parse, progressive disclosure, natural language
 
-### 2. Context Optimization (`optimize_course_text`)
+### 3. Context Budget Management
 
-Creates ultra-compact course descriptions for token efficiency:
+Strategic token allocation across retrieval tiers:
+- Summaries: ~60 tokens per course × 5 = ~300 tokens
+- Details: ~200 tokens per course × 2-3 = ~400 tokens
+- Total: ~700 tokens (vs ~6,000 in Stage 1, ~539 in Stage 2)
 
-```python
-# Optimized format:
-CS101: Intro to Programming - Fundamental programming concepts using Python... (Prereq: None)
-```
-
-**Benefits**: Reduced token count, faster processing, lower costs
-
-### 3. Semantic Search
+### 4. Semantic Search
 
 Uses Redis vector search (RedisVL) to find relevant courses based on semantic similarity:
 
@@ -226,20 +454,40 @@ print(f"Execution path: {result['metrics']['execution_path']}")
 
 This is **Stage 3** of the progressive learning experience:
 
-- **Stage 1** (Future): Baseline RAG - Naive retrieval with raw JSON context
-- **Stage 2** (Future): Context-Engineered RAG - Apply Section 2 techniques
-- **Stage 3** (Current): Full Agent without Memory - Complete workflow with quality evaluation
-- **Stage 4** (Future): Memory-Augmented Agent - Add Redis Agent Memory Server
+| Stage | Approach | Tokens | Syllabi | Key Learning |
+|-------|----------|--------|---------|--------------|
+| **Stage 1** | Information Overload | ~6,133 | ✅ All courses | The problem: too much information |
+| **Stage 2** | Context-Engineered | ~539 | ❌ None | Solution 1: cleaning & optimization |
+| **Stage 3** | Hierarchical Retrieval | ~700 | ✅ Top 2-3 | Solution 2: progressive disclosure |
+| **Stage 4** | Memory-Augmented | TBD | TBD | Add Redis Agent Memory Server |
+
+### Why Stage 3 is Best
+
+**vs Stage 1**:
+- ✅ 91% token reduction (~700 vs ~6,133)
+- ✅ Progressive disclosure (not information overload)
+- ✅ Better information architecture
+
+**vs Stage 2**:
+- ✅ Includes syllabi for top matches (Stage 2 has none)
+- ✅ Better information quality for decision-making
+- ⚠️ Slightly more tokens (~700 vs ~539), but worth it for syllabi
+
+**Best of Both Worlds**:
+- Efficient like Stage 2 (massive reduction vs Stage 1)
+- Informative like Stage 1 (includes syllabi for top matches)
+- Smart architecture (progressive disclosure, hierarchical retrieval)
 
 ## 🎓 Educational Goals
 
 Students learn:
 
-1. **LangGraph Architecture**: How to build observable, stateful agents
-2. **Query Decomposition**: Breaking complex questions into manageable parts
-3. **Context Engineering**: Transforming data for optimal LLM consumption
-4. **Quality Evaluation**: Iterative improvement through self-assessment
-5. **Semantic Search**: Vector-based retrieval for relevant information
+1. **Hierarchical Retrieval**: Two-tier retrieval with progressive disclosure
+2. **Context Budget Management**: Strategic token allocation across tiers
+3. **LangGraph Architecture**: How to build observable, stateful agents
+4. **Query Decomposition**: Breaking complex questions into manageable parts
+5. **Quality Evaluation**: Iterative improvement through self-assessment
+6. **Advanced Section 2 Techniques**: Structured views, hybrid assembly, multi-strategy retrieval
 
 ## 🔧 Implementation Details
 
@@ -317,10 +565,24 @@ python cli.py
 
 ## 📚 Related Resources
 
+### Stage Comparison
+- **Comparison Document**: `../HIERARCHICAL_RETRIEVAL_COMPARISON.md` - Detailed side-by-side comparison of all 3 stages
+- **Implementation Guide**: `../../HIERARCHICAL_RETRIEVAL_IMPLEMENTATION.md` - Complete implementation details
+- **Stage 1**: Information overload baseline (~6,133 tokens)
+- **Stage 2**: Context-engineered flat retrieval (~539 tokens)
+- **Stage 3**: Hierarchical retrieval with progressive disclosure (~700 tokens) ← **You are here**
+
+### Technical Resources
 - **Section 2 Notebooks**: Context engineering techniques
+- **Hierarchical Models**: `redis_context_course/hierarchical_models.py`
+- **Context Assemblers**: `redis_context_course/hierarchical_context.py`
 - **CourseManager**: Redis-based course search (`redis_context_course.course_manager`)
 - **LangGraph Docs**: https://langchain-ai.github.io/langgraph/
-- **Original Caching Agent**: `/Users/nitin.kanukolanu/workspace/caching-agent`
+
+### Course Data
+- **Hierarchical Courses**: `redis_context_course/data/hierarchical/hierarchical_courses.json`
+- **Course Catalog**: `redis_context_course/data/hierarchical/COURSE_CATALOG.md`
+- **Course Generator**: `redis_context_course/scripts/generate_hierarchical_courses.py`
 
 ## 🤝 Contributing
 

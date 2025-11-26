@@ -1,6 +1,4 @@
-import asyncio
 import pytest
-from unittest.mock import AsyncMock, MagicMock
 
 from redis_context_course import tools as tools_mod
 from redis_context_course.agent import ClassAgent
@@ -33,7 +31,9 @@ class FakeCourseManager:
 @pytest.mark.asyncio
 async def test_search_courses_tool_formats_result():
     cm = FakeCourseManager()
-    (search_tool, get_details_tool, check_prereq_tool) = tools_mod.create_course_tools(cm)
+    (search_tool, get_details_tool, check_prereq_tool) = tools_mod.create_course_tools(
+        cm
+    )
 
     out = await search_tool.ainvoke({"query": "python beginner", "limit": 2})
     assert "CS101" in out and "CS102" in out
@@ -55,7 +55,9 @@ def test_select_tools_by_keywords():
         "memory": ["M1"],
     }
     res1 = tools_mod.select_tools_by_keywords("find programming courses", tools_map)
-    res2 = tools_mod.select_tools_by_keywords("please remember my preferences", tools_map)
+    res2 = tools_mod.select_tools_by_keywords(
+        "please remember my preferences", tools_map
+    )
     res3 = tools_mod.select_tools_by_keywords("random", tools_map)
 
     assert res1 == ["S1"]
@@ -89,10 +91,13 @@ async def test_summarize_user_knowledge_tool():
                 break
 
         assert summary_tool is not None
-        assert "summarize what the agent knows about the user" in summary_tool.description.lower()
+        assert (
+            "summarize what the agent knows about the user"
+            in summary_tool.description.lower()
+        )
 
         # Test that the tool has the expected properties
-        assert hasattr(summary_tool, 'ainvoke')
+        assert hasattr(summary_tool, "ainvoke")
         assert summary_tool.name == "summarize_user_knowledge_tool"
 
 
@@ -140,9 +145,10 @@ async def test_clear_user_memories_tool():
                 break
 
         assert clear_tool is not None
-        assert "clear or reset stored user information" in clear_tool.description.lower()
+        assert (
+            "clear or reset stored user information" in clear_tool.description.lower()
+        )
 
         # Test that the tool has the expected properties
-        assert hasattr(clear_tool, 'ainvoke')
+        assert hasattr(clear_tool, "ainvoke")
         assert clear_tool.name == "clear_user_memories_tool"
-

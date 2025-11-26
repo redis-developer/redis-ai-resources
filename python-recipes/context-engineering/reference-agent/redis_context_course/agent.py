@@ -15,28 +15,30 @@ Memory Architecture:
 """
 
 import os
+from typing import Annotated, Any, Dict, List, Optional
 
-import json
-
-from typing import List, Dict, Any, Optional, Annotated
-from datetime import datetime
-
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, SystemMessage, ToolMessage
+from agent_memory_client import MemoryAPIClient, MemoryClientConfig
+from langchain_core.messages import (
+    AIMessage,
+    BaseMessage,
+    HumanMessage,
+    SystemMessage,
+    ToolMessage,
+)
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
-from langgraph.graph import StateGraph, END
+from langgraph.graph import END, StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
 from pydantic import BaseModel
 
-from .models import StudentProfile, CourseRecommendation, AgentResponse
-from agent_memory_client import MemoryAPIClient, MemoryClientConfig
 from .course_manager import CourseManager
-from .redis_config import redis_config
+from .models import CourseRecommendation, StudentProfile
 
 
 class AgentState(BaseModel):
     """State for the LangGraph agent."""
+
     messages: Annotated[List[BaseMessage], add_messages]
     student_id: str
     student_profile: Optional[StudentProfile] = None
@@ -56,13 +58,12 @@ class ClassAgent:
         # Initialize memory client with proper config
         config = MemoryClientConfig(
             base_url=os.getenv("AGENT_MEMORY_URL", "http://localhost:8088"),
-            default_namespace="redis_university"
+            default_namespace="redis_university",
         )
         self.memory_client = MemoryAPIClient(config=config)
         self.course_manager = CourseManager()
         self.model_name = os.getenv("OPENAI_MODEL", "gpt-4o")
         self.llm = ChatOpenAI(model=self.model_name, temperature=0.0)
-
 
         # Build the agent graph
         self.graph = self._build_graph()
@@ -77,17 +78,14 @@ class ClassAgent:
         """
         # Define tools
         tools = [
-
             self._create_search_courses_tool(),
             self._create_list_majors_tool(),
             self._create_recommendations_tool(),
             self._store_memory_tool,
             self._search_memories_tool,
             self._create_summarize_user_knowledge_tool(),
-            self._create_clear_user_memories_tool()
+            self._create_clear_user_memories_tool(),
         ]
-
-
 
         # Create tool node
         tool_node = ToolNode(tools)
@@ -108,12 +106,7 @@ class ClassAgent:
         workflow.add_edge("load_working_memory", "retrieve_context")
         workflow.add_edge("retrieve_context", "agent")
         workflow.add_conditional_edges(
-            "agent",
-            self._should_use_tools,
-            {
-                "tools": "tools",
-                "respond": "respond"
-            }
+            "agent", self._should_use_tools, {"tools": "tools", "respond": "respond"}
         )
         workflow.add_edge("tools", "agent")
         workflow.add_edge("respond", "save_working_memory")
@@ -142,7 +135,7 @@ class ClassAgent:
         _, working_memory = await self.memory_client.get_or_create_working_memory(
             session_id=self.session_id,
             user_id=self.student_id,
-            model_name=self.model_name
+            model_name=self.model_name,
         )
 
         # If we have working memory, add previous messages to state
@@ -159,25 +152,22 @@ class ClassAgent:
     async def _retrieve_context(self, state: AgentState) -> AgentState:
         """Retrieve relevant context for the current conversation."""
         # Get the latest human message
-        human_messages = [msg for msg in state.messages if isinstance(msg, HumanMessage)]
+        human_messages = [
+            msg for msg in state.messages if isinstance(msg, HumanMessage)
+        ]
         if human_messages:
             state.current_query = human_messages[-1].content
 
         # Search long-term memories for relevant context
         if state.current_query:
             from agent_memory_client.filters import UserId
+
             results = await self.memory_client.search_long_term_memory(
-                text=state.current_query,
-                user_id=UserId(eq=self.student_id),
-                limit=5
+                text=state.current_query, user_id=UserId(eq=self.student_id), limit=5
             )
 
             # Build context from memories
-            context = {
-                "preferences": [],
-                "goals": [],
-                "recent_facts": []
-            }
+            context = {"preferences": [], "goals": [], "recent_facts": []}
 
             for memory in results.memories:
                 if memory.memory_type == "semantic":
@@ -189,8 +179,6 @@ class ClassAgent:
                         context["recent_facts"].append(memory.text)
 
             state.context = context
-
-
 
     async def _agent_node(self, state: AgentState) -> AgentState:
         """Main agent reasoning node."""
@@ -207,9 +195,13 @@ class ClassAgent:
         has_tool_result = any(isinstance(m, ToolMessage) for m in state.messages)
         try:
             if not has_tool_result:
-                model = self.llm.bind_tools(tools, tool_choice="required", parallel_tool_calls=False)
+                model = self.llm.bind_tools(
+                    tools, tool_choice="required", parallel_tool_calls=False
+                )
             else:
-                model = self.llm.bind_tools(tools, tool_choice="none", parallel_tool_calls=False)
+                model = self.llm.bind_tools(
+                    tools, tool_choice="none", parallel_tool_calls=False
+                )
         except TypeError:
             # Fallback for older/mocked LLMs that don't accept tool_choice
             model = self.llm.bind_tools(tools)
@@ -220,7 +212,12 @@ class ClassAgent:
                 tool_calls = getattr(response, "tool_calls", None)
                 if tool_calls:
                     # LangChain ToolCall objects have .name and .args
-                    chosen = ", ".join([f"{tc.get('name') or getattr(tc, 'name', '')}" for tc in tool_calls])
+                    chosen = ", ".join(
+                        [
+                            f"{tc.get('name') or getattr(tc, 'name', '')}"
+                            for tc in tool_calls
+                        ]
+                    )
                     print(f"[DEBUG] tool_choice={chosen}")
                 else:
                     # OpenAI raw additional_kwargs path
@@ -258,12 +255,12 @@ class ClassAgent:
                 last_user_idx = i
         # If there's any ToolMessage after the latest user message, we've already executed a tool this turn
         if last_user_idx != -1:
-            for m in state.messages[last_user_idx + 1:]:
+            for m in state.messages[last_user_idx + 1 :]:
                 if isinstance(m, ToolMessage):
                     return "respond"
         # Otherwise, decide based on the last AI message having tool calls
         last_message = state.messages[-1]
-        if hasattr(last_message, 'tool_calls') and getattr(last_message, 'tool_calls'):
+        if hasattr(last_message, "tool_calls") and getattr(last_message, "tool_calls"):
             return "tools"
         return "respond"
 
@@ -300,7 +297,7 @@ class ClassAgent:
         # Save to working memory
         # The Agent Memory Server will automatically extract important memories
         # to long-term storage based on its configured extraction strategy
-        from agent_memory_client.models import WorkingMemory, MemoryMessage
+        from agent_memory_client.models import MemoryMessage, WorkingMemory
 
         # Convert messages to MemoryMessage format
         memory_messages = [MemoryMessage(**msg) for msg in messages]
@@ -311,14 +308,14 @@ class ClassAgent:
             user_id=self.student_id,
             messages=memory_messages,
             memories=[],
-            data={}
+            data={},
         )
 
         await self.memory_client.put_working_memory(
             session_id=self.session_id,
             memory=working_memory,
             user_id=self.student_id,
-            model_name=self.model_name
+            model_name=self.model_name,
         )
 
         return state
@@ -361,13 +358,17 @@ class ClassAgent:
         Current student context (from long-term memory):"""
 
         if context.get("preferences"):
-            prompt += f"\n\nPreferences:\n" + "\n".join(f"- {p}" for p in context['preferences'])
+            prompt += f"\n\nPreferences:\n" + "\n".join(
+                f"- {p}" for p in context["preferences"]
+            )
 
         if context.get("goals"):
-            prompt += f"\n\nGoals:\n" + "\n".join(f"- {g}" for g in context['goals'])
+            prompt += f"\n\nGoals:\n" + "\n".join(f"- {g}" for g in context["goals"])
 
         if context.get("recent_facts"):
-            prompt += f"\n\nRecent Facts:\n" + "\n".join(f"- {f}" for f in context['recent_facts'])
+            prompt += f"\n\nRecent Facts:\n" + "\n".join(
+                f"- {f}" for f in context["recent_facts"]
+            )
 
         prompt += """
 
@@ -444,12 +445,13 @@ class ClassAgent:
 
         return prompt
 
-
-
     def _create_search_courses_tool(self):
         """Create the search courses tool."""
+
         @tool
-        async def search_courses_tool(query: str, filters: Optional[Dict[str, Any]] = None) -> str:
+        async def search_courses_tool(
+            query: str, filters: Optional[Dict[str, Any]] = None
+        ) -> str:
             """Search course catalog by topic, department, or difficulty.
 
             Use this tool when users ask for specific courses or subjects, or when
@@ -481,15 +483,15 @@ class ClassAgent:
 
             # Only handle the most problematic/ambiguous cases explicitly
             problematic_mappings = {
-                ' ds ': 'Data Science',  # Space-bounded to avoid false matches
-                'ds classes': 'Data Science',
-                'ds courses': 'Data Science',
+                " ds ": "Data Science",  # Space-bounded to avoid false matches
+                "ds classes": "Data Science",
+                "ds courses": "Data Science",
             }
 
             query_lower = query.lower()
             for pattern, dept in problematic_mappings.items():
                 if pattern in query_lower:
-                    filters['department'] = dept
+                    filters["department"] = dept
                     break
 
             courses = await self.course_manager.search_courses(query, filters=filters)
@@ -509,6 +511,7 @@ class ClassAgent:
 
     def _create_list_majors_tool(self):
         """Create the list majors tool."""
+
         @tool
         async def list_majors_tool() -> str:
             """List all university majors and degree programs.
@@ -543,11 +546,15 @@ class ClassAgent:
                     major_data = self.course_manager.redis_client.hgetall(key)
                     if major_data:
                         major_info = {
-                            'name': major_data.get('name', 'Unknown'),
-                            'code': major_data.get('code', 'N/A'),
-                            'department': major_data.get('department', 'N/A'),
-                            'description': major_data.get('description', 'No description available'),
-                            'required_credits': major_data.get('required_credits', 'N/A')
+                            "name": major_data.get("name", "Unknown"),
+                            "code": major_data.get("code", "N/A"),
+                            "department": major_data.get("department", "N/A"),
+                            "description": major_data.get(
+                                "description", "No description available"
+                            ),
+                            "required_credits": major_data.get(
+                                "required_credits", "N/A"
+                            ),
                         }
                         majors.append(major_info)
 
@@ -555,7 +562,9 @@ class ClassAgent:
                     return "No major information could be retrieved."
 
                 # Format the response
-                result = f"Available majors at Redis University ({len(majors)} total):\n\n"
+                result = (
+                    f"Available majors at Redis University ({len(majors)} total):\n\n"
+                )
                 for major in majors:
                     result += f"**{major['name']} ({major['code']})**\n"
                     result += f"Department: {major['department']}\n"
@@ -571,6 +580,7 @@ class ClassAgent:
 
     def _create_recommendations_tool(self):
         """Create the recommendations tool."""
+
         @tool
         async def get_recommendations_tool(query: str = "", limit: int = 3) -> str:
             """Generate personalized course recommendations based on user interests.
@@ -610,11 +620,12 @@ class ClassAgent:
             if query:
                 # Store the user's expressed interests
                 from agent_memory_client.models import ClientMemoryRecord
+
                 memory = ClientMemoryRecord(
                     text=f"Student expressed interest in: {query}",
                     user_id=self.student_id,
                     memory_type="semantic",
-                    topics=["interests", "preferences"]
+                    topics=["interests", "preferences"],
                 )
                 await self.memory_client.create_long_term_memory([memory])
                 interests = [interest.strip() for interest in query.split(" and ")]
@@ -623,7 +634,7 @@ class ClassAgent:
             student_profile = StudentProfile(
                 name=self.student_id,
                 email=f"{self.student_id}@university.edu",
-                interests=interests if interests else ["general"]
+                interests=interests if interests else ["general"],
             )
 
             recommendations = await self.course_manager.recommend_courses(
@@ -649,7 +660,7 @@ class ClassAgent:
         self,
         text: str,
         memory_type: str = "semantic",
-        topics: Optional[List[str]] = None
+        topics: Optional[List[str]] = None,
     ) -> str:
         """Store important student information in persistent long-term memory.
 
@@ -682,18 +693,14 @@ class ClassAgent:
             text=text,
             user_id=self.student_id,
             memory_type=memory_type,
-            topics=topics or []
+            topics=topics or [],
         )
 
         await self.memory_client.create_long_term_memory([memory])
         return f"Stored in long-term memory: {text}"
 
     @tool
-    async def _search_memories_tool(
-        self,
-        query: str,
-        limit: int = 5
-    ) -> str:
+    async def _search_memories_tool(self, query: str, limit: int = 5) -> str:
         """Search stored memories using semantic search.
 
         Use this tool to recall previous preferences, context, or specific information
@@ -720,9 +727,7 @@ class ClassAgent:
         from agent_memory_client.models import UserId
 
         results = await self.memory_client.search_long_term_memory(
-            text=query,
-            user_id=UserId(eq=self.student_id),
-            limit=limit
+            text=query, user_id=UserId(eq=self.student_id), limit=limit
         )
 
         if not results.memories:
@@ -768,12 +773,11 @@ class ClassAgent:
             try:
                 from agent_memory_client.filters import UserId
 
-
                 # Search long-term memories for all user information
                 results = await self.memory_client.search_long_term_memory(
                     text="",  # Empty query to get all memories for this user
                     user_id=UserId(eq=self.student_id),
-                    limit=50  # Get more results for comprehensive summary
+                    limit=50,  # Get more results for comprehensive summary
                 )
             except Exception as e:
                 return f"I'm having trouble accessing your stored information right now. Error: {str(e)}"
@@ -782,11 +786,17 @@ class ClassAgent:
                 return "I don't have any stored information about you yet. As we interact more, I'll learn about your preferences, interests, and goals."
 
             # Check if user has requested a reset
-            reset_memories = [m for m in results.memories if m.topics and "reset" in [t.lower() for t in m.topics]]
+            reset_memories = [
+                m
+                for m in results.memories
+                if m.topics and "reset" in [t.lower() for t in m.topics]
+            ]
             if reset_memories:
-                return ("You previously requested to start fresh with your information. I don't have any current "
-                       "stored information about your preferences or interests. Please share what you'd like me "
-                       "to know about your academic interests and goals!")
+                return (
+                    "You previously requested to start fresh with your information. I don't have any current "
+                    "stored information about your preferences or interests. Please share what you'd like me "
+                    "to know about your academic interests and goals!"
+                )
 
             # Use LLM to create a comprehensive summary
             return await self._create_llm_summary(results.memories)
@@ -801,7 +811,9 @@ class ClassAgent:
         # Prepare memory texts and topics for LLM
         memory_info = []
         for memory in memories:
-            topics_str = f" (Topics: {', '.join(memory.topics)})" if memory.topics else ""
+            topics_str = (
+                f" (Topics: {', '.join(memory.topics)})" if memory.topics else ""
+            )
             memory_info.append(f"- {memory.text}{topics_str}")
 
         memories_str = "\n".join(memory_info)
@@ -837,9 +849,7 @@ Start with "Here's what I know about you based on our interactions:" and organiz
         """Create the clear user memories tool."""
 
         @tool
-        async def clear_user_memories_tool(
-            confirmation: str = "yes"
-        ) -> str:
+        async def clear_user_memories_tool(confirmation: str = "yes") -> str:
             """Clear or reset stored user information.
 
             Use this tool when users explicitly request to clear, reset, or "ignore" their
@@ -879,6 +889,7 @@ Start with "Here's what I know about you based on our interactions:" and organiz
             try:
                 # 1) Delete all long-term memories for this user
                 from agent_memory_client.filters import UserId
+
                 memory_ids = []
                 async for mem in self.memory_client.search_all_long_term_memories(
                     text="",
@@ -893,7 +904,7 @@ Start with "Here's what I know about you based on our interactions:" and organiz
                     # Delete in batches to avoid huge query params
                     BATCH = 100
                     for i in range(0, len(memory_ids), BATCH):
-                        batch = memory_ids[i:i+BATCH]
+                        batch = memory_ids[i : i + BATCH]
                         try:
                             await self.memory_client.delete_long_term_memories(batch)
                             deleted_lt += len(batch)
@@ -905,24 +916,31 @@ Start with "Here's what I know about you based on our interactions:" and organiz
                 deleted_wm = 0
                 try:
                     offset = 0
-                    page = await self.memory_client.list_sessions(limit=100, offset=offset, user_id=self.student_id)
+                    page = await self.memory_client.list_sessions(
+                        limit=100, offset=offset, user_id=self.student_id
+                    )
                     while page.sessions:
-
                         for s in page.sessions:
                             sid = getattr(s, "session_id", None) or s
                             try:
-                                await self.memory_client.delete_working_memory(session_id=sid, user_id=self.student_id)
+                                await self.memory_client.delete_working_memory(
+                                    session_id=sid, user_id=self.student_id
+                                )
                                 deleted_wm += 1
                             except Exception:
                                 pass
                         offset += len(page.sessions)
                         if len(page.sessions) < 100:
                             break
-                        page = await self.memory_client.list_sessions(limit=100, offset=offset, user_id=self.student_id)
+                        page = await self.memory_client.list_sessions(
+                            limit=100, offset=offset, user_id=self.student_id
+                        )
                 except Exception:
                     # Best-effort: if list_sessions isn't supported, try current session only
                     try:
-                        await self.memory_client.delete_working_memory(session_id=self.session_id, user_id=self.student_id)
+                        await self.memory_client.delete_working_memory(
+                            session_id=self.session_id, user_id=self.student_id
+                        )
                         deleted_wm += 1
                     except Exception:
                         pass
@@ -930,11 +948,12 @@ Start with "Here's what I know about you based on our interactions:" and organiz
                 if deleted_lt == 0 and deleted_wm == 0:
                     # Fall back: mark reset if deletion didn't occur
                     from agent_memory_client.models import ClientMemoryRecord
+
                     reset_memory = ClientMemoryRecord(
                         text="User requested to clear/reset all previous information and start fresh",
                         user_id=self.student_id,
                         memory_type="semantic",
-                        topics=["reset", "clear", "fresh_start"]
+                        topics=["reset", "clear", "fresh_start"],
                     )
                     await self.memory_client.create_long_term_memory([reset_memory])
                     return (
@@ -959,22 +978,20 @@ Start with "Here's what I know about you based on our interactions:" and organiz
     def _get_tools(self):
         """Get list of tools for the agent."""
         return [
-
             self._create_search_courses_tool(),
             self._create_list_majors_tool(),
             self._create_recommendations_tool(),
             self._store_memory_tool,
             self._search_memories_tool,
             self._create_summarize_user_knowledge_tool(),
-            self._create_clear_user_memories_tool()
+            self._create_clear_user_memories_tool(),
         ]
 
     async def chat(self, message: str, thread_id: str = "default") -> str:
         """Main chat interface for the agent."""
         # Create initial state
         initial_state = AgentState(
-            messages=[HumanMessage(content=message)],
-            student_id=self.student_id
+            messages=[HumanMessage(content=message)], student_id=self.student_id
         )
 
         # Run the graph

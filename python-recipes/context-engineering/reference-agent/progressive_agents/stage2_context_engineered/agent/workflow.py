@@ -10,10 +10,11 @@ The ONLY difference from Stage 1 is context engineering!
 """
 
 import logging
-from langgraph.graph import StateGraph, START, END
 
-from .state import AgentState
+from langgraph.graph import END, START, StateGraph
+
 from .nodes import research_node, synthesize_node
+from .state import AgentState
 
 logger = logging.getLogger("stage2-engineered")
 
@@ -52,4 +53,3 @@ def create_workflow() -> StateGraph:
     logger.info("📊 Workflow: START → research (engineered) → synthesize → END")
 
     return app
-

@@ -8,16 +8,21 @@ and other academic metadata for demonstration and testing purposes.
 
 import json
 import random
-import sys
-import os
 from datetime import time
-from typing import List, Dict, Any
-from faker import Faker
+from typing import Any, Dict, List
+
 import click
+from faker import Faker
 
 from redis_context_course.models import (
-    Course, Major, Prerequisite, CourseSchedule,
-    DifficultyLevel, CourseFormat, Semester, DayOfWeek
+    Course,
+    CourseFormat,
+    CourseSchedule,
+    DayOfWeek,
+    DifficultyLevel,
+    Major,
+    Prerequisite,
+    Semester,
 )
 
 fake = Faker()
@@ -25,13 +30,13 @@ fake = Faker()
 
 class CourseGenerator:
     """Generates realistic course catalog data."""
-    
+
     def __init__(self):
         self.majors_data = self._define_majors()
         self.course_templates = self._define_course_templates()
         self.generated_courses = []
         self.generated_majors = []
-    
+
     def _define_majors(self) -> Dict[str, Dict[str, Any]]:
         """Define major programs with their characteristics."""
         return {
@@ -40,38 +45,62 @@ class CourseGenerator:
                 "department": "Computer Science",
                 "description": "Study of computational systems, algorithms, and software design",
                 "required_credits": 120,
-                "career_paths": ["Software Engineer", "Data Scientist", "Systems Architect", "AI Researcher"]
+                "career_paths": [
+                    "Software Engineer",
+                    "Data Scientist",
+                    "Systems Architect",
+                    "AI Researcher",
+                ],
             },
             "Data Science": {
                 "code": "DS",
                 "department": "Data Science",
                 "description": "Interdisciplinary field using statistics, programming, and domain expertise",
                 "required_credits": 120,
-                "career_paths": ["Data Analyst", "Machine Learning Engineer", "Business Intelligence Analyst"]
+                "career_paths": [
+                    "Data Analyst",
+                    "Machine Learning Engineer",
+                    "Business Intelligence Analyst",
+                ],
             },
             "Mathematics": {
                 "code": "MATH",
                 "department": "Mathematics",
                 "description": "Study of numbers, structures, patterns, and logical reasoning",
                 "required_credits": 120,
-                "career_paths": ["Mathematician", "Statistician", "Actuary", "Research Scientist"]
+                "career_paths": [
+                    "Mathematician",
+                    "Statistician",
+                    "Actuary",
+                    "Research Scientist",
+                ],
             },
             "Business Administration": {
                 "code": "BUS",
                 "department": "Business",
                 "description": "Management, finance, marketing, and organizational behavior",
                 "required_credits": 120,
-                "career_paths": ["Business Analyst", "Project Manager", "Consultant", "Entrepreneur"]
+                "career_paths": [
+                    "Business Analyst",
+                    "Project Manager",
+                    "Consultant",
+                    "Entrepreneur",
+                ],
             },
             "Psychology": {
                 "code": "PSY",
                 "department": "Psychology",
                 "description": "Scientific study of mind, behavior, and mental processes",
                 "required_credits": 120,
-                "career_paths": ["Clinical Psychologist", "Counselor", "Research Psychologist", "HR Specialist"]
-            }
+                "career_paths": [
+                    "Clinical Psychologist",
+                    "Counselor",
+                    "Research Psychologist",
+                    "HR Specialist",
+                ],
+            },
         }
-    
+
     def _define_course_templates(self) -> Dict[str, List[Dict[str, Any]]]:
         """Define course templates for each major."""
         return {
@@ -86,8 +115,8 @@ class CourseGenerator:
                         "Write basic Python programs",
                         "Understand variables and data types",
                         "Use control structures effectively",
-                        "Create and use functions"
-                    ]
+                        "Create and use functions",
+                    ],
                 },
                 {
                     "title_template": "Data Structures and Algorithms",
@@ -99,8 +128,8 @@ class CourseGenerator:
                         "Implement common data structures",
                         "Analyze algorithm complexity",
                         "Solve problems using appropriate data structures",
-                        "Understand time and space complexity"
-                    ]
+                        "Understand time and space complexity",
+                    ],
                 },
                 {
                     "title_template": "Database Systems",
@@ -112,8 +141,8 @@ class CourseGenerator:
                         "Design relational databases",
                         "Write complex SQL queries",
                         "Understand database normalization",
-                        "Implement database transactions"
-                    ]
+                        "Implement database transactions",
+                    ],
                 },
                 {
                     "title_template": "Machine Learning",
@@ -125,8 +154,8 @@ class CourseGenerator:
                         "Understand ML algorithms",
                         "Implement classification and regression models",
                         "Evaluate model performance",
-                        "Apply ML to real-world problems"
-                    ]
+                        "Apply ML to real-world problems",
+                    ],
                 },
                 {
                     "title_template": "Web Development",
@@ -138,9 +167,9 @@ class CourseGenerator:
                         "Build responsive web interfaces",
                         "Develop REST APIs",
                         "Use modern JavaScript frameworks",
-                        "Deploy web applications"
-                    ]
-                }
+                        "Deploy web applications",
+                    ],
+                },
             ],
             "Data Science": [
                 {
@@ -153,8 +182,8 @@ class CourseGenerator:
                         "Apply statistical methods to data",
                         "Perform hypothesis testing",
                         "Understand probability distributions",
-                        "Conduct statistical inference"
-                    ]
+                        "Conduct statistical inference",
+                    ],
                 },
                 {
                     "title_template": "Data Visualization",
@@ -166,9 +195,9 @@ class CourseGenerator:
                         "Create effective data visualizations",
                         "Choose appropriate chart types",
                         "Use visualization tools",
-                        "Communicate insights through visuals"
-                    ]
-                }
+                        "Communicate insights through visuals",
+                    ],
+                },
             ],
             "Mathematics": [
                 {
@@ -181,8 +210,8 @@ class CourseGenerator:
                         "Understand limits and continuity",
                         "Calculate derivatives",
                         "Apply calculus to real problems",
-                        "Understand fundamental theorem"
-                    ]
+                        "Understand fundamental theorem",
+                    ],
                 },
                 {
                     "title_template": "Linear Algebra",
@@ -194,9 +223,9 @@ class CourseGenerator:
                         "Perform matrix operations",
                         "Understand vector spaces",
                         "Calculate eigenvalues and eigenvectors",
-                        "Apply linear algebra to problems"
-                    ]
-                }
+                        "Apply linear algebra to problems",
+                    ],
+                },
             ],
             "Business Administration": [
                 {
@@ -209,8 +238,8 @@ class CourseGenerator:
                         "Understand management principles",
                         "Apply leadership concepts",
                         "Organize teams effectively",
-                        "Control organizational resources"
-                    ]
+                        "Control organizational resources",
+                    ],
                 },
                 {
                     "title_template": "Marketing Strategy",
@@ -222,9 +251,9 @@ class CourseGenerator:
                         "Develop marketing strategies",
                         "Analyze market opportunities",
                         "Understand consumer behavior",
-                        "Implement digital marketing"
-                    ]
-                }
+                        "Implement digital marketing",
+                    ],
+                },
             ],
             "Psychology": [
                 {
@@ -237,8 +266,8 @@ class CourseGenerator:
                         "Understand psychological principles",
                         "Learn research methods",
                         "Explore areas of psychology",
-                        "Apply psychological concepts"
-                    ]
+                        "Apply psychological concepts",
+                    ],
                 },
                 {
                     "title_template": "Cognitive Psychology",
@@ -250,12 +279,12 @@ class CourseGenerator:
                         "Understand cognitive processes",
                         "Study memory systems",
                         "Analyze problem-solving",
-                        "Explore perception mechanisms"
-                    ]
-                }
-            ]
+                        "Explore perception mechanisms",
+                    ],
+                },
+            ],
         }
-    
+
     def generate_majors(self) -> List[Major]:
         """Generate major objects."""
         majors = []
@@ -266,10 +295,10 @@ class CourseGenerator:
                 department=data["department"],
                 description=data["description"],
                 required_credits=data["required_credits"],
-                career_paths=data["career_paths"]
+                career_paths=data["career_paths"],
             )
             majors.append(major)
-        
+
         self.generated_majors = majors
         return majors
 
@@ -288,12 +317,12 @@ class CourseGenerator:
                 else:
                     # Fallback template for majors without specific templates
                     template = {
-                        "title_template": f"{major_name} Course {i+1}",
+                        "title_template": f"{major_name} Course {i + 1}",
                         "description": f"Advanced topics in {major_name.lower()}",
                         "difficulty": random.choice(list(DifficultyLevel)),
                         "credits": random.choice([3, 4]),
                         "tags": [major_name.lower().replace(" ", "_")],
-                        "learning_objectives": [f"Understand {major_name} concepts"]
+                        "learning_objectives": [f"Understand {major_name} concepts"],
                     }
 
                 # Create course code
@@ -315,7 +344,7 @@ class CourseGenerator:
                             course_code=prereq_code,
                             course_title=f"Prerequisite Course {prereq_num}",
                             minimum_grade=random.choice(["C", "C+", "B-"]),
-                            can_be_concurrent=random.random() < 0.2
+                            can_be_concurrent=random.random() < 0.2,
                         )
                         prerequisites.append(prereq)
 
@@ -336,7 +365,7 @@ class CourseGenerator:
                     max_enrollment=random.randint(20, 100),
                     current_enrollment=random.randint(0, 80),
                     tags=template["tags"],
-                    learning_objectives=template["learning_objectives"]
+                    learning_objectives=template["learning_objectives"],
                 )
 
                 courses.append(course)
@@ -371,35 +400,42 @@ class CourseGenerator:
         end_time = time(end_hour, end_minute)
 
         # Generate location
-        buildings = ["Science Hall", "Engineering Building", "Liberal Arts Center", "Business Complex", "Technology Center"]
+        buildings = [
+            "Science Hall",
+            "Engineering Building",
+            "Liberal Arts Center",
+            "Business Complex",
+            "Technology Center",
+        ]
         room_number = random.randint(100, 999)
         location = f"{random.choice(buildings)} {room_number}"
 
         return CourseSchedule(
-            days=days,
-            start_time=start_time,
-            end_time=end_time,
-            location=location
+            days=days, start_time=start_time, end_time=end_time, location=location
         )
 
     def save_to_json(self, filename: str):
         """Save generated data to JSON file."""
         data = {
             "majors": [major.dict() for major in self.generated_majors],
-            "courses": [course.dict() for course in self.generated_courses]
+            "courses": [course.dict() for course in self.generated_courses],
         }
 
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             json.dump(data, f, indent=2, default=str)
 
-        print(f"Generated {len(self.generated_majors)} majors and {len(self.generated_courses)} courses")
+        print(
+            f"Generated {len(self.generated_majors)} majors and {len(self.generated_courses)} courses"
+        )
         print(f"Data saved to {filename}")
 
 
 @click.command()
-@click.option('--output', '-o', default='course_catalog.json', help='Output JSON file')
-@click.option('--courses-per-major', '-c', default=10, help='Number of courses per major')
-@click.option('--seed', '-s', type=int, help='Random seed for reproducible generation')
+@click.option("--output", "-o", default="course_catalog.json", help="Output JSON file")
+@click.option(
+    "--courses-per-major", "-c", default=10, help="Number of courses per major"
+)
+@click.option("--seed", "-s", type=int, help="Random seed for reproducible generation")
 def main(output: str, courses_per_major: int, seed: int):
     """Generate course catalog data for the Redis University Class Agent."""
 

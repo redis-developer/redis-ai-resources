@@ -1,11 +1,10 @@
-import asyncio
-import os
 import types
+
 import pytest
+from langchain_core.messages import AIMessage
 
 # Target under test
 from redis_context_course import agent as agent_mod
-from langchain_core.messages import AIMessage
 
 
 class FakeMemoryClient:
@@ -13,7 +12,9 @@ class FakeMemoryClient:
         self.config = config
         self.put_calls = []
 
-    async def get_or_create_working_memory(self, session_id: str, user_id: str, model_name: str):
+    async def get_or_create_working_memory(
+        self, session_id: str, user_id: str, model_name: str
+    ):
         # Return a simple object with .messages list
         wm = types.SimpleNamespace(messages=[])
         return True, wm
@@ -22,13 +23,17 @@ class FakeMemoryClient:
         # Return an object with .memories to mimic client result
         return types.SimpleNamespace(memories=[])
 
-    async def put_working_memory(self, session_id: str, memory, user_id: str, model_name: str):
-        self.put_calls.append({
-            "session_id": session_id,
-            "user_id": user_id,
-            "model_name": model_name,
-            "message_count": len(getattr(memory, "messages", [])),
-        })
+    async def put_working_memory(
+        self, session_id: str, memory, user_id: str, model_name: str
+    ):
+        self.put_calls.append(
+            {
+                "session_id": session_id,
+                "user_id": user_id,
+                "model_name": model_name,
+                "message_count": len(getattr(memory, "messages", [])),
+            }
+        )
         return True
 
 
@@ -73,4 +78,3 @@ async def test_agent_chat_returns_llm_response_and_saves_memory(monkeypatch):
     assert mc.put_calls[0]["user_id"] == a.student_id
     # Should have at least 2 messages (user + assistant)
     assert mc.put_calls[0]["message_count"] >= 2
-

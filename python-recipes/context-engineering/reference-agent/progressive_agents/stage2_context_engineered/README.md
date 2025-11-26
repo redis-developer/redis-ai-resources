@@ -1,10 +1,10 @@
-# Stage 2: Context-Engineered Agent
+# Stage 2: Context-Engineered Agent (Flat Retrieval)
 
 ## 🎯 Purpose
 
-This agent demonstrates the **power of context engineering** by applying Section 2 techniques to improve upon Stage 1's baseline approach.
+This agent demonstrates the **power of context engineering** by applying Section 2 techniques to dramatically reduce tokens compared to Stage 1.
 
-**Key Learning**: "Context engineering dramatically improves RAG efficiency and quality."
+**Key Learning**: "Context engineering dramatically improves RAG efficiency through cleaning, transformation, and optimization."
 
 ## ✨ What's Different from Stage 1?
 
@@ -19,25 +19,38 @@ This agent demonstrates the **power of context engineering** by applying Section
 - ✅ **Context Transformation**: JSON → natural text format
 - ✅ **Context Optimization**: Efficient token usage
 
+### ⚠️ Limitations (Fixed in Stage 3)
+- ❌ **Flat Retrieval**: All courses get same detail level
+- ❌ **No Progressive Disclosure**: Everything at once, no hierarchy
+- ❌ **No Syllabi**: Had to remove syllabi to fit token budget
+- ❌ **No Adaptation**: Doesn't adapt detail level to relevance
+
 This makes it easy to compare and see the **direct impact** of context engineering!
 
 ## 📊 Improvements Over Stage 1
 
 ### Token Efficiency
 
-| Metric | Stage 1 (Baseline) | Stage 2 (Engineered) | Improvement |
+| Metric | Stage 1 (Overload) | Stage 2 (Engineered) | Improvement |
 |--------|-------------------|---------------------|-------------|
-| **Tokens per Query** | ~1,515 | ~539 | **64% reduction** |
-| **Cost per Query** | $0.015 | $0.005 | **67% savings** |
-| **Context Format** | Raw JSON | Natural text | **Better parsing** |
-| **Noise Fields** | Included | Removed | **Cleaner** |
+| **Tokens per Query** | ~6,133 | ~539 | **91% reduction** |
+| **Cost per Query** | $0.061 | $0.005 | **92% savings** |
+| **Context Format** | Raw JSON with syllabi | Natural text | **Better parsing** |
+| **Includes Syllabi** | ✅ All courses | ❌ None | **Trade-off** |
 
 ### Quality Improvements
 
 - **Better LLM Understanding**: Natural text is easier to parse than JSON
-- **Faster Processing**: Less context to process
+- **Faster Processing**: Much less context to process
 - **Clearer Answers**: LLM focuses on relevant information
-- **Same Accuracy**: No loss of information despite compression
+- **No Information Overload**: Removed syllabi to fit budget
+
+### Trade-offs
+
+- ✅ **Massive token reduction** (91% vs Stage 1)
+- ⚠️ **Lost syllabi** (had to remove to fit budget)
+- ⚠️ **Still flat** (all courses get same detail level)
+- ⚠️ **No progressive disclosure** (can't show overview first, details later)
 
 ## 🧠 Context Engineering Techniques
 
