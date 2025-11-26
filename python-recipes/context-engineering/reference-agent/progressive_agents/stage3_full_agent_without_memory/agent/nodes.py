@@ -5,16 +5,17 @@ Adapted from caching-agent to use CourseManager for course search.
 Semantic caching is commented out for now - will be added later.
 """
 
-import time
 import logging
-from typing import Dict, Any
+import time
 
+from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
-from langgraph.prebuilt import create_react_agent
 
-from .state import WorkflowState, initialize_metrics
-from .tools import search_courses, search_courses_sync
+from .state import WorkflowState
+from .tools import search_courses_sync
+
+# Suppress httpx INFO logs
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 # Configure logger
 logger = logging.getLogger("course-qa-workflow")
@@ -40,7 +41,7 @@ def get_analysis_llm():
     """Get the configured analysis LLM instance."""
     global _analysis_llm
     if _analysis_llm is None:
-        _analysis_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.1, max_tokens=400)
+        _analysis_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.1, max_tokens=800)
     return _analysis_llm
 
 
@@ -48,39 +49,130 @@ def get_research_llm():
     """Get the configured research LLM instance."""
     global _research_llm
     if _research_llm is None:
-        _research_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3, max_tokens=800)
+        _research_llm = ChatOpenAI(
+            model="gpt-4o-mini", temperature=0.3, max_tokens=3000
+        )
     return _research_llm
+
+
+def classify_intent_node(state: WorkflowState) -> WorkflowState:
+    """Classify query intent and determine appropriate detail level."""
+    start_time = time.perf_counter()
+    query = state["original_query"]
+
+    logger.info(f"🎯 Classifying intent for: '{query[:50]}...'")
+
+    try:
+        intent_prompt = f"""You are a query intent classifier for a course information system.
+
+TASK: Analyze the query and return ONLY the most appropriate intent category.
+
+Query: {query}
+
+INTENT CATEGORIES:
+
+1. GREETING
+   - Greetings, acknowledgments, pleasantries
+   - Examples: "hello", "hi there", "thank you", "thanks"
+
+2. GENERAL
+   - Broad course information requests
+   - Course descriptions and overviews
+   - "What is [course]?" questions
+   - Example: "What is CS002?"
+
+3. SYLLABUS_OBJECTIVES
+   - Syllabus requests
+   - Course structure and topics covered
+   - Learning objectives and outcomes
+   - Examples: "Show me the syllabus for CS002", "What will I learn?", "What topics are covered?", "Give me details about this course"
+
+4. ASSIGNMENTS
+   - Homework, projects, exams
+   - Assessment types and workload
+   - Grading information
+   - Examples: "What are the assignments?", "How many exams?", "What's the workload?"
+
+5. PREREQUISITES
+   - Course requirements
+   - Prior knowledge needed
+   - Examples: "What are the prerequisites?", "What do I need before taking this?"
+
+CLASSIFICATION RULES:
+- Choose the MOST SPECIFIC category that matches
+- If multiple categories apply, prioritize based on the primary intent
+- Default to GENERAL for ambiguous queries
+- Ignore filler words and focus on core intent
+
+OUTPUT FORMAT (respond with exactly this structure):
+INTENT: <category_name>
+"""
+
+        response = get_analysis_llm().invoke([HumanMessage(content=intent_prompt)])
+
+        # Track LLM usage
+        llm_calls = state.get("llm_calls", {}).copy()
+        llm_calls["analysis_llm"] = llm_calls.get("analysis_llm", 0) + 1
+
+        # Parse response
+        response_content = response.content.strip()
+        intent = "GENERAL"
+
+        for line in response_content.split("\n"):
+            if line.startswith("INTENT:"):
+                intent = line.split(":", 1)[1].strip()
+
+        logger.info(f"🎯 Intent: {intent}")
+
+        latency = (time.perf_counter() - start_time) * 1000
+
+        return {
+            **state,
+            "query_intent": intent,
+            "llm_calls": llm_calls,
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Intent classification failed: {e}")
+        # Default to safe values
+        return {
+            **state,
+            "query_intent": "GENERAL_QUESTION",
+            "detail_level": "summary",
+        }
 
 
 def decompose_query_node(state: WorkflowState) -> WorkflowState:
     """Decompose complex queries into focused, cacheable sub-questions."""
     start_time = time.perf_counter()
     query = state["original_query"]
-    
+
     logger.info(f"🧠 Decomposing query: '{query[:50]}...'")
-    
+
     try:
         decomposition_prompt = f"""
         Analyze this course-related query and determine if it needs to be broken down into sub-questions.
-        
+
         Original query: {query}
-        
+
         Rules:
         - If the query is simple and focused on ONE topic, respond with: SINGLE_QUESTION
         - If the query has multiple distinct aspects, break it into 2-4 specific sub-questions
         - Each sub-question should be self-contained and cacheable
         - Focus on course-related information (course content, prerequisites, instructors, schedules, etc.)
-        
+
         If breaking down, provide ONLY the sub-questions, one per line, no numbering.
         If keeping as single question, respond with exactly: SINGLE_QUESTION
         """
-        
-        response = get_analysis_llm().invoke([HumanMessage(content=decomposition_prompt)])
-        
+
+        response = get_analysis_llm().invoke(
+            [HumanMessage(content=decomposition_prompt)]
+        )
+
         # Track LLM usage
         llm_calls = state.get("llm_calls", {}).copy()
         llm_calls["analysis_llm"] = llm_calls.get("analysis_llm", 0) + 1
-        
+
         # Process response
         response_content = response.content.strip()
         if response_content == "SINGLE_QUESTION":
@@ -90,39 +182,42 @@ def decompose_query_node(state: WorkflowState) -> WorkflowState:
             sub_questions = [
                 line.strip()
                 for line in response_content.split("\n")
-                if line.strip() and not line.strip().startswith(("1.", "2.", "3.", "4.", "-", "*"))
+                if line.strip()
+                and not line.strip().startswith(("1.", "2.", "3.", "4.", "-", "*"))
                 and line.strip() != "SINGLE_QUESTION"
             ]
-            
+
             if not sub_questions or len(sub_questions) == 1:
                 sub_questions = [query]
             elif len(sub_questions) > 4:
                 sub_questions = sub_questions[:4]
-            
-            logger.info(f"🧠 Decomposed into {len(sub_questions)} sub-questions in {(time.perf_counter() - start_time) * 1000:.2f}ms")
+
+            logger.info(
+                f"🧠 Decomposed into {len(sub_questions)} sub-questions in {(time.perf_counter() - start_time) * 1000:.2f}ms"
+            )
             for i, q in enumerate(sub_questions, 1):
                 logger.info(f"   {i}. {q}")
-        
+
         # Update state
         state["sub_questions"] = sub_questions
         state["llm_calls"] = llm_calls
         state["execution_path"].append("decomposed")
-        
+
         # Initialize tracking for sub-questions
         for question in sub_questions:
             state["cache_hits"][question] = False
             state["cache_confidences"][question] = 0.0
             state["research_iterations"][question] = 0
             state["current_research_strategy"][question] = "initial"
-        
+
         # Update metrics
         decomposition_time = (time.perf_counter() - start_time) * 1000
         state["metrics"]["decomposition_latency"] = decomposition_time
         state["metrics"]["sub_question_count"] = len(sub_questions)
-        
+
         logger.info("🧠 Query decomposition complete")
         return state
-        
+
     except Exception as e:
         logger.error(f"Decomposition failed: {e}")
         # Fallback to original query
@@ -134,37 +229,41 @@ def decompose_query_node(state: WorkflowState) -> WorkflowState:
 def check_cache_node(state: WorkflowState) -> WorkflowState:
     """
     Check semantic cache for existing answers to sub-questions.
-    
+
     NOTE: Semantic caching is COMMENTED OUT for now.
     This node currently just marks all questions as cache misses.
     Will be implemented in future stages.
     """
     start_time = time.perf_counter()
     sub_questions = state["sub_questions"]
-    
-    logger.info(f"🔍 Checking cache for {len(sub_questions)} sub-questions (CACHE DISABLED)")
-    
+
+    logger.info(
+        f"🔍 Checking cache for {len(sub_questions)} sub-questions (CACHE DISABLED)"
+    )
+
     # SEMANTIC CACHING COMMENTED OUT - Will be added later
     # Original implementation preserved below for reference
-    
+
     cache_hits = 0
     for question in sub_questions:
         # For now, all questions are cache misses
         state["cache_hits"][question] = False
         state["cache_confidences"][question] = 0.0
         logger.info(f"   ❌ Cache MISS (disabled): '{question[:40]}...'")
-    
+
     # Update metrics
     cache_time = (time.perf_counter() - start_time) * 1000
     hit_rate = 0.0  # Always 0 since caching is disabled
-    
+
     state["metrics"]["cache_latency"] = cache_time
     state["metrics"]["cache_hit_rate"] = hit_rate
     state["metrics"]["cache_hits_count"] = cache_hits
     state["execution_path"].append("cache_checked")
-    
-    logger.info(f"🔍 Cache check complete: {cache_hits}/{len(sub_questions)} hits ({hit_rate:.1f}%) in {cache_time:.2f}ms")
-    
+
+    logger.info(
+        f"🔍 Cache check complete: {cache_hits}/{len(sub_questions)} hits ({hit_rate:.1f}%) in {cache_time:.2f}ms"
+    )
+
     return state
 
 
@@ -223,7 +322,7 @@ def research_node(state: WorkflowState) -> WorkflowState:
     Research sub-questions using course search.
 
     Uses CourseManager.search_courses() to find relevant courses.
-    Simplified version that directly calls search without ReAct agent.
+    Respects intent from intent classification.
     """
     start_time = time.perf_counter()
     cache_hits = state.get("cache_hits", {})
@@ -231,21 +330,30 @@ def research_node(state: WorkflowState) -> WorkflowState:
     research_iterations = state.get("research_iterations", {}).copy()
     questions_researched = 0
 
+    # Get intent from intent classification
+    intent = state.get("query_intent", "GENERAL")
+
     # Track LLM usage
     llm_calls = state.get("llm_calls", {}).copy()
 
-    logger.info("🔬 Research: Starting course search")
+    logger.info(f"🔬 Research: Starting course search (intent={intent})")
 
     try:
         for sub_question, is_cached in cache_hits.items():
             if not is_cached:
                 iteration = research_iterations.get(sub_question, 0) + 1
-                current_strategy = state.get("current_research_strategy", {}).get(sub_question, "initial")
+                current_strategy = state.get("current_research_strategy", {}).get(
+                    sub_question, "initial"
+                )
 
-                logger.info(f"🔍 Researching: '{sub_question[:50]}...' (iteration {iteration}, strategy: {current_strategy})")
+                logger.info(
+                    f"🔍 Researching: '{sub_question[:50]}...' (iteration {iteration}, strategy: {current_strategy})"
+                )
 
-                # Directly search for courses using synchronous wrapper
-                search_results = search_courses_sync(sub_question, top_k=5)
+                # Directly search for courses using synchronous wrapper with intent
+                search_results = search_courses_sync(
+                    sub_question, top_k=5, intent=intent
+                )
 
                 # Format the answer
                 if search_results and "No relevant courses found" not in search_results:
@@ -260,7 +368,9 @@ def research_node(state: WorkflowState) -> WorkflowState:
                 # Track LLM usage (just for embeddings)
                 llm_calls["research_llm"] = llm_calls.get("research_llm", 0) + 1
 
-                logger.info(f"   ✅ Research complete (iteration {iteration}): '{answer[:50]}...'")
+                logger.info(
+                    f"   ✅ Research complete (iteration {iteration}): '{answer[:50]}...'"
+                )
 
         # Update state
         state["sub_answers"] = sub_answers
@@ -273,13 +383,16 @@ def research_node(state: WorkflowState) -> WorkflowState:
         state["metrics"]["research_latency"] = research_time
         state["metrics"]["questions_researched"] = questions_researched
 
-        logger.info(f"🔬 Research complete: {questions_researched} questions researched in {research_time:.2f}ms")
+        logger.info(
+            f"🔬 Research complete: {questions_researched} questions researched in {research_time:.2f}ms"
+        )
 
         return state
 
     except Exception as e:
         logger.error(f"Research failed: {e}")
         import traceback
+
         traceback.print_exc()
         state["execution_path"].append("research_failed")
         return state
@@ -291,7 +404,9 @@ def evaluate_quality_node(state: WorkflowState) -> WorkflowState:
     sub_answers = state.get("sub_answers", {})
     quality_scores = {}
 
-    logger.info(f"🎯 Quality Evaluation: Evaluating research quality for {len(sub_answers)} answers")
+    logger.info(
+        f"🎯 Quality Evaluation: Evaluating research quality for {len(sub_answers)} answers"
+    )
 
     # Track LLM usage
     llm_calls = state.get("llm_calls", {}).copy()
@@ -321,7 +436,9 @@ def evaluate_quality_node(state: WorkflowState) -> WorkflowState:
             Respond with only a number between 0.0 and 1.0 (e.g., 0.85)
             """
 
-            response = get_analysis_llm().invoke([HumanMessage(content=evaluation_prompt)])
+            response = get_analysis_llm().invoke(
+                [HumanMessage(content=evaluation_prompt)]
+            )
             llm_calls["analysis_llm"] = llm_calls.get("analysis_llm", 0) + 1
 
             try:
@@ -334,7 +451,9 @@ def evaluate_quality_node(state: WorkflowState) -> WorkflowState:
 
             if score < 0.7:
                 needs_improvement += 1
-                logger.info(f"   📊 {question[:40]}... - Score: {score:.2f} - Needs improvement")
+                logger.info(
+                    f"   📊 {question[:40]}... - Score: {score:.2f} - Needs improvement"
+                )
             else:
                 logger.info(f"   ✅ {question[:40]}... - Score: {score:.2f} - Adequate")
 
@@ -377,8 +496,21 @@ def synthesize_response_node(state: WorkflowState) -> WorkflowState:
 
         # Create synthesis prompt
         if len(sub_questions) == 1:
-            # Single question - return answer directly
-            final_response = sub_answers.get(sub_questions[0], "No answer available")
+            # Single question - check if we have course data
+            answer = sub_answers.get(sub_questions[0], "No answer available")
+
+            if "No courses found" in answer or len(answer.strip()) < 50:
+                # No courses found - acknowledge and redirect
+                final_response = f"""I searched our course catalog for information about "{original_query}", but I couldn't find any courses that match.
+
+Our catalog includes courses in Computer Science, Mathematics, Data Science, and related fields. Would you like me to:
+- Show you available courses in a specific department?
+- Help you find courses on a related topic?
+- List popular courses?
+
+Just let me know what you're interested in!"""
+            else:
+                final_response = answer
         else:
             # Multiple questions - synthesize
             qa_pairs = []
@@ -386,19 +518,43 @@ def synthesize_response_node(state: WorkflowState) -> WorkflowState:
                 answer = sub_answers.get(question, "No answer available")
                 qa_pairs.append(f"Q{i}: {question}\nA{i}: {answer}")
 
-            synthesis_prompt = f"""
-            Original question: {original_query}
+            # Check if we have meaningful course data
+            has_courses = any(
+                "No courses found" not in sub_answers.get(q, "") for q in sub_questions
+            )
 
-            Course search findings:
-            {chr(10).join(qa_pairs)}
+            if not has_courses:
+                # No courses found - acknowledge and redirect
+                final_response = f"""I searched our course catalog for information about "{original_query}", but I couldn't find any courses that match.
 
-            Synthesize these findings into a comprehensive, well-structured response that fully addresses the original question.
-            Be conversational and helpful while ensuring all key course information is included.
-            """
+Our catalog includes courses in Computer Science, Mathematics, Data Science, and related fields. Would you like me to:
+- Show you available courses in a specific department?
+- Help you find courses on a related topic?
+- List popular courses?
 
-            response = get_analysis_llm().invoke([HumanMessage(content=synthesis_prompt)])
-            llm_calls["analysis_llm"] = llm_calls.get("analysis_llm", 0) + 1
-            final_response = response.content
+Just let me know what you're interested in!"""
+            else:
+                synthesis_prompt = f"""
+                Original question: {original_query}
+
+                Course search findings from our catalog:
+                {chr(10).join(qa_pairs)}
+
+                IMPORTANT:
+                - Base your response ONLY on the course information provided above
+                - If the course information doesn't fully answer the question, acknowledge what's available
+                - Always tie your response back to the actual courses in our catalog
+                - Do NOT provide generic educational content - focus on OUR specific courses
+
+                Synthesize these findings into a comprehensive, well-structured response that fully addresses the original question.
+                Be conversational and helpful while ensuring all key course information is included.
+                """
+
+                response = get_analysis_llm().invoke(
+                    [HumanMessage(content=synthesis_prompt)]
+                )
+                llm_calls["analysis_llm"] = llm_calls.get("analysis_llm", 0) + 1
+                final_response = response.content
 
         # Update state
         state["final_response"] = final_response
@@ -420,3 +576,50 @@ def synthesize_response_node(state: WorkflowState) -> WorkflowState:
         state["execution_path"].append("synthesis_failed")
         return state
 
+
+def handle_greeting_node(state: WorkflowState) -> WorkflowState:
+    """Handle greetings and non-course queries without course search."""
+    start_time = time.perf_counter()
+    query = state["original_query"]
+
+    logger.info(f"👋 Handling greeting/non-course query: '{query[:50]}...'")
+
+    try:
+        greeting_prompt = f"""
+        The user sent this message: {query}
+
+        Respond naturally and helpfully. If it's a greeting, greet them back and let them know you're a course advisor agent that can help them find courses, view syllabi, check prerequisites, etc.
+
+        Keep it brief and friendly (2-3 sentences max).
+        """
+
+        response = get_analysis_llm().invoke([HumanMessage(content=greeting_prompt)])
+
+        # Track LLM usage
+        llm_calls = state.get("llm_calls", {}).copy()
+        llm_calls["analysis_llm"] = llm_calls.get("analysis_llm", 0) + 1
+
+        final_response = response.content.strip()
+
+        logger.info(f"👋 Greeting response: {final_response[:100]}...")
+
+        latency = (time.perf_counter() - start_time) * 1000
+
+        return {
+            **state,
+            "final_response": final_response,
+            "llm_calls": llm_calls,
+            "execution_path": state.get("execution_path", []) + ["greeting_handled"],
+            "metrics": {
+                **state.get("metrics", {}),
+                "total_latency": latency,
+            },
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Greeting handling failed: {e}")
+        return {
+            **state,
+            "final_response": "Hello! I'm a course advisor agent. I can help you find courses, view syllabi, check prerequisites, and more. What would you like to know?",
+            "execution_path": state.get("execution_path", []) + ["greeting_failed"],
+        }
