@@ -1,18 +1,17 @@
 """
 Workflow nodes for the Course Q&A Agent.
 
-Adapted from caching-agent to use CourseManager for course search.
-Semantic caching is commented out for now - will be added later.
+Stage 3: Agentic workflow with LLM-controlled tool calling.
 """
 
 import logging
 import time
 
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langchain_openai import ChatOpenAI
 
 from .state import WorkflowState
-from .tools import search_courses_sync
+from .tools import search_courses_sync, search_courses_tool
 
 # Suppress httpx INFO logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -27,6 +26,7 @@ logger = logging.getLogger("course-qa-workflow")
 # Global LLMs
 _analysis_llm = None
 _research_llm = None
+_agent_llm = None  # NEW: LLM for agent node
 
 
 def initialize_nodes():
@@ -53,6 +53,16 @@ def get_research_llm():
             model="gpt-4o-mini", temperature=0.3, max_tokens=3000
         )
     return _research_llm
+
+
+def get_agent_llm():
+    """Get the configured agent LLM instance with tool binding."""
+    global _agent_llm
+    if _agent_llm is None:
+        llm = ChatOpenAI(model="gpt-4o", temperature=0.1, max_tokens=2000)
+        # Bind the search_courses tool
+        _agent_llm = llm.bind_tools([search_courses_tool])
+    return _agent_llm
 
 
 def classify_intent_node(state: WorkflowState) -> WorkflowState:
@@ -623,3 +633,135 @@ def handle_greeting_node(state: WorkflowState) -> WorkflowState:
             "final_response": "Hello! I'm a course advisor agent. I can help you find courses, view syllabi, check prerequisites, and more. What would you like to know?",
             "execution_path": state.get("execution_path", []) + ["greeting_failed"],
         }
+
+
+# ============================================================================
+# NEW: Agent Node with Tool Calling
+# ============================================================================
+
+
+async def agent_node(state: WorkflowState) -> WorkflowState:
+    """
+    Agent node that uses LLM with tool calling to answer questions.
+
+    This replaces the scripted research → evaluate → synthesize pipeline
+    with an agentic approach where the LLM decides:
+    - When to search for courses
+    - What parameters to use (intent, strategy, entities)
+    - How to formulate the final answer
+    """
+    start_time = time.perf_counter()
+
+    query = state["original_query"]
+
+    logger.info(f"🤖 Agent: Processing query with tool calling")
+
+    try:
+        # Build messages
+        messages = []
+
+        # Add system message with instructions
+        system_prompt = """You are a helpful course advisor assistant. Your job is to help students find and learn about courses.
+
+You have access to a search_courses tool that can search the course catalog. Use this tool to find relevant courses to answer the user's question.
+
+When using the search_courses tool, you need to determine:
+
+1. **intent**: What type of information does the user want?
+   - "GENERAL": Just course summaries/overviews
+   - "PREREQUISITES": Detailed prerequisite information
+   - "SYLLABUS_OBJECTIVES": Syllabus and learning objectives
+   - "ASSIGNMENTS": Assignment details
+
+2. **search_strategy**: How should we search?
+   - "exact_match": When user mentions specific course codes (e.g., "CS004", "MATH301")
+   - "hybrid": Combine exact matching + semantic search (best for most queries)
+   - "semantic_only": Pure semantic search (when no specific codes mentioned)
+
+3. **course_codes**: Extract any specific course codes mentioned (e.g., ["CS004"])
+
+4. **information_type**: What specific info is needed? (e.g., ["prerequisites"], ["syllabus"], ["assignments"])
+
+5. **departments**: Filter by department if mentioned (e.g., ["Computer Science"])
+
+Examples:
+- "What is CS004?" → intent="GENERAL", search_strategy="exact_match", course_codes=["CS004"]
+- "What are the prerequisites for CS004?" → intent="PREREQUISITES", search_strategy="exact_match", course_codes=["CS004"], information_type=["prerequisites"]
+- "Show me machine learning courses" → intent="GENERAL", search_strategy="semantic_only", query="machine learning"
+- "What's the syllabus for CS004?" → intent="SYLLABUS_OBJECTIVES", search_strategy="exact_match", course_codes=["CS004"], information_type=["syllabus"]
+
+After calling the tool and getting results, provide a clear, helpful answer to the user."""
+
+        messages.append(HumanMessage(content=system_prompt))
+
+        # Add current query
+        messages.append(HumanMessage(content=query))
+
+        # Get LLM with tool binding
+        llm = get_agent_llm()
+
+        # Track LLM calls
+        llm_calls = state.get("llm_calls", {}).copy()
+        llm_calls["agent_llm"] = llm_calls.get("agent_llm", 0) + 1
+
+        # First LLM call - may include tool calls
+        logger.info(f"   🧠 Calling LLM with tool binding...")
+        response = await llm.ainvoke(messages)
+
+        # Check if LLM wants to use tools
+        if response.tool_calls:
+            logger.info(f"   🔧 LLM requested {len(response.tool_calls)} tool call(s)")
+
+            # Add AI response to messages
+            messages.append(response)
+
+            # Execute tool calls
+            for tool_call in response.tool_calls:
+                tool_name = tool_call["name"]
+                tool_args = tool_call["args"]
+
+                logger.info(f"   📞 Executing tool: {tool_name}")
+                logger.info(f"      Args: {tool_args}")
+
+                # Execute the tool
+                tool_result = await search_courses_tool.ainvoke(tool_args)
+
+                # Add tool result to messages
+                messages.append(
+                    ToolMessage(
+                        content=tool_result,
+                        tool_call_id=tool_call["id"]
+                    )
+                )
+
+            # Second LLM call - synthesize final answer
+            llm_calls["agent_llm"] = llm_calls.get("agent_llm", 0) + 1
+            logger.info(f"   🧠 Calling LLM to synthesize final answer...")
+            final_response = await llm.ainvoke(messages)
+            final_answer = final_response.content.strip()
+        else:
+            # No tool calls, use direct response
+            logger.info(f"   💬 LLM provided direct answer (no tools)")
+            final_answer = response.content.strip()
+
+        # Update state
+        latency = (time.perf_counter() - start_time) * 1000
+
+        state["final_response"] = final_answer
+        state["llm_calls"] = llm_calls
+        state["execution_path"].append("agent_completed")
+        state["metrics"]["total_latency"] = latency
+
+        logger.info(f"🤖 Agent complete in {latency:.2f}ms")
+        logger.info(f"   Response: {final_answer[:100]}...")
+
+        return state
+
+    except Exception as e:
+        logger.error(f"Agent node failed: {e}")
+        import traceback
+        traceback.print_exc()
+
+        state["final_response"] = f"I encountered an error: {str(e)}"
+        state["execution_path"].append("agent_failed")
+        return state

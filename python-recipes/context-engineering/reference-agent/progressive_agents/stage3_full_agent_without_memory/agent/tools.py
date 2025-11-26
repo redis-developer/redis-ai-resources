@@ -1,20 +1,22 @@
 """
 Tools for the Course Q&A Agent workflow.
 
-Stage 3: HIERARCHICAL RETRIEVAL with progressive disclosure!
+Stage 3: Agentic workflow with LLM-controlled search tool!
 
-This demonstrates advanced Section 2 techniques:
-- Two-tier retrieval (summaries → details)
-- Progressive disclosure (overview first, details on-demand)
-- Context budget management (strategic token allocation)
-- Hybrid assembly (combining multiple strategies)
+This demonstrates the transition from scripted to agentic workflows:
+- LLM decides when to search and what parameters to use
+- Complex tool with multiple parameters (intent, strategy, entities)
+- Replaces hardcoded nodes with tool-based decision making
+- Hierarchical retrieval with progressive disclosure
 """
 
 import json
 import logging
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
+from langchain_core.tools import tool
+from pydantic import BaseModel, Field
 from redis_context_course import CourseManager
 from redis_context_course.hierarchical_context import HierarchicalContextAssembler
 from redis_context_course.hierarchical_models import (
@@ -347,42 +349,95 @@ async def search_courses(
         return f"Search failed: {str(e)}"
 
 
-# NOTE: Original caching-agent used knowledge_base search with web content
-# We've replaced this with CourseManager.search_courses() for course data
-# The original implementation is preserved below for reference:
+# ============================================================================
+# NEW: LangChain Tool for Agentic Workflow
+# ============================================================================
 
-# ORIGINAL IMPLEMENTATION (COMMENTED OUT):
-# """
-# def search_knowledge_base(query: str, top_k: int = 3) -> str:
-#     if not knowledge_base_index or not embeddings:
-#         return "Knowledge base not available"
-#
-#     try:
-#         query_embedding = embeddings.embed(query)
-#         vector_query = VectorQuery(
-#             vector=query_embedding,
-#             vector_field_name="embedding",
-#             return_fields=["content", "source_id", "chunk_id"],
-#             num_results=top_k
-#         )
-#
-#         results = knowledge_base_index.query(vector_query)
-#
-#         if not results:
-#             return "No relevant information found in knowledge base"
-#
-#         formatted_results = []
-#         for i, result in enumerate(results, 1):
-#             content = result.get("content", "").strip()
-#             if content:
-#                 formatted_results.append(f"Result {i}:\n{content}")
-#
-#         if not formatted_results:
-#             return "No relevant content found"
-#
-#         return "\n\n".join(formatted_results)
-#
-#     except Exception as e:
-#         logger.error(f"Knowledge base search failed: {e}")
-#         return f"Search failed: {str(e)}"
-# """
+
+class SearchCoursesInput(BaseModel):
+    """Input schema for search_courses tool."""
+
+    query: str = Field(description="The search query for finding courses")
+    intent: str = Field(
+        default="GENERAL",
+        description="Intent category: GENERAL (summaries only), PREREQUISITES (prerequisite details), SYLLABUS_OBJECTIVES (syllabus and learning objectives), ASSIGNMENTS (assignment details)",
+    )
+    search_strategy: str = Field(
+        default="semantic_only",
+        description="Search strategy: exact_match (for course codes), hybrid (exact + semantic + filters), semantic_only (traditional vector search)",
+    )
+    course_codes: List[str] = Field(
+        default_factory=list,
+        description="Specific course codes to search for (e.g., ['CS004', 'MATH301'])",
+    )
+    information_type: List[str] = Field(
+        default_factory=list,
+        description="Types of information needed: prerequisites, syllabus, assignments, objectives, description",
+    )
+    departments: List[str] = Field(
+        default_factory=list,
+        description="Filter by departments (e.g., ['Computer Science', 'Mathematics'])",
+    )
+    difficulty_level: Optional[str] = Field(
+        default=None,
+        description="Filter by difficulty: beginner, intermediate, advanced",
+    )
+
+
+@tool("search_courses", args_schema=SearchCoursesInput)
+async def search_courses_tool(
+    query: str,
+    intent: str = "GENERAL",
+    search_strategy: str = "semantic_only",
+    course_codes: List[str] = [],
+    information_type: List[str] = [],
+    departments: List[str] = [],
+    difficulty_level: Optional[str] = None,
+) -> str:
+    """
+    Search for courses with flexible parameters controlled by the LLM.
+
+    This tool replaces the scripted research_node, allowing the LLM to decide:
+    - WHEN to search (instead of always searching)
+    - WHAT intent to use (GENERAL, PREREQUISITES, SYLLABUS_OBJECTIVES, ASSIGNMENTS)
+
+    Stage 3 uses simple hierarchical retrieval (semantic search only).
+    The search_strategy, course_codes, and other advanced parameters are accepted
+    but not used - Stage 3 always uses semantic search with hierarchical disclosure.
+
+    Use this tool when you need to find course information to answer the user's question.
+
+    Args:
+        query: The search query
+        intent: What type of information to return (GENERAL, PREREQUISITES, SYLLABUS_OBJECTIVES, ASSIGNMENTS)
+        search_strategy: Ignored in Stage 3 (always uses semantic search)
+        course_codes: Ignored in Stage 3 (query is used directly)
+        information_type: Ignored in Stage 3 (intent determines what's included)
+        departments: Ignored in Stage 3
+        difficulty_level: Ignored in Stage 3
+
+    Returns:
+        Formatted course information based on intent using hierarchical retrieval
+    """
+    if not course_manager:
+        return "Course search not available - CourseManager not initialized"
+
+    logger.info(f"🔧 Tool called: search_courses")
+    logger.info(f"   Query: {query}")
+    logger.info(f"   Intent: {intent}")
+    logger.info(f"   (Stage 3: Using simple hierarchical retrieval)")
+
+    # Call the existing search_courses_sync function (Stage 3 version)
+    # This only takes: query, top_k, use_optimized_format, intent
+    try:
+        result = search_courses_sync(
+            query=query,
+            top_k=5,
+            use_optimized_format=False,
+            intent=intent,
+        )
+        logger.info(f"   ✅ Search completed: {len(result)} chars returned")
+        return result
+    except Exception as e:
+        logger.error(f"   ❌ Search failed: {e}")
+        return f"Search failed: {str(e)}"
