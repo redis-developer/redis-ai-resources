@@ -31,28 +31,44 @@ Students will learn how to:
 - Context optimization (token reduction)
 - Demonstrates: How context engineering improves efficiency
 
-### Stage 3: Full Agent without Memory (Current)
+### Stage 3: Full Agent without Memory
 **Goal**: Production-ready patterns with quality evaluation
 
-- ✅ **Currently Implemented**
+- ✅ **Implemented**
 - Complete LangGraph workflow
+- Intent classification (GREETING, GENERAL, SYLLABUS_OBJECTIVES, ASSIGNMENTS, PREREQUISITES)
 - Query decomposition
 - Semantic course search with CourseManager
 - Quality evaluation and iterative improvement
 - Context engineering techniques applied
-- Semantic caching commented out (for future stages)
 - Demonstrates: Advanced RAG patterns
 
 **Location**: `stage3_full_agent_without_memory/`
 
-### Stage 4: Memory-Augmented Agent (Future)
-**Goal**: Add personalization through memory integration
+### Stage 4: Hybrid Search with NER
+**Goal**: Add Named Entity Recognition for precise retrieval
 
+- ✅ **Implemented**
+- Named Entity Recognition (NER) for course codes, names, departments, topics
+- Hybrid search strategy (exact match + semantic search)
+- Metadata filtering (difficulty, format, semester, credits)
+- Progressive disclosure based on intent
+- Demonstrates: Combining structured and semantic search
+
+**Location**: `stage4_hybrid_search_with_ner/`
+
+### Stage 5: Memory-Augmented Agent (Current)
+**Goal**: Add conversation continuity through working memory
+
+- ✅ **Currently Implemented**
 - Integrate Redis Agent Memory Server
-- Add memory tools (store/search memories)
-- Multi-turn conversations with context
-- Personalized recommendations
+- Working memory for multi-turn conversations
+- Session management and conversation history
+- Context resolution using conversation history (pronoun resolution)
+- Automatic memory extraction to long-term storage
 - Demonstrates: How memory + RAG complement each other
+
+**Location**: `stage5_memory_augmented/`
 
 ## 🏗️ Architecture Overview
 
@@ -60,6 +76,12 @@ All stages follow the same LangGraph architecture pattern:
 
 ```
 User Query
+    ↓
+[Load Memory] - Retrieve conversation history (Stage 5)
+    ↓
+[Classify Intent] - Determine query intent (Stage 3+)
+    ↓
+[Extract Entities] - NER for precise search (Stage 4+)
     ↓
 [Decompose Query] - Break into sub-questions
     ↓
@@ -71,14 +93,17 @@ User Query
     ↓
 [Synthesize Response] - Combine into final answer
     ↓
+[Save Memory] - Persist conversation (Stage 5)
+    ↓
 Final Response
 ```
 
 **Key Differences Between Stages**:
-- **Stage 1**: Raw context, no optimization
-- **Stage 2**: Optimized context, student exercises
-- **Stage 3**: Full workflow, quality evaluation
-- **Stage 4**: + Memory integration
+- **Stage 1**: Raw context, no optimization (Future)
+- **Stage 2**: Optimized context, student exercises (Future)
+- **Stage 3**: Intent classification, quality evaluation
+- **Stage 4**: + Named Entity Recognition, hybrid search
+- **Stage 5**: + Working memory, conversation continuity
 
 ## 🚀 Getting Started
 
@@ -94,11 +119,38 @@ export OPENAI_API_KEY="your-openai-api-key"
 export REDIS_URL="redis://localhost:6379"
 ```
 
-### Running Stage 3 (Current)
+### Running Stage 3
 
 ```bash
 cd progressive_agents/stage3_full_agent_without_memory
-python examples/basic_usage.py
+python cli.py "What courses are available in Computer Science?"
+```
+
+### Running Stage 4
+
+```bash
+cd progressive_agents/stage4_hybrid_search_with_ner
+python cli.py "Show me advanced CS courses about machine learning"
+```
+
+### Running Stage 5 (Current)
+
+```bash
+# Start Agent Memory Server first
+docker start agent-memory-server
+
+# Run multi-turn conversation
+cd progressive_agents/stage5_memory_augmented
+python -m progressive_agents.stage5_memory_augmented.cli \
+  --student-id alice \
+  --session-id my_session \
+  "What is CS004?"
+
+# Follow-up question (same session)
+python -m progressive_agents.stage5_memory_augmented.cli \
+  --student-id alice \
+  --session-id my_session \
+  "give me details about it"
 ```
 
 ## 📖 Educational Flow
@@ -182,15 +234,20 @@ All stages use techniques from Section 2 notebooks:
 
 ## 📊 Comparison Across Stages
 
-| Feature | Stage 1 | Stage 2 | Stage 3 | Stage 4 |
-|---------|---------|---------|---------|---------|
-| **Context Format** | Raw JSON | Optimized Text | Optimized Text | Optimized Text |
-| **Query Decomposition** | ❌ | ❌ | ✅ | ✅ |
-| **Quality Evaluation** | ❌ | ❌ | ✅ | ✅ |
-| **Semantic Caching** | ❌ | ❌ | 🚧 Commented | ✅ |
-| **Memory Integration** | ❌ | ❌ | ❌ | ✅ |
-| **Token Efficiency** | Low | High | High | High |
-| **Multi-turn Support** | ❌ | ❌ | ❌ | ✅ |
+| Feature | Stage 1 | Stage 2 | Stage 3 | Stage 4 | Stage 5 |
+|---------|---------|---------|---------|---------|---------|
+| **Context Format** | Raw JSON | Optimized Text | Optimized Text | Optimized Text | Optimized Text |
+| **Intent Classification** | ❌ | ❌ | ✅ | ✅ | ✅ |
+| **Named Entity Recognition** | ❌ | ❌ | ❌ | ✅ | ✅ |
+| **Hybrid Search** | ❌ | ❌ | ❌ | ✅ | ✅ |
+| **Query Decomposition** | ❌ | ❌ | ✅ | ✅ | ✅ |
+| **Quality Evaluation** | ❌ | ❌ | ✅ | ✅ | ✅ |
+| **Progressive Disclosure** | ❌ | ❌ | ❌ | ✅ | ✅ |
+| **Working Memory** | ❌ | ❌ | ❌ | ❌ | ✅ |
+| **Conversation History** | ❌ | ❌ | ❌ | ❌ | ✅ |
+| **Context Resolution** | ❌ | ❌ | ❌ | ❌ | ✅ |
+| **Token Efficiency** | Low | High | High | High | High |
+| **Multi-turn Support** | ❌ | ❌ | ❌ | ❌ | ✅ |
 
 ## 🎓 Learning Outcomes
 
