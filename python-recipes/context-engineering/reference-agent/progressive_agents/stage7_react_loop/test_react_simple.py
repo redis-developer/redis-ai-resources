@@ -6,20 +6,25 @@ Tests basic ReAct functionality with explicit reasoning traces.
 """
 
 import asyncio
-import os
+import logging
 import sys
 from pathlib import Path
 
-# Load environment variables
-from dotenv import load_dotenv
+# Add parent directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-env_path = Path(__file__).parent.parent.parent / ".env"
-load_dotenv(env_path)
+from redis_context_course import CourseManager
 
-# Add agent to path
-sys.path.insert(0, str(Path(__file__).parent))
+from progressive_agents.stage7_react_loop.agent.workflow import (
+    create_workflow,
+    run_agent_async,
+)
 
-from agent import create_workflow, run_agent_async, setup_agent
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 
 
 async def test_react_simple():
@@ -30,9 +35,11 @@ async def test_react_simple():
     print()
 
     # Setup
-    print("Setting up agent...")
-    course_manager = await setup_agent()
-    agent = create_workflow()
+    print("Initializing Course Manager...")
+    course_manager = CourseManager()
+
+    print("Creating agent workflow...")
+    agent = create_workflow(course_manager)
 
     # Test query
     query = "What is CS004?"
@@ -91,9 +98,11 @@ async def test_react_memory():
     print()
 
     # Setup
-    print("Setting up agent...")
-    course_manager = await setup_agent()
-    agent = create_workflow()
+    print("Initializing Course Manager...")
+    course_manager = CourseManager()
+
+    print("Creating agent workflow...")
+    agent = create_workflow(course_manager)
 
     student_id = "test_student_react_memory"
     session_id = "test_session_react_002"
