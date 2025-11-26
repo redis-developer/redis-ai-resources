@@ -1,0 +1,759 @@
+"""
+Tools for the Course Q&A Agent workflow.
+
+Stage 6: Long-term Memory Tools!
+
+This demonstrates agentic memory management:
+- LLM decides when to search courses vs search memories vs store memories
+- Three tools: search_courses, search_memories, store_memory
+- Enables cross-session personalization with long-term memory
+"""
+
+import json
+import logging
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+from langchain_core.tools import tool
+from pydantic import BaseModel, Field
+from redis_context_course import CourseManager
+from redis_context_course.hierarchical_context import HierarchicalContextAssembler
+from redis_context_course.hierarchical_models import (
+    CourseDetails,
+    CourseSummary,
+    HierarchicalCourse,
+)
+from redis_context_course.models import Course
+
+# Configure logger
+logger = logging.getLogger("course-qa-workflow")
+
+# Global variables that will be set during initialization
+course_manager: Optional[CourseManager] = None
+hierarchical_courses = []
+context_assembler = HierarchicalContextAssembler()
+
+
+def initialize_tools(manager: CourseManager):
+    """
+    Initialize tools with required dependencies.
+
+    Args:
+        manager: CourseManager instance for course search
+    """
+    global course_manager, hierarchical_courses
+    course_manager = manager
+
+    # Load hierarchical courses with full syllabi
+    try:
+        data_path = (
+            Path(__file__).parent.parent.parent.parent
+            / "redis_context_course"
+            / "data"
+            / "hierarchical"
+            / "hierarchical_courses.json"
+        )
+        if data_path.exists():
+            with open(data_path) as f:
+                data = json.load(f)
+                hierarchical_courses = [
+                    HierarchicalCourse(**course_data) for course_data in data["courses"]
+                ]
+            logger.info(
+                f"Loaded {len(hierarchical_courses)} hierarchical courses for progressive disclosure"
+            )
+        else:
+            logger.warning(f"Hierarchical courses not found at {data_path}")
+    except Exception as e:
+        logger.error(f"Failed to load hierarchical courses: {e}")
+
+
+def transform_course_to_text(course: Course) -> str:
+    """
+    Transform course object to LLM-optimized text format.
+
+    This is the context engineering technique from Section 2 Notebook 2.
+    Converts structured course data into natural text format that's easier
+    for LLMs to process.
+
+    Args:
+        course: Course object to transform
+
+    Returns:
+        LLM-friendly text representation
+    """
+    # Build prerequisites text
+    prereq_text = ""
+    if course.prerequisites:
+        prereq_codes = [p.course_code for p in course.prerequisites]
+        prereq_text = f"\nPrerequisites: {', '.join(prereq_codes)}"
+
+    # Build learning objectives text
+    objectives_text = ""
+    if course.learning_objectives:
+        objectives_text = f"\nLearning Objectives:\n" + "\n".join(
+            f"  - {obj}" for obj in course.learning_objectives
+        )
+
+    # Build course text
+    course_text = f"""{course.course_code}: {course.title}
+Department: {course.department}
+Credits: {course.credits}
+Level: {course.difficulty_level.value}
+Format: {course.format.value}
+Instructor: {course.instructor}{prereq_text}
+Description: {course.description}{objectives_text}"""
+
+    return course_text
+
+
+def optimize_course_text(course: Course) -> str:
+    """
+    Create ultra-compact course description.
+
+    This is the optimization technique from Section 2 Notebook 2.
+    Reduces token count while preserving essential information.
+
+    Args:
+        course: Course object to optimize
+
+    Returns:
+        Compact text representation
+    """
+    prereqs = (
+        f" (Prereq: {', '.join([p.course_code for p in course.prerequisites])})"
+        if course.prerequisites
+        else ""
+    )
+    return (
+        f"{course.course_code}: {course.title} - {course.description[:100]}...{prereqs}"
+    )
+
+
+def _filter_course_details(
+    details: List[CourseDetails], info_types: List[str]
+) -> List[CourseDetails]:
+    """
+    Filter course details to include only requested information.
+
+    NEW in Stage 4: Targeted information extraction for specific requests.
+
+    Args:
+        details: List of CourseDetails objects
+        info_types: Types of information requested (assignments, syllabus, prerequisites, etc.)
+
+    Returns:
+        Filtered CourseDetails with only requested information
+    """
+    if not info_types:
+        return details
+
+    filtered = []
+    for detail in details:
+        # Create a copy with selective information based on the new simplified model
+        filtered_detail = CourseDetails(
+            course_code=detail.course_code,
+            title=detail.title,
+            department=detail.department,
+            credits=detail.credits,
+            difficulty_level=detail.difficulty_level,
+            format=detail.format,
+            instructor=detail.instructor,
+            semester=detail.semester,
+            year=detail.year,
+            max_enrollment=detail.max_enrollment,
+            full_description=detail.full_description
+            if "overview" in info_types or "description" in info_types
+            else "",
+            prerequisites=detail.prerequisites
+            if "prerequisites" in info_types or "prerequisite" in info_types
+            else [],
+            learning_objectives=detail.learning_objectives
+            if "syllabus" in info_types
+            or "learning_objectives" in info_types
+            or "objectives" in info_types
+            else [],
+            syllabus=detail.syllabus
+            if "syllabus" in info_types
+            else detail.syllabus,  # Always include syllabus structure
+            assignments=detail.assignments
+            if "assignments" in info_types or "assignment" in info_types
+            else [],
+            tags=detail.tags,
+        )
+        filtered.append(filtered_detail)
+
+    return filtered
+
+
+def search_courses_sync(
+    query: str,
+    top_k: int = 5,
+    use_optimized_format: bool = False,
+    intent: str = "GENERAL",
+    search_strategy: str = "semantic_only",
+    extracted_entities: Optional[Dict[str, Any]] = None,
+    metadata_filters: Optional[Dict[str, Any]] = None,
+) -> str:
+    """
+    Search for relevant courses using HYBRID SEARCH with NER (synchronous version).
+
+    Stage 4: Hybrid search with Named Entity Recognition!
+
+    Search Strategies:
+    - "exact_match": Use course codes for exact lookup
+    - "hybrid": Combine exact matches + semantic search + metadata filters
+    - "semantic_only": Traditional vector search (fallback)
+
+    Intent-Based Context:
+    - "GREETING": No search needed
+    - "GENERAL": Return ONLY summaries for ALL matches (~300 tokens)
+    - "SYLLABUS_OBJECTIVES": Summaries + full details with syllabus & learning objectives
+    - "ASSIGNMENTS": Summaries + full details with assignments
+    - "PREREQUISITES": Summaries + full details with prerequisites
+
+    Args:
+        query: Search query
+        top_k: Number of summaries to return
+        use_optimized_format: Ignored (always uses hierarchical format)
+        intent: Intent category (GREETING, GENERAL, SYLLABUS_OBJECTIVES, ASSIGNMENTS, PREREQUISITES)
+        search_strategy: "exact_match", "hybrid", or "semantic_only"
+        extracted_entities: Entities extracted from query (course codes, names, etc.)
+        metadata_filters: Filters for department, difficulty, format, etc.
+
+    Returns:
+        Hierarchically formatted search results
+    """
+    if not course_manager:
+        return "Course search not available - CourseManager not initialized"
+
+    try:
+        # Use asyncio to run the async search in a sync context
+        import asyncio
+
+        import nest_asyncio
+
+        # Allow nested event loops (needed when LangGraph is already running async)
+        nest_asyncio.apply()
+
+        # Get or create event loop
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+
+        basic_results = []
+
+        # HYBRID SEARCH: Combine multiple search strategies
+        if (
+            search_strategy == "exact_match"
+            and extracted_entities
+            and extracted_entities.get("course_codes")
+        ):
+            # Strategy 1: Exact course code lookup
+            logger.info(
+                f"🎯 Exact match search for codes: {extracted_entities['course_codes']}"
+            )
+
+            for course_code in extracted_entities["course_codes"]:
+                # Search by exact course code
+                results = loop.run_until_complete(
+                    course_manager.search_courses(
+                        query=course_code,
+                        filters=None,
+                        limit=1,
+                        similarity_threshold=0.9,  # High threshold for exact match
+                    )
+                )
+                if results:
+                    basic_results.extend(results)
+
+            # If we found exact matches, we're done
+            if basic_results:
+                logger.info(f"✅ Found {len(basic_results)} exact matches")
+            else:
+                # Fallback to semantic search if no exact matches
+                logger.info("⚠️ No exact matches, falling back to semantic search")
+                search_strategy = "semantic_only"
+
+        if search_strategy == "hybrid":
+            # Strategy 2: Hybrid search (exact + semantic + filters)
+            logger.info(f"🔀 Hybrid search with entities and filters")
+
+            # First, try exact matches for course codes
+            if extracted_entities and extracted_entities.get("course_codes"):
+                for course_code in extracted_entities["course_codes"]:
+                    results = loop.run_until_complete(
+                        course_manager.search_courses(
+                            query=course_code,
+                            filters=None,
+                            limit=1,
+                            similarity_threshold=0.9,
+                        )
+                    )
+                    if results:
+                        basic_results.extend(results)
+
+            # Then, semantic search with metadata filters
+            semantic_query = query
+            if extracted_entities:
+                # Enhance query with extracted topics
+                if extracted_entities.get("topics"):
+                    semantic_query = f"{query} {' '.join(extracted_entities['topics'])}"
+
+            semantic_results = loop.run_until_complete(
+                course_manager.search_courses(
+                    query=semantic_query,
+                    filters=metadata_filters,
+                    limit=top_k - len(basic_results),  # Fill remaining slots
+                    similarity_threshold=0.5,
+                )
+            )
+
+            if semantic_results:
+                # Deduplicate by course code
+                existing_codes = {c.course_code for c in basic_results}
+                for result in semantic_results:
+                    if result.course_code not in existing_codes:
+                        basic_results.append(result)
+                        existing_codes.add(result.course_code)
+
+            logger.info(f"✅ Hybrid search found {len(basic_results)} courses")
+
+        if search_strategy == "semantic_only" or not basic_results:
+            # Strategy 3: Traditional semantic search (fallback)
+            logger.info(f"🔍 Semantic-only search")
+            basic_results = loop.run_until_complete(
+                course_manager.search_courses(
+                    query=query,
+                    filters=metadata_filters,
+                    limit=top_k,
+                    similarity_threshold=0.5,
+                )
+            )
+
+        if not basic_results:
+            return "No relevant courses found"
+
+        # TIER 2: Match to hierarchical courses and extract summaries + details
+        summaries = []
+        all_details = []
+
+        for basic_course in basic_results:
+            # Find matching hierarchical course
+            for h_course in hierarchical_courses:
+                if h_course.summary.course_code == basic_course.course_code:
+                    summaries.append(h_course.summary)
+                    all_details.append(h_course.details)
+                    break
+            else:
+                # Fallback: create summary from basic course
+                logger.warning(
+                    f"No hierarchical data for {basic_course.course_code}, using basic data"
+                )
+                summary = CourseSummary(
+                    course_code=basic_course.course_code,
+                    title=basic_course.title,
+                    department=basic_course.department,
+                    credits=basic_course.credits,
+                    difficulty_level=basic_course.difficulty_level,
+                    format=basic_course.format,
+                    instructor=basic_course.instructor,
+                    short_description=basic_course.description[:200],
+                    prerequisite_codes=[
+                        p.course_code for p in basic_course.prerequisites
+                    ]
+                    if basic_course.prerequisites
+                    else [],
+                    tags=[],
+                )
+                summaries.append(summary)
+
+        # NEW in Stage 4: Filter details based on requested information type
+        if extracted_entities and extracted_entities.get("information_type"):
+            info_types = extracted_entities["information_type"]
+            logger.info(f"📋 Filtering for specific information: {info_types}")
+
+            # If specific info requested (assignments, syllabus, etc.), use specialized extraction
+            filtered_details = _filter_course_details(all_details, info_types)
+            if filtered_details:
+                all_details = filtered_details
+
+        # PROGRESSIVE DISCLOSURE: Adapt based on intent
+        if intent == "GENERAL":
+            # SUMMARY ONLY: Just return summaries, no details
+            hierarchical_context = context_assembler.assemble_summary_only_context(
+                summaries=summaries, query=query
+            )
+            token_estimate = len(hierarchical_context) // 4
+            logger.info(f"📊 Summary-only context: ~{token_estimate} tokens")
+            logger.info(f"   - Summaries for {len(summaries)} courses")
+            logger.info("✅ Summary mode: overview only")
+        else:
+            # DETAILED: Return summaries for ALL, details for top 2-3
+            # Intent determines what details are included (syllabus, assignments, prerequisites)
+            detail_limit = min(3, len(all_details))
+            top_details = all_details[:detail_limit]
+
+            hierarchical_context = context_assembler.assemble_hierarchical_context(
+                summaries=summaries, details=top_details, query=query
+            )
+            token_estimate = len(hierarchical_context) // 4
+            logger.info(f"📊 Hierarchical context: ~{token_estimate} tokens")
+            logger.info(f"   - Summaries for {len(summaries)} courses")
+            logger.info(
+                f"   - Full details for top {len(top_details)} courses (intent: {intent})"
+            )
+            logger.info(
+                "✅ Progressive disclosure: targeted information based on intent!"
+            )
+
+        return hierarchical_context
+
+    except Exception as e:
+        logger.error(f"Course search failed: {e}")
+        import traceback
+
+        traceback.print_exc()
+        return f"Search failed: {str(e)}"
+
+
+async def search_courses(
+    query: str, top_k: int = 5, use_optimized_format: bool = False
+) -> str:
+    """
+    Search for relevant courses using HIERARCHICAL RETRIEVAL (async version).
+
+    Stage 3: Progressive disclosure with two-tier retrieval!
+
+    See search_courses_sync() for full documentation.
+
+    Args:
+        query: Search query
+        top_k: Number of summaries to return
+        use_optimized_format: Ignored (always uses hierarchical format)
+
+    Returns:
+        Hierarchically formatted search results
+    """
+    if not course_manager:
+        return "Course search not available - CourseManager not initialized"
+
+    try:
+        # TIER 1: Search for courses using semantic search
+        basic_results = await course_manager.search_courses(
+            query=query, filters=None, limit=top_k, similarity_threshold=0.5
+        )
+
+        if not basic_results:
+            return "No relevant courses found"
+
+        # TIER 2: Match to hierarchical courses
+        summaries = []
+        all_details = []
+
+        for basic_course in basic_results:
+            for h_course in hierarchical_courses:
+                if h_course.summary.course_code == basic_course.course_code:
+                    summaries.append(h_course.summary)
+                    all_details.append(h_course.details)
+                    break
+            else:
+                # Fallback: create summary from basic course
+                logger.warning(f"No hierarchical data for {basic_course.course_code}")
+                summary = CourseSummary(
+                    course_code=basic_course.course_code,
+                    title=basic_course.title,
+                    department=basic_course.department,
+                    credits=basic_course.credits,
+                    difficulty_level=basic_course.difficulty_level,
+                    format=basic_course.format,
+                    instructor=basic_course.instructor,
+                    short_description=basic_course.description[:200],
+                    prerequisite_codes=[
+                        p.course_code for p in basic_course.prerequisites
+                    ]
+                    if basic_course.prerequisites
+                    else [],
+                    tags=[],
+                )
+                summaries.append(summary)
+
+        # PROGRESSIVE DISCLOSURE: Summaries for ALL, details for top 2-3
+        detail_limit = min(3, len(all_details))
+        top_details = all_details[:detail_limit]
+
+        # Assemble hierarchical context
+        hierarchical_context = context_assembler.assemble_hierarchical_context(
+            summaries=summaries, details=top_details, query=query
+        )
+
+        # Log token efficiency
+        token_estimate = len(hierarchical_context) // 4
+        logger.info(f"📊 Hierarchical context: ~{token_estimate} tokens")
+        logger.info(f"   - Summaries for {len(summaries)} courses")
+        logger.info(
+            f"   - Full details (with syllabi) for top {len(top_details)} courses"
+        )
+
+        return hierarchical_context
+
+    except Exception as e:
+        logger.error(f"Course search failed: {e}")
+        return f"Search failed: {str(e)}"
+
+
+# ============================================================================
+# NEW: LangChain Tool for Agentic Workflow
+# ============================================================================
+
+
+class SearchCoursesInput(BaseModel):
+    """Input schema for search_courses tool."""
+
+    query: str = Field(description="The search query for finding courses")
+    intent: str = Field(
+        default="GENERAL",
+        description="Intent category: GENERAL (summaries only), PREREQUISITES (prerequisite details), SYLLABUS_OBJECTIVES (syllabus and learning objectives), ASSIGNMENTS (assignment details)",
+    )
+    search_strategy: str = Field(
+        default="hybrid",
+        description="Search strategy: exact_match (for course codes), hybrid (exact + semantic + filters), semantic_only (traditional vector search)",
+    )
+    course_codes: List[str] = Field(
+        default_factory=list,
+        description="Specific course codes to search for (e.g., ['CS004', 'MATH301'])",
+    )
+    information_type: List[str] = Field(
+        default_factory=list,
+        description="Types of information needed: prerequisites, syllabus, assignments, objectives, description",
+    )
+    departments: List[str] = Field(
+        default_factory=list,
+        description="Filter by departments (e.g., ['Computer Science', 'Mathematics'])",
+    )
+    difficulty_level: Optional[str] = Field(
+        default=None,
+        description="Filter by difficulty: beginner, intermediate, advanced",
+    )
+
+
+@tool("search_courses", args_schema=SearchCoursesInput)
+async def search_courses_tool(
+    query: str,
+    intent: str = "GENERAL",
+    search_strategy: str = "hybrid",
+    course_codes: List[str] = [],
+    information_type: List[str] = [],
+    departments: List[str] = [],
+    difficulty_level: Optional[str] = None,
+) -> str:
+    """
+    Search for courses with flexible parameters controlled by the LLM.
+
+    This tool replaces the scripted research_node, allowing the LLM to decide:
+    - WHEN to search (instead of always searching)
+    - WHAT intent to use (GENERAL, PREREQUISITES, SYLLABUS_OBJECTIVES, ASSIGNMENTS)
+    - HOW to search (exact_match, hybrid, semantic_only)
+    - WHICH entities to extract (course codes, departments, etc.)
+
+    Use this tool when you need to find course information to answer the user's question.
+
+    Args:
+        query: The search query
+        intent: What type of information to return (GENERAL, PREREQUISITES, SYLLABUS_OBJECTIVES, ASSIGNMENTS)
+        search_strategy: How to search (exact_match, hybrid, semantic_only)
+        course_codes: Specific course codes if mentioned (e.g., ["CS004"])
+        information_type: Specific info types needed (e.g., ["prerequisites", "syllabus"])
+        departments: Filter by departments
+        difficulty_level: Filter by difficulty level
+
+    Returns:
+        Formatted course information based on intent and search strategy
+    """
+    if not course_manager:
+        return "Course search not available - CourseManager not initialized"
+
+    logger.info(f"🔧 Tool called: search_courses")
+    logger.info(f"   Query: {query}")
+    logger.info(f"   Intent: {intent}")
+    logger.info(f"   Strategy: {search_strategy}")
+    logger.info(f"   Course codes: {course_codes}")
+    logger.info(f"   Info types: {information_type}")
+
+    # Build extracted_entities from tool parameters
+    extracted_entities = {
+        "course_codes": course_codes,
+        "information_type": information_type,
+        "departments": departments,
+    }
+
+    # Build metadata filters
+    metadata_filters = {}
+    if departments:
+        metadata_filters["department"] = departments
+    if difficulty_level:
+        metadata_filters["difficulty_level"] = difficulty_level
+
+    # Call the existing search_courses_sync function
+    try:
+        result = search_courses_sync(
+            query=query,
+            top_k=5,
+            intent=intent,
+            search_strategy=search_strategy,
+            extracted_entities=extracted_entities,
+            metadata_filters=metadata_filters,
+        )
+        logger.info(f"   ✅ Search completed: {len(result)} chars returned")
+        return result
+    except Exception as e:
+        logger.error(f"   ❌ Search failed: {e}")
+        return f"Search failed: {str(e)}"
+
+
+# ============================================================================
+# LONG-TERM MEMORY TOOLS (NEW IN STAGE 6)
+# ============================================================================
+
+# Global variable for current student ID (set by agent_node)
+_current_student_id: Optional[str] = None
+
+
+class SearchMemoriesInput(BaseModel):
+    """Input schema for searching long-term memories."""
+
+    query: str = Field(
+        description="Natural language query to search for in user's long-term memory. "
+        "Examples: 'career goals', 'course preferences', 'learning style', 'interests'"
+    )
+    limit: int = Field(
+        default=5, description="Maximum number of memories to return. Default is 5."
+    )
+
+
+@tool("search_memories", args_schema=SearchMemoriesInput)
+async def search_memories_tool(query: str, limit: int = 5) -> str:
+    """
+    Search the student's long-term memory for relevant facts, preferences, and past interactions.
+
+    Use this tool when you need to:
+    - Recall user preferences: "What format does the user prefer?"
+    - Remember past goals: "What career path is the user interested in?"
+    - Find previous interactions: "What courses did we discuss before?"
+    - Personalize recommendations: "What are the user's interests?"
+
+    The search uses semantic matching to find relevant memories.
+
+    Returns: List of relevant memories with content and metadata.
+    """
+    try:
+        from agent_memory_client.filters import UserId
+
+        # Import memory client from nodes module
+        from .nodes import get_memory_client
+
+        memory_client = get_memory_client()
+
+        # Get student_id from global variable
+        if _current_student_id is None:
+            return "Error: Student ID not set. Cannot search memories."
+
+        logger.info(f"🔍 Searching long-term memory: '{query}' (limit={limit})")
+
+        # Search long-term memory
+        results = await memory_client.search_long_term_memory(
+            text=query, user_id=UserId(eq=_current_student_id), limit=limit
+        )
+
+        if not results.memories or len(results.memories) == 0:
+            logger.info("   ℹ️  No relevant memories found")
+            return "No relevant memories found."
+
+        # Format results
+        output = []
+        for i, memory in enumerate(results.memories, 1):
+            output.append(f"{i}. {memory.text}")
+            if memory.topics:
+                output.append(f"   Topics: {', '.join(memory.topics)}")
+
+        logger.info(f"   ✅ Found {len(results.memories)} memories")
+        return "\n".join(output)
+
+    except Exception as e:
+        logger.error(f"   ❌ Memory search failed: {e}")
+        return f"Error searching memories: {str(e)}"
+
+
+class StoreMemoryInput(BaseModel):
+    """Input schema for storing memories."""
+
+    text: str = Field(
+        description="The information to store. Should be a clear, factual statement. "
+        "Examples: 'User prefers online courses', 'User's career goal is AI research', "
+        "'User is interested in machine learning'"
+    )
+    memory_type: str = Field(
+        default="semantic",
+        description="Type of memory: 'semantic' (facts/preferences), 'episodic' (events/interactions). "
+        "Default is 'semantic'.",
+    )
+    topics: List[str] = Field(
+        default=[],
+        description="Optional tags to categorize the memory. Examples: ['preferences', 'courses'], "
+        "['goals', 'career'], ['interests', 'ML']",
+    )
+
+
+@tool("store_memory", args_schema=StoreMemoryInput)
+async def store_memory_tool(
+    text: str, memory_type: str = "semantic", topics: List[str] = []
+) -> str:
+    """
+    Store important information to the student's long-term memory.
+
+    Use this tool when the student shares:
+    - Preferences: "I prefer online courses", "I like hands-on projects"
+    - Goals: "I want to work in AI", "I'm preparing for grad school"
+    - Important facts: "I have a part-time job", "I'm interested in startups"
+    - Constraints: "I can only take 2 courses per semester"
+
+    Do NOT store:
+    - Temporary information (use conversation context instead)
+    - Course details (already in course catalog)
+    - General questions
+
+    Returns: Confirmation message.
+    """
+    try:
+        from agent_memory_client.models import ClientMemoryRecord
+
+        # Import memory client from nodes module
+        from .nodes import get_memory_client
+
+        memory_client = get_memory_client()
+
+        # Get student_id from global variable
+        if _current_student_id is None:
+            return "Error: Student ID not set. Cannot store memory."
+
+        logger.info(f"💾 Storing memory: '{text}' (type={memory_type}, topics={topics})")
+
+        # Create memory record
+        memory = ClientMemoryRecord(
+            text=text,
+            user_id=_current_student_id,
+            memory_type=memory_type,
+            topics=topics or [],
+        )
+
+        # Store in long-term memory
+        await memory_client.create_long_term_memory([memory])
+
+        logger.info(f"   ✅ Memory stored successfully")
+        return f"✅ Stored to long-term memory: {text}"
+
+    except Exception as e:
+        logger.error(f"   ❌ Memory storage failed: {e}")
+        return f"Error storing memory: {str(e)}"
