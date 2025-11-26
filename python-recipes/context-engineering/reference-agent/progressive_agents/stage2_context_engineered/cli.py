@@ -33,7 +33,6 @@ load_dotenv(env_path)
 
 from agent import cleanup_courses, initialize_state, setup_agent
 
-
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
