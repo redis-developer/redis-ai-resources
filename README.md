@@ -57,7 +57,7 @@ No faster way to get started than by diving in and playing around with a demo.
 | [Shopping AI Agent](https://github.com/redis-developer/shopping-ai-agent-langgraph-js-demo) | An Agentic AI grocery-shopping platform demo that combines Redis's speed with LangGraph's workflow orchestration. Get personalized recipe recommendations, smart product suggestions, and lightning-fast responses through semantic caching.                                                                   |
 | [Restaurant Discovery AI Agent](https://github.com/redis-developer/restaurant-discovery-ai-agent-demo) | An Agentic AI restaurant discovery platform that combines Redis's speed with LangGraph's intelligent workflow orchestration. Get personalized restaurant recommendations, make reservations, and get lightning-fast responses through semantic caching.                                                    |
 | [Podcast Chatbot with Agent Memory](https://github.com/redis-developer/podcast-chatbot-with-agent-memory-azure-demo) | A chatbot that discusses and recommends podcasts. Affectionately called Podbot, it demonstrates how to use Redis Agent Memory Server to build context-aware agents with Azure Managed Redis. |
-
+| [Car Dealership Assistant with Agent Memory](https://github.com/redis-developer/dealership-chatbot-agent-memory-demo) | A Car Dealership chatbot  with Redis Agent Memory Server, showcasing short-term and long-term memory. |
 
 ## Recipes
 
