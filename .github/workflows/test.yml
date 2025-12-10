@@ -87,9 +87,14 @@ jobs:
 
     services:
       redis:
-        image: redis:8.0-M03
+        image: redis:8.2
         ports:
           - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
@@ -99,6 +104,40 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      # Start Agent Memory Server
+      - name: Start Agent Memory Server
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Start the Agent Memory Server
+          docker run -d \
+            --name agent-memory-server \
+            --network host \
+            -e REDIS_URL=redis://localhost:6379 \
+            -e OPENAI_API_KEY=$OPENAI_API_KEY \
+            -e LOG_LEVEL=INFO \
+            ghcr.io/redis/agent-memory-server:latest
+
+          # Wait for memory server to be ready
+          echo "Waiting for Agent Memory Server to be ready..."
+          for i in {1..30}; do
+            if curl -f http://localhost:8000/health 2>/dev/null; then
+              echo "✅ Agent Memory Server is ready!"
+              break
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+
+          # Show status but don't fail if server isn't ready
+          if curl -f http://localhost:8000/health 2>/dev/null; then
+            echo "✅ Agent Memory Server is healthy"
+          else
+            echo "⚠️  WARNING: Agent Memory Server may not be ready"
+            echo "Docker logs:"
+            docker logs agent-memory-server || true
+          fi
+
       - name: Create and activate venv
         run: |
           python -m venv venv
@@ -106,11 +145,22 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install pytest nbval
 
+          # Install the redis-context-course package and its dependencies
+          cd python-recipes/context-engineering/reference-agent
+          pip install -e .
+
       - name: Test notebook
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          AGENT_MEMORY_URL: http://localhost:8000
+          REDIS_URL: redis://localhost:6379
         run: |
           echo "Testing notebook: ${{ matrix.notebook }}"
           source venv/bin/activate
           pytest --nbval-lax --disable-warnings "${{ matrix.notebook }}"
+
+      - name: Show Agent Memory Server logs on failure
+        if: failure()
+        run: |
+          docker logs agent-memory-server
