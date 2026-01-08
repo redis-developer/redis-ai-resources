@@ -32,7 +32,7 @@ jobs:
             [[ -z "$skip_nb" || "$skip_nb" =~ ^# ]] && continue
             IGNORE_LIST+=("$skip_nb")
           done < .github/ignore-notebooks.txt
-      
+
           # 3) Filter out notebooks that match anything in IGNORE_LIST
           FILTERED_NBS=()
           for nb in $NBS; do
@@ -47,16 +47,16 @@ jobs:
               FILTERED_NBS+=("$nb")
             fi
           done
-      
+
           # 4) Stuff into a single-line JSON array
           NB_JSON=$(printf '%s\n' "${FILTERED_NBS[@]}" \
             | jq -R . \
             | jq -s -c .)
-      
+
           if [ -z "$NB_JSON" ] || [ "$NB_JSON" = "[]" ]; then
             NB_JSON="[]"
           fi
-      
+
           echo "All valid notebooks: $NB_JSON"
 
           # 5) Check if there's anything in FILTERED_NBS
@@ -65,7 +65,7 @@ jobs:
           else
             echo "has_notebooks=false" >> $GITHUB_OUTPUT
           fi
-      
+
           echo "notebooks=$NB_JSON" >> $GITHUB_OUTPUT
 
   # ---------------------------------------------------------
@@ -99,7 +99,7 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install --upgrade pip setuptools wheel
-          pip install pytest nbval
+          pip install --no-cache-dir pytest nbval
 
       - name: Test notebook
         env:
@@ -108,4 +108,4 @@ jobs:
         run: |
           echo "Testing notebook: ${{ matrix.notebook }}"
           source venv/bin/activate
-          pytest --nbval-lax --disable-warnings "${{ matrix.notebook }}"
+          pytest --nbval-lax --nbval-cell-timeout=300 --disable-warnings "${{ matrix.notebook }}"
