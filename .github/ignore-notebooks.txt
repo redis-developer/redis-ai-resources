@@ -15,3 +15,4 @@ spring_ai_redis_rag.ipynb
 1_semantic_classification.ipynb
 2_semantic_tool_calling.ipynb
 3_semantic_guardrails.ipynb
+04_langcache_semantic_caching.ipynb
