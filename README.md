@@ -232,6 +232,7 @@ Redis integrates with many different players in the AI ecosystem. Here's a curat
 | [Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main) | Popular lib by MSFT to integrate LLMs with plugins |
 | [RelevanceAI](https://relevance.ai/) | Platform to tag, search and analyze unstructured data faster, built on Redis |
 | [DocArray](https://docs.docarray.org/user_guide/storing/index_redis/) | DocArray Integration of Redis as a VectorDB by Jina AI |
+| [MiniMax](https://www.minimaxi.com/en) | MiniMax M2.5 / M2.5-highspeed LLMs (204K context window) via OpenAI-compatible API — see the [full-featured agent recipe](python-recipes/agents/02_full_featured_agent.ipynb) |
 
 <hr>
 
