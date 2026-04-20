@@ -12,6 +12,7 @@ spring_ai_redis_rag.ipynb
 07_flat_to_svs_vamana_migration.ipynb
 1_pre_generated_semantic_caching.ipynb
 2_semantic_caching_with_langcache.ipynb
+04_langcache_semantic_caching.ipynb
 1_semantic_classification.ipynb
 2_semantic_tool_calling.ipynb
 3_semantic_guardrails.ipynb
