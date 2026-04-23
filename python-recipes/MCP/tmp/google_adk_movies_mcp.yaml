@@ -1,0 +1,19 @@
+server:
+  redis_url: redis://localhost:6379
+indexes:
+  movies:
+    redis_name: adk-movies
+    vectorizer:
+      class: HFTextVectorizer
+      model: sentence-transformers/all-MiniLM-L6-v2
+    search:
+      type: vector
+    runtime:
+      vector_field_name: embedding
+      text_field_name: description
+      default_embed_text_field: description
+      default_limit: 5
+      max_limit: 10
+      max_result_window: 100
+      request_timeout_seconds: 120
+      startup_timeout_seconds: 120
