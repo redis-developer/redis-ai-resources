@@ -1,0 +1,122 @@
+[
+    {
+        "record_id": "runbook_cache_failover_eu_central",
+        "title": "Runbook: mitigate elevated cache miss rate after eu-central failover",
+        "content": "After a regional failover in eu-central, elevated cache miss rate usually means replicas are warm but invalidation workers are behind. Restart the cache warming job, replay invalidation events, and pre-warm the top keys for the developer platform before reopening traffic.",
+        "source_type": "runbook",
+        "team": "platform",
+        "region": "eu-central",
+        "product": "developer-platform",
+        "severity": "sev1",
+        "release_version": "na",
+        "last_reviewed_at": "2026-03-18"
+    },
+    {
+        "record_id": "incident_cache_failover_summary",
+        "title": "Incident summary: cache miss spike during regional failover",
+        "content": "A March 2026 failover in eu-central caused elevated cache miss rate and stale responses for the developer portal. The fix was to drain the legacy invalidation backlog, force a cache warmup pass, and keep the platform severity at sev1 until hit rate recovered.",
+        "source_type": "incident_summary",
+        "team": "platform",
+        "region": "eu-central",
+        "product": "developer-platform",
+        "severity": "sev1",
+        "release_version": "na",
+        "last_reviewed_at": "2026-03-12"
+    },
+    {
+        "record_id": "kb_legacy_invalidation_troubleshooting",
+        "title": "KB: troubleshoot stale reads from legacy cache invalidation flow",
+        "content": "Support engineers should check whether a service is still publishing to the legacy cache invalidation flow. Mixed old and new invalidation events can leave stale objects in Redis until the developer-platform consumers catch up.",
+        "source_type": "kb_article",
+        "team": "support",
+        "region": "global",
+        "product": "developer-platform",
+        "severity": "sev2",
+        "release_version": "na",
+        "last_reviewed_at": "2026-02-26"
+    },
+    {
+        "record_id": "release_2026_03_legacy_invalidation_deprecation",
+        "title": "Release notes: deprecation of legacy cache invalidation flow",
+        "content": "Release 2026.03 deprecates the legacy cache invalidation flow for the developer platform. Teams should migrate to the event-driven invalidation endpoint before the next quarterly cutoff.",
+        "source_type": "release_note",
+        "team": "platform",
+        "region": "global",
+        "product": "developer-platform",
+        "severity": "info",
+        "release_version": "2026.03",
+        "last_reviewed_at": "2026-03-01"
+    },
+    {
+        "record_id": "runbook_new_invalidation_cutover",
+        "title": "Runbook: cut over services to the new invalidation endpoint",
+        "content": "To retire the legacy cache invalidation flow, deploy the new invalidation endpoint, verify consumer lag stays below threshold, and compare cache key eviction counts between the old and new pipelines for one full release.",
+        "source_type": "runbook",
+        "team": "platform",
+        "region": "us-east",
+        "product": "developer-platform",
+        "severity": "sev2",
+        "release_version": "na",
+        "last_reviewed_at": "2026-03-22"
+    },
+    {
+        "record_id": "kb_cache_key_version_mismatch",
+        "title": "KB: cache key version mismatch after application deploy",
+        "content": "If users report stale content after a deploy, compare cache key versions between the API and the worker fleet. A version mismatch often looks like a partial invalidation failure even when Redis itself is healthy.",
+        "source_type": "kb_article",
+        "team": "support",
+        "region": "global",
+        "product": "developer-platform",
+        "severity": "sev2",
+        "release_version": "na",
+        "last_reviewed_at": "2026-03-04"
+    },
+    {
+        "record_id": "incident_release_rollout_cache_regression",
+        "title": "Incident summary: release rollout caused invalidation lag",
+        "content": "A rollout in us-east introduced invalidation lag after the release workers fell behind. Hybrid search over this summary is useful when engineers ask about cache regressions without knowing the exact incident title.",
+        "source_type": "incident_summary",
+        "team": "platform",
+        "region": "us-east",
+        "product": "developer-platform",
+        "severity": "sev2",
+        "release_version": "na",
+        "last_reviewed_at": "2026-02-17"
+    },
+    {
+        "record_id": "release_2026_04_new_invalidation_endpoint",
+        "title": "Release notes: new invalidation endpoint is now the default",
+        "content": "Release 2026.04 makes the new invalidation endpoint the default path for developer-platform services and announces final removal dates for the legacy cache invalidation flow.",
+        "source_type": "release_note",
+        "team": "platform",
+        "region": "global",
+        "product": "developer-platform",
+        "severity": "info",
+        "release_version": "2026.04",
+        "last_reviewed_at": "2026-04-02"
+    },
+    {
+        "record_id": "runbook_checkout_processor_brownout",
+        "title": "Runbook: recover checkout queue after payment processor brownout",
+        "content": "This payments runbook covers queue draining and circuit breaker resets after a processor brownout. It is intentionally unrelated to developer-platform cache incidents so product filters have something to exclude.",
+        "source_type": "runbook",
+        "team": "payments",
+        "region": "eu-west",
+        "product": "checkout",
+        "severity": "sev1",
+        "release_version": "na",
+        "last_reviewed_at": "2026-03-03"
+    },
+    {
+        "record_id": "kb_identity_token_expiry",
+        "title": "KB: identity token expiry after mobile app resume",
+        "content": "Identity support uses this article to diagnose expired tokens after long mobile app suspends. It gives the index one more non-cache knowledge slice for metadata-filtered search examples.",
+        "source_type": "kb_article",
+        "team": "identity",
+        "region": "global",
+        "product": "identity-service",
+        "severity": "sev2",
+        "release_version": "na",
+        "last_reviewed_at": "2026-03-05"
+    }
+]
