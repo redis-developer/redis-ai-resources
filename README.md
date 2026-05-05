@@ -160,6 +160,12 @@ AI gateways manage LLM traffic through a centralized, managed layer that can imp
 | 💳 **Credit Scoring** - Credit scoring system using Feast with Redis as the online store | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/feature-store/00_feast_credit_score.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/feature-store/00_feast_credit_score.ipynb) |
 | 🔍 **Transaction Search** - Real-time transaction feature search with Redis | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/feature-store/01_card_transaction_search.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/feature-store/01_card_transaction_search.ipynb) |
 
+### Model Context Protocol (MCP)
+| Recipe | GitHub | Google Colab |
+| ------ | ------ | ------------ |
+| 🤖 **RedisVL MCP (Google ADK)** - Build an agent with Google ADK, paired with tools from RedisVL MCP Server. | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/MCP/00_google_adk_redisvl_mcp_agent.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/MCP/00_google_adk_redisvl_mcp_agent.ipynb) |
+| ✴️ **RedisVL MCP (Claude Agent SDK)** - Build an agent with Claude Agent SDK, paired with tools from RedisVL MCP Server. | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/MCP/01_claude_agent_sdk_redisvl_mcp.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/MCP/01_claude_agent_sdk_redisvl_mcp.ipynb) |
+
 ### ☕️ Java AI Recipes
 
 A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md).
