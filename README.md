@@ -156,6 +156,11 @@ AI gateways manage LLM traffic through a centralized, managed layer that can imp
 | 👥 **Collaborative Filtering** - Intro collaborative filtering example with redisvl | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/recommendation-systems/01_collaborative_filtering.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/recommendation-systems/01_collaborative_filtering.ipynb) |
 | 🏗️ **Two Towers** - Intro deep learning two tower example with redisvl | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/recommendation-systems/02_two_towers.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/recommendation-systems/02_two_towers.ipynb) |
 
+### Fraud Detection
+| Recipe | GitHub | Google Colab |
+| --- | --- | --- |
+| 🛡️ **Fraud Detection** - Detect financial fraud with vector k-NN scoring, anomaly detection, and velocity rules using RedisVL | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/fraud-detection/00_fraud_detection.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/fraud-detection/00_fraud_detection.ipynb) |
+
 ### Feature Store
 | Recipe | GitHub | Google Colab |
 | ------ | ------ | ------------ |
