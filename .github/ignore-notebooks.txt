@@ -16,3 +16,5 @@ spring_ai_redis_rag.ipynb
 1_semantic_classification.ipynb
 2_semantic_tool_calling.ipynb
 3_semantic_guardrails.ipynb
+06_nemo_agent_toolkit_redis.ipynb
+07_nemo_agent_toolkit_redis_cloud.ipynb

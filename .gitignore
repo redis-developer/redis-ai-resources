@@ -225,6 +225,7 @@ java-recipes/.*
 
 python-recipes/vector-search/beir_datasets
 python-recipes/vector-search/datasets
+python-recipes/agents/nat_config.yml
 
 litellm_proxy.log
 litellm_redis.yml
