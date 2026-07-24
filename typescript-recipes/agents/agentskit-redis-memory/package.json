@@ -1,0 +1,21 @@
+{
+  "name": "agentskit-redis-memory-recipe",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "demo": "tsx src/demo.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@agentskit/core": "^1.12.5",
+    "@agentskit/memory": "^0.11.3",
+    "redis": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^6.0.0",
+    "vitest": "^4.0.0"
+  }
+}
