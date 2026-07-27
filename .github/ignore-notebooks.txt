@@ -19,3 +19,7 @@ spring_ai_redis_rag.ipynb
 06_nemo_agent_toolkit_redis.ipynb
 07_nemo_agent_toolkit_redis_cloud.ipynb
 02_featureform_fraud_detection.ipynb
+03_featureform_transformations_lineage.ipynb
+04_featureform_embeddings_vector_search.ipynb
+05_featureform_ondemand_features.ipynb
+06_featureform_feature_variants.ipynb
