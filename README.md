@@ -127,6 +127,8 @@ Routing is a simple and effective way of preventing misuse with your AI applicat
 ### AI Gateways
 AI gateways manage LLM traffic through a centralized, managed layer that can implement routing, rate limiting, caching, and more.
 
+> **Tip:** The OpenAI client `base_url` pattern also works with other OpenAI-compatible multi-model gateways — for example [DaoXE](https://daoxe.com/?utm_source=github&utm_medium=organic&utm_campaign=redis-ai-resources&utm_content=ai-gateways) at `https://api.daoxe.com/v1`.
+
 | Recipe | GitHub | Google Colab |
 | --- | --- | --- |
 | 🚪 **LiteLLM Proxy** - Getting started with LiteLLM proxy and Redis | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/gateway/00_litellm_proxy_redis.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/gateway/00_litellm_proxy_redis.ipynb) |
