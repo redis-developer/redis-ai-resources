@@ -7,9 +7,11 @@ and bundles the query engine + JSON, so we switch to it and keep $(lsb_release -
 
 Raw-text replace: every pattern below is plain ASCII with no JSON-special chars, so a
 literal string replace on the file bytes stays valid JSON AND produces a minimal diff
-(reserializing the JSON reformats notebooks saved with other conventions). It rewrites
-recorded cell outputs too, but the old package name only appears there in stale startup
-logs, which refresh on the next run. Idempotent.
+(reserializing the JSON reformats notebooks saved with other conventions). Only these
+exact command/image strings are rewritten; unrelated text left in recorded cell outputs
+(e.g. "Starting redis-stack-server..." log lines) is NOT touched and simply refreshes
+when the notebook is re-run. `-y` keeps the apt install non-interactive so it can't stall
+on a confirmation prompt in a headless Colab shell. Idempotent.
 """
 import json
 import sys
@@ -20,7 +22,7 @@ from pathlib import Path
 REPLACEMENTS = [
     ("redis/redis-stack-server:latest", "redis:8"),
     ("--name redis-stack-server", "--name redis"),
-    ("apt-get install redis-stack-server", "apt-get install redis-server"),
+    ("apt-get install redis-stack-server", "apt-get install -y redis-server"),
     ("redis-stack-server --daemonize yes", "redis-server --daemonize yes"),
 ]
 
