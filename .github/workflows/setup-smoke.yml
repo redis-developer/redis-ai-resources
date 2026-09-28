@@ -1,0 +1,53 @@
+name: Setup Smoke Test
+
+# The notebook test jobs provide Redis via a service container, so the setup cell
+# that installs Redis in Colab (apt on Ubuntu) is never actually exercised. That is
+# how the Colab install silently broke when Colab moved to Ubuntu 24.04 (noble).
+#
+# This job runs the EXACT install snippet the notebooks use, on the real runner OS
+# (ubuntu-latest is noble), and asserts Redis 8 comes up with the query engine + JSON
+# built in. The weekly cron catches distro/package drift even when no code changes.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'python-recipes/**/*.ipynb'
+      - '.github/workflows/setup-smoke.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'python-recipes/**/*.ipynb'
+      - '.github/workflows/setup-smoke.yml'
+  schedule:
+    - cron: "0 4 * * 1"  # Mondays 04:00 UTC — catch distro drift
+  workflow_dispatch:
+
+jobs:
+  install-redis-on-colab-os:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show runner OS codename
+        run: lsb_release -a || true
+
+      - name: Install Redis the way the notebooks do
+        run: |
+          curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+          sudo apt-get update
+          sudo apt-get install -y redis-server
+          redis-server --daemonize yes
+          sleep 1
+
+      - name: Assert Redis 8 with query engine + JSON built in
+        run: |
+          set -e
+          VER=$(redis-cli INFO server | tr -d '\r' | awk -F: '/redis_version/{print $2}')
+          echo "redis_version=$VER"
+          case "$VER" in 8.*) ;; *) echo "::error::expected Redis 8.x, got $VER"; exit 1;; esac
+          # Query engine (formerly RediSearch) must be present
+          redis-cli FT.CREATE idx:smoke ON HASH PREFIX 1 doc: \
+            SCHEMA v VECTOR FLAT 6 TYPE FLOAT32 DIM 4 DISTANCE_METRIC L2
+          # JSON must be present
+          redis-cli JSON.SET doc:1 '$' '{"ok":true}'
+          echo "query engine + JSON present ✓"

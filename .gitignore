@@ -230,3 +230,6 @@ python-recipes/agents/nat_config.yml
 litellm_proxy.log
 litellm_redis.yml
 .vscode/
+
+# vendored redisvl checkout — not part of this repo
+python-recipes/vector-search/src/
