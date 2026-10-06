@@ -1,12 +1,18 @@
 name: Setup Smoke Test
 
 # The notebook test jobs provide Redis via a service container, so the setup cell
-# that installs Redis in Colab (apt on Ubuntu) is never actually exercised. That is
-# how the Colab install silently broke when Colab moved to Ubuntu 24.04 (noble).
+# that installs Redis in Colab (apt on Ubuntu) is never actually exercised.
 #
-# This job runs the EXACT install snippet the notebooks use, on the real runner OS
-# (ubuntu-latest is noble), and asserts Redis 8 comes up with the query engine + JSON
-# built in. The weekly cron catches distro/package drift even when no code changes.
+# This job runs the EXACT install snippet the notebooks use inside a bare Ubuntu
+# container that matches Colab (noble, root, no systemd) and asserts Redis 8 comes up
+# with the query engine + JSON loaded.
+#
+# Why a container and not the runner host: on a systemd host `apt-get install
+# redis-server` auto-starts the packaged service with /etc/redis/redis.conf, which
+# carries the `loadmodule` lines. A bare `redis-server --daemonize yes` that loads NO
+# modules then fails to bind :6379 and the asserts "pass" against the service instead.
+# Colab has no systemd, so only the notebook's own start line counts.
+# The weekly cron catches distro/package drift even when no code changes.
 
 on:
   push:
@@ -24,27 +30,34 @@ on:
   workflow_dispatch:
 
 jobs:
-  install-redis-on-colab-os:
+  install-redis-like-colab:
     runs-on: ubuntu-latest
+    container: ubuntu:24.04  # Colab runtime = Ubuntu 24.04 (noble), root, no systemd
+    env:
+      DEBIAN_FRONTEND: noninteractive
     steps:
-      - name: Show runner OS codename
-        run: lsb_release -a || true
+      - name: Tools Colab already ships (sudo, lsb_release, curl, gpg)
+        run: apt-get update && apt-get install -y sudo lsb-release curl gpg
 
-      - name: Install Redis the way the notebooks do
+      - name: Show OS codename
+        run: lsb_release -a
+
+      - name: Install and start Redis the way the notebooks do
         run: |
           curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
           echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
           sudo apt-get update
           sudo apt-get install -y redis-server
-          redis-server --daemonize yes
+          sudo redis-server /etc/redis/redis.conf --daemonize yes
           sleep 1
 
-      - name: Assert Redis 8 with query engine + JSON built in
+      - name: Assert Redis 8 with query engine + JSON loaded
         run: |
           set -e
           VER=$(redis-cli INFO server | tr -d '\r' | awk -F: '/redis_version/{print $2}')
           echo "redis_version=$VER"
           case "$VER" in 8.*) ;; *) echo "::error::expected Redis 8.x, got $VER"; exit 1;; esac
+          echo "modules: $(redis-cli MODULE LIST | awk '/^name$/{getline; printf "%s ", $0}')"
           # Query engine (formerly RediSearch) must be present
           redis-cli FT.CREATE idx:smoke ON HASH PREFIX 1 doc: \
             SCHEMA v VECTOR FLAT 6 TYPE FLOAT32 DIM 4 DISTANCE_METRIC L2
