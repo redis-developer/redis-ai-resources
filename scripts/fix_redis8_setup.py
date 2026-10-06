@@ -5,6 +5,12 @@ Why: Colab moved to Ubuntu 24.04 (noble); packages.redis.io has no redis-stack-s
 for noble, so the apt install cell fails. Redis 8's `redis-server` package IS on noble
 and bundles the query engine + JSON, so we switch to it and keep $(lsb_release -cs).
 
+Start line: the Redis 8 deb ships the modules as .so files and loads them via the
+`loadmodule` lines in /etc/redis/redis.conf. A bare `redis-server --daemonize yes`
+ignores that file and starts with only the built-in vectorset module, so FT.* / JSON.*
+are "unknown command". Colab has no systemd to start the packaged service for us, so
+the notebook must pass the conf explicitly (sudo: the conf is root:redis 0640).
+
 Raw-text replace: every pattern below is plain ASCII with no JSON-special chars, so a
 literal string replace on the file bytes stays valid JSON AND produces a minimal diff
 (reserializing the JSON reformats notebooks saved with other conventions). Only these
@@ -24,6 +30,9 @@ REPLACEMENTS = [
     ("--name redis-stack-server", "--name redis"),
     ("apt-get install redis-stack-server", "apt-get install -y redis-server"),
     ("redis-stack-server --daemonize yes", "redis-server --daemonize yes"),
+    # bare start -> start with the packaged conf so the modules load (not a substring of
+    # its own output, so re-running stays idempotent)
+    ("redis-server --daemonize yes", "sudo redis-server /etc/redis/redis.conf --daemonize yes"),
 ]
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -80,7 +89,7 @@ def main() -> None:
         else:
             body = p.read_text()
         for pat in ("install redis-stack-server", "redis-stack-server --daemonize",
-                    "redis/redis-stack-server:latest"):
+                    "redis/redis-stack-server:latest", "redis-server --daemonize yes"):
             if pat in body:
                 print(f"LEFTOVER {pat!r} in {p.relative_to(ROOT)}", file=sys.stderr)
                 leftover += 1
