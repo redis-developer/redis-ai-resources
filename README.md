@@ -180,6 +180,12 @@ AI gateways manage LLM traffic through a centralized, managed layer that can imp
 | 🤖 **RedisVL MCP (Google ADK)** - Build an agent with Google ADK, paired with tools from RedisVL MCP Server. | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/MCP/00_google_adk_redisvl_mcp_agent.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/MCP/00_google_adk_redisvl_mcp_agent.ipynb) |
 | ✴️ **RedisVL MCP (Claude Agent SDK)** - Build an agent with Claude Agent SDK, paired with tools from RedisVL MCP Server. | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/MCP/01_claude_agent_sdk_redisvl_mcp.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/MCP/01_claude_agent_sdk_redisvl_mcp.ipynb) |
 
+
+### Redis Agent Memory (RAM)
+ Recipe | GitHub | Google Colab |
+| ------ | ------ | ------------ |
+| 💡 **Redis Agent Memory** - Store and retrieve memories that can be used across conversation sessions. | [![Open In GitHub](https://img.shields.io/badge/View-GitHub-green)](python-recipes/agent-memory/01_intro_to_redis_agent_memory.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/agent-memory/01_intro_to_redis_agent_memory.ipynb) |
+
 ### ☕️ Java AI Recipes
 
 A set of Java recipes can be found under [/java-recipes](/java-recipes/README.md).
