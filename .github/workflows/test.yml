@@ -26,7 +26,7 @@ jobs:
         run: |
           # 1) Compare this commit/PR to 'main' and list changed notebooks
           git fetch --depth=1 origin main
-          CHANGED_NOTEBOOKS=$(git diff --name-only origin/main | grep '\.ipynb$' || true)
+          CHANGED_NOTEBOOKS=$(git diff --name-only --diff-filter=AM origin/main | grep '\.ipynb$' || true)
       
           # 2) Load notebooks to ignore
           IGNORE_LIST=()
