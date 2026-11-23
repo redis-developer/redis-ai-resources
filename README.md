@@ -59,6 +59,7 @@ No faster way to get started than by diving in and playing around with a demo.
 | [Podcast Chatbot with Agent Memory](https://github.com/redis-developer/podcast-chatbot-with-agent-memory-azure-demo) | A chatbot that discusses and recommends podcasts. Affectionately called Podbot, it demonstrates how to use Redis Agent Memory Server to build context-aware agents with Azure Managed Redis. |
 | [Car Dealership Assistant with Agent Memory](https://github.com/redis-developer/dealership-chatbot-agent-memory-demo) | A Car Dealership chatbot  with Redis Agent Memory Server, showcasing short-term and long-term memory. |
 | [Multi-Agent AI Text Adventure Game with Agent Memory and LangGraph.js](https://github.com/redis-developer/multi-agent-ai-text-adventure-game-with-agent-memory-langgraph-js-azure) | A text-adventure game that demonstrates how to build a multi-agent AI workflows with LangGraph.js, Azure Managed Redis, and Agent Memory Server. |
+| [Movie Streaming Support Chatbot with Agent Playbooks](https://github.com/redis-developer/movie-streaming-playbook-demo) | A StreamFlix support chatbot whose knowledge is governed by Redis Iris Agent Playbooks: approved FAQs served verbatim, versioned Skills with on-demand resources, publish and rollback, and a proposal inbox fed by real support conversations. FastAPI + React on Redis Cloud. |
 
 ## Recipes
 
